@@ -72,7 +72,7 @@ main() {
   if [[ $JC_DOTFILES_UNATTENDED = "" ]] \
     && [[ $JC_DOTFILES_UNATTENDED -eq 0 ]]; then
     echo
-    read -r -p "Overwrite the above files? [y,n] " ANSWER
+    read -r -p "Install the above files? [y,n] " ANSWER
     if [[ "$ANSWER" != "y" ]]; then
       echo "Interrupted." >&2
       exit 1
@@ -80,6 +80,7 @@ main() {
   fi
 
   rsync "${opts[@]}" "$HOME/"
+  echo "Success."
 }
 
 main "$@"

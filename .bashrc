@@ -34,6 +34,18 @@
 #
 
 #-------------------------------------------------------------------------------
+# CHECKS
+#-------------------------------------------------------------------------------
+
+if [[ -z "$BASH" ]]; then
+  return
+elif [[ $_JC_BASHRC_LOADED != '' ]]; then
+  return
+else
+  _JC_BASHRC_LOADED=1
+fi
+
+#-------------------------------------------------------------------------------
 # GLOBAL VARIABLES
 #-------------------------------------------------------------------------------
 TMOUT=650
@@ -50,21 +62,11 @@ PS1_MAILDIR_PATH="$HOME/.maildir"
 PS1_MAILDIR=1
 
 #-------------------------------------------------------------------------------
-# CHECKS
+# INIT
 #-------------------------------------------------------------------------------
-if [[ $_JC_BASHRC_LOADED != '' ]]; then
-  return
-else
-  _JC_BASHRC_LOADED=1
-fi
-
 if [[ -f ~/.profile ]]; then
   # shellcheck disable=SC1090
   source ~/.profile
-fi
-
-if [[ -z "$BASH" ]]; then
-  return
 fi
 
 case $- in
@@ -164,6 +166,9 @@ alias cls="clear"
 alias md="mkdir"
 alias e='ranger'
 alias df='df -h -x overlay -x aufs -x tmpfs -x devtmpfs --print-type'
+alias ncdu="ncdu --color off"
+alias tree="tree -C --gitignore"
+alias mv="mv -i"
 
 alias br="git --no-pager branch"
 alias g="git"
@@ -171,8 +176,31 @@ alias glp="git log -p"
 alias gitroot='cd "$(command git rev-parse --show-toplevel)"'
 alias gt=gitroot
 
+alias grep="grep --color=auto --exclude-dir=.git"
+alias rg="rg --hidden --no-messages --no-heading"
+alias fd="fd --hidden"
+alias fdf="fd --type file"
+alias fdd="fd --type d"
+
+alias gd="git d"
+alias gp="git push"
+alias gpf="git push --force"
+alias gpl="git pull"
+alias gb='command git branch'
+
 if type -P colordiff >/dev/null 2>&1; then
   alias diff=colordiff
+fi
+
+alias ipython='ipython --no-confirm-exit'
+if type -P ipython >/dev/null 2>&1; then
+  alias py=ipython
+  alias ipy=ipython
+  alias p=ipython
+else
+  alias py='python -q'
+  alias ipy='python -q'
+  alias p='python -q'
 fi
 
 #-------------------------------------------------------------------------------
@@ -181,6 +209,8 @@ fi
 alias sl=ls
 alias sls=ls
 alias sll=ls
+
+alias dc=cd
 
 alias v='vim'
 alias vi='vim'
@@ -246,6 +276,89 @@ PS1="$Green\$(ps1-git-branch)$Color_Off$Blue"
 PS1="${PS1}\$(ps1-count-mails-maildir)$Color_Off"
 PS1="${PS1}$MYPROMPT$PS1_USER_COLOR\$USER$Color_Off "
 PS1="${PS1}$Yellow$PathShort$Color_Off $ "
+
+#-------------------------------------------------------------------------------
+# Functions
+#-------------------------------------------------------------------------------
+
+_jc_better_cd() {
+  # Function: _jc_better_cd
+  # Description:
+  # 1. 'cd path/to/file' changes the directory to 'path/to' (the parent directory
+  #    of 'file').
+  # 2. You can switch to the previous directory using 'popd' or 'cd -' (the
+  #    function adds directories to the top of the directory stack).
+  # 3. 'cd path/to/dir with spaces' changes the directory to "path/to/dir with
+  #    spaces".
+  # 4. 'cd file:///home/user' changes the directory to "/home/user".
+
+  # Previous directory ('cd -')
+  if [[ $# -eq 1 ]] && [[ $1 = '-' ]]; then
+    popd >/dev/null || return 1
+    return 0
+  fi
+
+  # Join paths
+  local path
+  if [[ $# -eq 0 ]]; then
+    path="$HOME"
+  else
+    path=$(echo "$1" | sed -e 's/^file:\/\///')
+    shift
+
+    local item
+    for item in "$@"; do
+      path="${path} ${item}"
+    done
+  fi
+
+  # Checks
+  local errno=0
+  if [[ -f "$path" ]]; then
+    path=$(dirname "$path")
+  fi
+
+  if ! [[ -d "$path" ]]; then
+    echo "$(basename "$0"):" "cd: $path: No such file or directory" >&2
+    return 1
+  fi
+
+  # Change the directory
+  pushd . >/dev/null || return 1
+  builtin cd "$path" >/dev/null 2>&1 || errno=1
+  if [[ $errno -ne 0 ]]; then
+    echo "Error." >&2
+    popd >/dev/null || return 1
+  fi
+
+  return "$errno"
+}
+
+alias cd=_jc_better_cd
+alias ..='cd ..'
+alias ..2='cd ../..'
+alias ..3='cd ../../..'
+alias ..4='cd ../../../..'
+alias ..5='cd ../../../../..'
+
+#-------------------------------------------------------------------------------
+# Configure FASD
+#-------------------------------------------------------------------------------
+if type -P fasd >/dev/null 2>&1; then
+  _JC_FASD_ENABLED=1
+  _jc_fasd_cd() {
+    if [ $# -le 1 ]; then
+      fasd "$@"
+    else
+      local _fasd_ret
+      _fasd_ret="$(fasd -e 'printf %s' "$@")"
+      [ -z "$_fasd_ret" ] && return
+      [ -d "$_fasd_ret" ] && cd "$_fasd_ret" || echo "$_fasd_ret"
+    fi
+  }
+  eval "$(fasd --init bash-hook bash-ccomp bash-ccomp-install)"
+  alias j="_js_fasd_cd -d"
+fi
 
 #-------------------------------------------------------------------------------
 # Local bashrc
