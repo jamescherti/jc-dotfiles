@@ -18,13 +18,13 @@ Here's how to install James Cherti's dotfiles:
    git clone https://github.com/jamescherti/jc-dotfiles
    ```
 
-2. **Navigate to the Directory:**
+2. **Navigate to the jc-dotfiles directory:**
 
    ```bash
    cd jc-dotfiles
    ```
 
-3. **Install Dependencies and Apply Configurations:**
+3. **Install:**
 
    ```bash
    ./install.sh

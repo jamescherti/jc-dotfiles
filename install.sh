@@ -35,6 +35,7 @@
 # SOFTWARE.
 #
 
+JC_DOTFILES_UNATTENDED="$JC_DOTFILES_UNATTENDED"
 set -euf -o pipefail
 
 LIST_FILES=(
@@ -64,9 +65,19 @@ main() {
   local opts=(--recursive --links --human-readable
     --times --atimes)
   for file in "${LIST_FILES[@]}"; do
-    echo "[INSTALL] $HOME/$file"
+    echo "$HOME/$file"
     opts+=("$file")
   done
+
+  if [[ $JC_DOTFILES_UNATTENDED = "" ]] \
+    && [[ $JC_DOTFILES_UNATTENDED -eq 0 ]]; then
+    echo
+    read -r -p "Overwrite the above files? [y,n] " ANSWER
+    if [[ "$ANSWER" != "y" ]]; then
+      echo "Interrupted." >&2
+      exit 1
+    fi
+  fi
 
   rsync "${opts[@]}" "$HOME/"
 }
