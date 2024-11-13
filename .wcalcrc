@@ -1,0 +1,5 @@
+precision=2
+show_equals=false
+save_errors=true
+history_limit=2000
+color=true

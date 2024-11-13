@@ -41,7 +41,11 @@ LIST_FILES=(
   .tmux.conf
   .profile
   .bashrc
+  .bash_profile
   .inputrc
+  .fdignore
+  .Xmodmap
+  .wcalcrc
 )
 
 run() {
@@ -57,12 +61,14 @@ main() {
 
   # Synchronize all files (no delete, just rsync)
   local file
+  local opts=(--recursive --links --human-readable
+    --times --atimes)
   for file in "${LIST_FILES[@]}"; do
-    local opts=(--recursive --links --human-readable
-      --times --atimes)
-    rsync "${opts[@]}" "$file" "$HOME/$file"
     echo "[INSTALL] $HOME/$file"
+    opts+=("$file")
   done
+
+  rsync "${opts[@]}" "$HOME/"
 }
 
 main "$@"

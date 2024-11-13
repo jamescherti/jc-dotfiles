@@ -4,9 +4,9 @@ This repository houses [James Cherti](https://www.jamescherti.com)'s dotfiles an
 
 **What's Inside:**
 * **Terminal Multiplexer (.tmux.conf):** Configuration for Tmux, enhancing terminal session management and productivity.
-* **Shell Configuration (.bashrc and .profile):** Optimized Bash shell settings for efficient command execution and interactive sessions.
+* **Shell Configuration (.bashrc, .profile, and .bash_profile):** Optimized Bash shell settings for efficient command execution and interactive sessions.
 * **Readline configuration (.inputrc): Inputrc configuration that also allows using Alt-h, Alt-j, Alt-k, and Alt-l as a way to move the cursor.
-* **Other:** Various scripts and configuration files for managing system settings, aliases, and more.
+* **Other:** .fdignore, .wcalcrc, and various scripts and configuration files for managing system settings, aliases, and more.
 
 ## Installation
 
