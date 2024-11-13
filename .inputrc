@@ -1,0 +1,201 @@
+#!/usr/bin/env bash
+#
+# Author: James Cherti
+# URL: https://github.com/jamescherti/jc-dotfiles
+#
+# Description:
+# ------------
+# .inputrc configuration that supports hjkl Vim key binding.
+#
+# License:
+# --------
+# Distributed under terms of the MIT license.
+#
+# Copyright (C) 2004-2024 James Cherti
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the “Software”), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+# Be 8-bit clean
+set input-meta on
+set output-meta on
+
+# Do not ring the bell on tab completion
+set bell-style none
+
+# When performing tab completion, a single tab attempts to partially complete
+# the current word. If no partial completions are possible, a double tab shows
+# all possible completions. The double tab can be changed to a single tab by
+# setting the following option:
+set show-all-if-unmodified on
+
+# Alternatively, you can set it such that a single tab will perform both steps:
+# partially complete the word and show all possible completions if it is still
+# ambiguous:
+set show-all-if-ambiguous on
+
+# Ignore case when completing
+set completion-ignore-case on
+
+# Enable coloring of filename completions using the colored-stats option. You
+# can also color the common prefix in completion lists using
+# colored-completion-prefix. For example, color files by type. Note that this
+# may cause completion text to blink in some terminals (e.g., xterm). Disabled
+# this option due to issues with Gentoo.
+set colored-stats off
+
+# Append a character to indicate type (e.g., '/' for directories)
+set visible-stats on
+
+# Mark symlinked directories with a special indicator
+set mark-symlinked-directories on
+
+# Color the common prefix in completion lists
+set colored-completion-prefix on
+
+# Color the common prefix in menu completion mode
+set menu-complete-display-prefix on
+
+# Readline causes the terminal to echo ^C when Ctrl+C is pressed. To disable
+# this, add the following to ~/.inputrc:
+set echo-control-characters off
+
+# Expand tilde (~) to the full home directory path
+set expand-tilde off
+
+# Disable the "Display all possibilities" prompt
+set completion-query-items 0
+set page-completions off
+
+# Append '/' on directory completion
+set mark-directories on
+
+# Append '/' on symlink directory completion
+# set mark-symlinked-directories on
+
+# Emacs mode key bindings
+$if mode=emacs
+
+# Replace the arrow keys with Alt + hjkl
+"\eh": backward-char
+"\ej": history-search-forward
+"\ek": history-search-backward
+"\el": forward-char
+
+# Alt-Shift-H and Alt-Shift-L for backward/forward word movement
+"\eH": backward-word
+"\eL": forward-word
+
+# Unbind the Home/End keys (replaced with Ctrl-b and Ctrl-e)
+Control-b: beginning-of-line
+Control-e: end-of-line
+"\e[1~": ""
+"\e[4~": ""
+
+# Unbind the Delete/Insert keys
+"\e[3~": ""
+"\e[2~": ""
+
+# Unbind the alternate mappings for "page up" and "page down"
+"\e[5~": ""
+"\e[6~": ""
+
+# Unbind Ctrl-left-arrow and Ctrl-right-arrow for word movement
+# (replaced with Alt-Shift-h and Alt-Shift-l)
+"\e[5C": ""
+"\e[5D": ""
+"\e\e[C": ""
+"\e\e[D": ""
+"\e[1;5D": backward-word
+"\e[1;5C": forward-word
+
+# Unbind the arrow keys (replaced by custom keybindings)
+# "\eOD": ""
+# "\e[D": ""
+# "\eOC": ""
+# "\e[C": ""
+# "\eOA": ""
+# "\e[A": ""
+# "\eOB": ""
+# "\e[B": ""
+
+# Unbind Enter (replaced with Ctrl-j)
+# "\C-j": accept-line
+# "\C-m": ""
+
+# Disable the terminal special characters handling by readline.
+# The readline library (configured via inputrc) binds keys corresponding to the
+# terminal's cooked input, often referred to as stty keys. For instance, Ctrl+W
+# is used to delete the previous word (werase).
+set bind-tty-special-chars off
+
+# Other key bindings
+Control-u: backward-kill-line
+Control-w: backward-kill-word
+"\e\C-h": unix-word-rubout
+
+$endif
+
+# Vi mode settings
+$if mode=vi
+    set show-mode-in-prompt on
+
+    # Set vi insert and command mode strings for the terminal
+    # set vi-cmd-mode-string "\1\e[6 q\2"
+    # set vi-ins-mode-string "\1\e[2 q\2"
+
+    $if term=linux
+        set vi-ins-mode-string \1\e[?0c\2
+        set vi-cmd-mode-string \1\e[?8c\2
+    $else
+        set vi-ins-mode-string \1\e[6 q\2
+        set vi-cmd-mode-string \1\e[2 q\2
+    $endif
+
+    set keymap vi-command
+
+    # Key bindings for vi-command mode
+    #
+    # "\e[A": history-search-backward
+    # "\e[B": history-search-forward
+    j: history-search-forward
+    k: history-search-backward
+    Control-l: clear-screen
+    "p": "i !!*\r"
+
+    # Disable the 'V' key (visual mode) in Vi mode
+    v: ""
+
+    # Key bindings for vi-insert mode
+    #
+    set keymap vi-insert
+    # "\e[A": history-search-backward
+    # "\e[B": history-search-forward
+    Control-l: clear-screen
+
+    # Pressing Tab will list all completions and select the first one. Pressing
+    # it again will cycle through available completions. Shift+Tab cycles
+    # completions backward
+    TAB: menu-complete
+    "\e[Z": menu-complete-backward
+
+    # Option-up/Option-down should also apply to insert mode
+    "\e\e[A": history-search-backward
+    "\e\e[B": history-search-forward
+$endif
