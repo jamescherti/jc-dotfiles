@@ -32,7 +32,11 @@
 
 set -euf -o pipefail
 
-LIST_FILES=(.tmux.conf)
+LIST_FILES=(
+  .tmux.conf
+  .profile
+  .bashrc
+)
 
 run() {
   echo "[RUN]" "$@"
