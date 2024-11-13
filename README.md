@@ -1,6 +1,6 @@
 # jc-dotfiles - James Cherti's Dotfiles
 
-This repository houses [James Cherti](https://www.jamescherti.com)'s dotfiles and configuration scripts.
+This repository houses James Cherti's dotfiles and configuration scripts.
 
 **What's Inside:**
 * **Terminal Multiplexer (.tmux.conf):** Configuration for Tmux, enhancing terminal session management and productivity.
