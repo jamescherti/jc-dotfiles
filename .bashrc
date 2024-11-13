@@ -357,7 +357,7 @@ if type -P fasd >/dev/null 2>&1; then
     fi
   }
   eval "$(fasd --init bash-hook bash-ccomp bash-ccomp-install)"
-  alias j="_js_fasd_cd -d"
+  alias j="_jc_fasd_cd -d"
 fi
 
 #-------------------------------------------------------------------------------
