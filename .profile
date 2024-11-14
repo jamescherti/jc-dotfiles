@@ -79,8 +79,8 @@ _jc_add_local_path "$HOME/.local"
 case "$OSTYPE" in
 darwin*)
   # Mac Port
-  _jc_append_path "/opt/local/bin"
-  _jc_append_path "/opt/local/libexec/gnubin"
+  PATH="/opt/local/bin:$PATH"
+  PATH="/opt/local/libexec/gnubin:$PATH"
   ;;
 esac
 
