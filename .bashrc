@@ -173,20 +173,20 @@ alias mv="mv -i"
 alias br="git --no-pager branch"
 alias g="git"
 alias glp="git log -p"
-alias gitroot='cd "$(command git rev-parse --show-toplevel)"'
-alias gt=gitroot
-
 alias grep="grep --color=auto --exclude-dir=.git"
 alias rg="rg --hidden --no-messages --no-heading"
 alias fd="fd --hidden"
 alias fdf="fd --type file"
 alias fdd="fd --type d"
 
-alias gd="git d"
+alias gitroot='cd "$(command git rev-parse --show-toplevel)"'
+alias gt=gitroot
+alias gd="git diff HEAD"
+alias gl="git log"
 alias gp="git push"
 alias gpf="git push --force"
 alias gpl="git pull"
-alias gb='command git branch'
+alias gb='git branch'
 
 if type -P colordiff >/dev/null 2>&1; then
   alias diff=colordiff
