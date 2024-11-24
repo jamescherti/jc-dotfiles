@@ -397,6 +397,7 @@ fi
 #-------------------------------------------------------------------------------
 # Emacs integration
 #-------------------------------------------------------------------------------
+# vterm
 if [ "$INSIDE_EMACS" = 'vterm' ]; then
   # Some of the most useful features in vterm (e.g., directory-tracking and
   # prompt-tracking or message passing) require shell-side configurations. The
@@ -418,6 +419,10 @@ if [ "$INSIDE_EMACS" = 'vterm' ]; then
     fi
   }
 fi
+
+# Eat (Emulate A Terminal)
+# shellcheck disable=SC1091
+[ -n "$EAT_SHELL_INTEGRATION_DIR" ] && source "$EAT_SHELL_INTEGRATION_DIR/bash"
 
 #-------------------------------------------------------------------------------
 # Local bashrc
