@@ -368,6 +368,33 @@ if type -P fasd >/dev/null 2>&1; then
 fi
 
 #-------------------------------------------------------------------------------
+# FZF
+#-------------------------------------------------------------------------------
+# if [ -f /opt/local/share/fzf/shell/completion.bash ]; then
+#   # shellcheck disable=SC1091
+#   source /opt/local/share/fzf/shell/completion.bash
+# fi
+
+# Key bindings
+_JC_FZF=0
+if [[ -f /usr/share/doc/fzf/examples/key-bindings.bash ]]; then
+  # Debian/Ubuntu
+  # shellcheck disable=SC1091
+  source /usr/share/doc/fzf/examples/key-bindings.bash
+  _JC_FZF=1
+elif [[ -f /opt/local/share/fzf/shell/key-bindings.bash ]]; then
+  # Mac OS X (Macport)
+  # shellcheck disable=SC1091
+  source /opt/local/share/fzf/shell/key-bindings.bash
+  _JC_FZF=1
+elif [[ -f /usr/share/fzf/key-bindings.bash ]]; then
+  # Arch Linux
+  # shellcheck disable=SC1091
+  source /usr/share/fzf/key-bindings.bash
+  _JC_FZF=1
+fi
+
+#-------------------------------------------------------------------------------
 # Local bashrc
 #-------------------------------------------------------------------------------
 # shellcheck disable=SC1090
