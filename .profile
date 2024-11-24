@@ -106,6 +106,22 @@ if ! test -d "/tmp/tmp_$USER"; then
 fi
 
 #-------------------------------------------------------------------------------
+# Emacs integration
+#-------------------------------------------------------------------------------
+if [ "$INSIDE_EMACS" = 'vterm' ]; then
+  # vterm-clear-scrollback does exactly what the name suggests: it clears the
+  # current buffer from the data that it is not currently visible.
+  # vterm-clear-scrollback is bound to C-c C-l. This function is typically used
+  # with the clear function provided by the shell to clear both screen and
+  # scrollback. In order to achieve this behavior, you need to add a new shell
+  # alias.
+  clear() {
+    vterm_printf "51;Evterm-clear-scrollback"
+    tput clear
+  }
+fi
+
+#-------------------------------------------------------------------------------
 # Local profile
 #-------------------------------------------------------------------------------
 # shellcheck disable=SC1090
