@@ -54,3 +54,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ## Links
 
 - [jc-dotfiles @GitHub](https://github.com/jamescherti/jc-dotfiles)
+
+Other related project by the same author:
+- James Cherti's XFCE customization script: [jc-xfce-settings @GitHub](https://github.com/jamescherti/jc-xfce-settings).
+- [watch-xfce-xfconf @GitHub](https://github.com/jamescherti/watch-xfce-xfconf/): A command-line tool that can be used to configure XFCE 4 programmatically using the *xfconf-query* commands displayed when XFCE 4 settings are modified.
