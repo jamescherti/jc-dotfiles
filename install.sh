@@ -47,6 +47,7 @@ LIST_FILES=(
   .fdignore
   .Xmodmap
   .wcalcrc
+  .config
 )
 
 run() {
@@ -69,8 +70,8 @@ main() {
     opts+=("$file")
   done
 
-  if [[ $JC_DOTFILES_UNATTENDED = "" ]] \
-    && [[ $JC_DOTFILES_UNATTENDED -eq 0 ]]; then
+  if [[ $JC_DOTFILES_UNATTENDED = "" ]] &&
+    [[ $JC_DOTFILES_UNATTENDED -eq 0 ]]; then
     echo
     read -r -p "Install the above files? [y,n] " ANSWER
     if [[ "$ANSWER" != "y" ]]; then
@@ -79,6 +80,7 @@ main() {
     fi
   fi
 
+  echo rsync "${opts[@]}" "$HOME/"
   rsync "${opts[@]}" "$HOME/"
   echo "Success."
 }
