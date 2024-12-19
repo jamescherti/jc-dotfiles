@@ -1,0 +1,7 @@
+feh -B black \
+--fullscreen \
+--auto-zoom \
+--auto-rotate \
+--sort=filename \
+--on-last-slide hold \
+--hide-pointer

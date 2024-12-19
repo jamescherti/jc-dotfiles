@@ -47,6 +47,7 @@ LIST_FILES=(
   .fdignore
   .Xmodmap
   .wcalcrc
+  # Dirs
   .config
 )
 
@@ -60,6 +61,9 @@ main() {
     echo "Error: 'rsync' not found in \$PATH" >&2
     exit 1
   fi
+
+  # Required directories
+  mkdir -p ~/.config
 
   # Synchronize all files (no delete, just rsync)
   local file
