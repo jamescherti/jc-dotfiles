@@ -47,8 +47,12 @@ LIST_FILES=(
   .fdignore
   .Xmodmap
   .wcalcrc
+  .colorgcc
+  .gtkrc-2.0
+  .rgignore
   # Dirs
   .config
+  .ccache
 )
 
 run() {
