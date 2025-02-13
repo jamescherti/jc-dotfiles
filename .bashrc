@@ -241,8 +241,8 @@ export GPG_TTY
 ps1-git-branch() {
   if [[ $PS1_GIT_BRANCH -ne 0 ]]; then
     local branch_name
-    branch_name=$("$GIT_BIN_PATH" symbolic-ref --short -q HEAD 2>/dev/null) \
-      || return 0
+    branch_name=$("$GIT_BIN_PATH" symbolic-ref --short -q HEAD 2>/dev/null) ||
+      return 0
     echo -e "($branch_name) "
     return 0
   fi
@@ -342,6 +342,24 @@ alias ..4='cd ../../../..'
 alias ..5='cd ../../../../..'
 
 #-------------------------------------------------------------------------------
+# Better ls
+#-------------------------------------------------------------------------------
+_jc_better_ls() {
+  OPTS=()
+  if [[ -n "$TERM" && "$TERM" != "dumb" ]]; then
+    OPTS+=(--color=auto)
+  fi
+
+  command ls "${OPTS[@]}" -X --human-readable \
+    --hide=__pycache__ \
+    --hide=*.elc \
+    --hide=*.egg-info \
+    "$@"
+}
+
+alias ls='_jc_better_ls'
+
+#-------------------------------------------------------------------------------
 # Configure FASD
 #-------------------------------------------------------------------------------
 if type -P fasd >/dev/null 2>&1; then
@@ -406,9 +424,9 @@ if [ "$INSIDE_EMACS" = 'vterm' ]; then
   # in this task, vterm_printf, is defined below. This function is widely used
   # throughout this readme.
   vterm_printf() {
-    if [ -n "$TMUX" ] \
-      && { [ "${TERM%%-*}" = "tmux" ] \
-        || [ "${TERM%%-*}" = "screen" ]; }; then
+    if [ -n "$TMUX" ] &&
+      { [ "${TERM%%-*}" = "tmux" ] ||
+        [ "${TERM%%-*}" = "screen" ]; }; then
       # Tell tmux to pass the escape sequences through
       printf "\ePtmux;\e\e]%s\007\e\\" "$1"
     elif [ "${TERM%%-*}" = "screen" ]; then
