@@ -85,6 +85,7 @@ fi
 
 #-------------------------------------------------------------------------------
 # OPTIONS
+# -s = enable | -u = disable
 #-------------------------------------------------------------------------------
 # Adjust terminal dimensions dynamically after each command, updating LINES and
 # COLUMNS as needed.
@@ -196,11 +197,9 @@ alias ipython='ipython --no-confirm-exit'
 if type -P ipython >/dev/null 2>&1; then
   alias py=ipython
   alias ipy=ipython
-  alias p=ipython
 else
   alias py='python -q'
   alias ipy='python -q'
-  alias p='python -q'
 fi
 
 #-------------------------------------------------------------------------------
@@ -241,8 +240,8 @@ export GPG_TTY
 ps1-git-branch() {
   if [[ $PS1_GIT_BRANCH -ne 0 ]]; then
     local branch_name
-    branch_name=$("$GIT_BIN_PATH" symbolic-ref --short -q HEAD 2>/dev/null) ||
-      return 0
+    branch_name=$("$GIT_BIN_PATH" symbolic-ref --short -q HEAD 2>/dev/null) \
+      || return 0
     echo -e "($branch_name) "
     return 0
   fi
@@ -424,9 +423,9 @@ if [ "$INSIDE_EMACS" = 'vterm' ]; then
   # in this task, vterm_printf, is defined below. This function is widely used
   # throughout this readme.
   vterm_printf() {
-    if [ -n "$TMUX" ] &&
-      { [ "${TERM%%-*}" = "tmux" ] ||
-        [ "${TERM%%-*}" = "screen" ]; }; then
+    if [ -n "$TMUX" ] \
+      && { [ "${TERM%%-*}" = "tmux" ] \
+        || [ "${TERM%%-*}" = "screen" ]; }; then
       # Tell tmux to pass the escape sequences through
       printf "\ePtmux;\e\e]%s\007\e\\" "$1"
     elif [ "${TERM%%-*}" = "screen" ]; then
