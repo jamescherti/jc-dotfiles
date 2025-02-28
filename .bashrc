@@ -196,11 +196,9 @@ alias ipython='ipython --no-confirm-exit'
 if type -P ipython >/dev/null 2>&1; then
   alias py=ipython
   alias ipy=ipython
-  alias p=ipython
 else
   alias py='python -q'
   alias ipy='python -q'
-  alias p='python -q'
 fi
 
 #-------------------------------------------------------------------------------
