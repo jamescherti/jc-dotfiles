@@ -56,5 +56,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 - [jc-dotfiles @GitHub](https://github.com/jamescherti/jc-dotfiles)
 
 Other related project by the same author:
-- [jc-xfce-settings](https://github.com/jamescherti/jc-xfce-settings): James Cherti's XFCE customization script.
+- [bash-stdops @GitHub](https://github.com/jamescherti/bash-stdops): A collection of Bash helper shell scripts.
+- [jc-gentoo-portage @GitHub](https://github.com/jamescherti/jc-gentoo-portage): Provides configuration files for customizing Gentoo Linux Portage, including package management, USE flags, and system-wide settings.
+- [jc-gnome-settings](https://github.com/jamescherti/jc-gnome-settings): A script that can customize the GNOME desktop environment programmatically, including window management, notifications, and more.
+- [jc-firefox-settings @GitHub](https://github.com/jamescherti/jc-firefox-settings): Provides the user.js file, which holds settings to customize the Firefox web browser to enhance the user experience and security.
+- [jc-xfce-settings](https://github.com/jamescherti/jc-xfce-settings): A script that can customize the XFCE desktop environment programmatically, including window management, notifications, keyboard settings, and more, to enhance the user experience.
 - [watch-xfce-xfconf](https://github.com/jamescherti/watch-xfce-xfconf/): A command-line tool that can be used to configure XFCE 4 programmatically using the *xfconf-query* commands displayed when XFCE 4 settings are modified.
