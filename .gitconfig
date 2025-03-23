@@ -86,100 +86,13 @@ precomposeunicode = false
 # repositories with many files or complex index states.
 preloadindex = true
 
-# Delta
-# pager = delta
-
-# [pager]
-# pager = delta
-# diff = delta
-# show = delta
-# reflog = delta
-# show = delta
-
-# [log]
-# Not supported in old versions of Git
-# follow = true
-
-# [interactive]
-# Delta
-# diffFilter = delta --color-only
-
-# [color "diff-highlight"]
-# 	oldNormal = red bold
-# 	oldHighlight = red bold 52
-# 	newNormal = green bold
-# 	newHighlight = green bold 22
-# [color "diff"]
-# 	meta = yellow bold
-# 	frag = magenta bold
-# 	commit = yellow bold
-# 	old = red bold
-# 	new = green bold
-# 	whitespace = red reverse
-
-# [delta]
-# side-by-side = false
-# navigate = true    # use n and N to move between diff sections
-# line-numbers = true
-# syntax-theme = Monokai Extended
-# # hyperlinks = true
-#
-# # GitHub style (light)
-# # minus-style = red "#e6ffec"
-# # plus-style = green "#ffebe9"
-#
-# commit-decoration-style = yellow ol ul
-# file-decoration-style = yellow box
-# file-style = bold yellow
-# hunk-header-decoration-style =
-# hunk-header-style = bold 146
-# keep-plus-minus-markers = true
-# minus-emph-style = bold red 52
-# minus-empty-line-marker-style = normal
-# minus-non-emph-style = bold red
-# minus-style = bold red
-# plus-emph-style = bold green 22
-# plus-empty-line-marker-style = normal
-# plus-non-emph-style = bold green
-# plus-style = bold green
-#
-# # Disable syntax highlight
-# # zero-style = normal
-#
-# # GitHub style (dark)
-# # minus-style = red bold "#ffd7d5"
-# # plus-style = red bold "#ccffd8"
-#
-# # line-numbers-left-format = ""
-# # line-numbers-right-format = "│ "
-#
-# # delta detects terminal colors automatically; set one of these to disable auto-detection
-# dark = true
-# # light = true
-# features = unobtrusive-line-numbers decorations
-# # features = unobtrusive-line-numbers decorations
-# # whitespace-error-style = 22 reverse
-#
-# # [delta "unobtrusive-line-numbers"]
-# # line-numbers = true
-# # line-numbers-minus-style = "#444444"
-# # line-numbers-zero-style = "#444444"
-# # line-numbers-plus-style = "#444444"
-# # line-numbers-left-format = "{nm:>4}┊"
-# # line-numbers-right-format = "{np:>4}│"
-# # line-numbers-left-style = blue
-# # line-numbers-right-style = blue
-#
-# # [delta "decorations"]
-# # commit-decoration-style = bold yellow box ul
-# # file-style = bold yellow ul
-# # file-decoration-style = none
-# # hunk-header-decoration-style = yellow box
-
 [diff-so-fancy]
 markEmptyLines = false
 stripLeadingSymbols = false
 rulerWidth = 50
+
+[diff]
+tool = vimdiff
 
 [rerere]
 # The "reuse recorded resolution" (rerere) feature, which helps Git
@@ -212,12 +125,6 @@ autoSetupRemote = true
 
 [merge]
 ff = only
-
-# Delta
-# conflictstyle = diff3
-
-# Delta
-# colorMoved = default
 
 [pull]
 ff = only
@@ -254,6 +161,7 @@ pa = pullall
 
 d = diff HEAD
 dc = diff --cached
+dt = difftool
 
 dw = diff --color-words HEAD
 sw = show --color-words
@@ -295,7 +203,6 @@ top-contributors-merges = "!t() { c=${1:-10}; git --no-pager shortlog --summary 
 # latest = "! git tag | vsort"
 # diff = diff --color-words
 # cip = "! git commit -a && git push"
-# d = "! f() { ( git submodule foreach 'git --no-pager diff --color'; git diff --color ) | delta; }; f"
 # d = ydiff
 # ds = ydiff --side-by-side
 # cip = rpush
