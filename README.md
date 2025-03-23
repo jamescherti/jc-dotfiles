@@ -4,7 +4,7 @@ This repository houses James Cherti's dotfiles and configuration scripts:
 * **Shell Configuration (.bashrc, .profile, and .bash_profile):** Optimized Bash shell settings for efficient command execution and interactive sessions.
 * **Terminal Multiplexer (.tmux.conf):** Configuration for Tmux, enhancing terminal session management and productivity.
 * **Readline configuration (.inputrc)**: Inputrc configuration that also allows using Alt-h, Alt-j, Alt-k, and Alt-l as a way to move the cursor.
-* **Other:** ranger, .fdignore, .wcalcrc, mpv, picom, feh, and various scripts and configuration files for managing system settings, aliases, and more.
+* **Other:** .gitconfig, ranger, .fdignore, .wcalcrc, mpv, picom, feh, and various scripts and configuration files for managing system settings, aliases, and more.
 
 ## Installation
 

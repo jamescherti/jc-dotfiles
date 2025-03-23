@@ -1,0 +1,315 @@
+# Author: James Cherti
+# URL: https://github.com/jamescherti/jc-dotfiles
+#
+# Description:
+# ------------
+# Git configuration (.gitconfig).
+#
+# License:
+# --------
+#
+# Distributed under terms of the MIT license.
+#
+# Copyright (C) 2005-2025 James Cherti
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the “Software”), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+[tag]
+forceSignAnnotated = true
+
+[pack]
+threads = 8
+
+# This command sets the global Git configuration to use up to x GB of memory for
+# delta compression during packing operations. This setting can help speed up
+# the packing process and reduce the size of packfiles, useful for large
+# repositories or frequent packing operations.
+windowMemory = 5g
+
+# The packSizeLimit configuration in Git determines the maximum size of a
+# packfile that Git will generate. A packfile is a file that contains a
+# collection of objects, such as commits, trees, and blobs, in a compressed
+# format.
+packSizeLimit = 2g
+
+[gc]
+# Optimization:
+# When there are approximately more than this many loose objects in the
+# repository, git gc --auto will pack them. Some Porcelain commands use this
+# command to perform a light-weight garbage collection from time to time. The
+# default value is 6700.
+#
+# Setting this to 0 disables not only automatic packing based on the number of
+# loose objects, but also any other heuristic git gc --auto will otherwise use
+# to determine if there’s work to do, such as gc.autoPackLimit.
+auto = 8000
+
+[core]
+pager = less -X -F
+quotepath = off
+editor = vim
+
+# trailing-space: look for spaces at the end of a line
+# space-before-tab: look for spaces before tabs at beginning of line
+# removed: indent-with-non-tab
+whitespace = space-before-tab,trailing-space
+
+# Prevent showing files whose names contain non-ASCII symbols as unversioned.
+precomposeunicode = false
+
+# Optimization:
+# The core.preloadIndex configuration option in Git controls whether the index
+# (staging area) is preloaded into memory when starting Git commands.
+# When core.preloadIndex is set to true, Git will load the index into memory
+# early in the execution of commands. This can lead to performance improvements
+# for operations that involve the index, especially for repositories with a
+# large number of files. Setting core.preloadIndex to true helps Git to be more
+# efficient by reducing the time required to access index data during operations
+# like git status or git diff. This can be particularly beneficial in
+# repositories with many files or complex index states.
+preloadindex = true
+
+# Delta
+# pager = delta
+
+# [pager]
+# pager = delta
+# diff = delta
+# show = delta
+# reflog = delta
+# show = delta
+
+# [log]
+# Not supported in old versions of Git
+# follow = true
+
+# [interactive]
+# Delta
+# diffFilter = delta --color-only
+
+# [color "diff-highlight"]
+# 	oldNormal = red bold
+# 	oldHighlight = red bold 52
+# 	newNormal = green bold
+# 	newHighlight = green bold 22
+# [color "diff"]
+# 	meta = yellow bold
+# 	frag = magenta bold
+# 	commit = yellow bold
+# 	old = red bold
+# 	new = green bold
+# 	whitespace = red reverse
+
+# [delta]
+# side-by-side = false
+# navigate = true    # use n and N to move between diff sections
+# line-numbers = true
+# syntax-theme = Monokai Extended
+# # hyperlinks = true
+#
+# # GitHub style (light)
+# # minus-style = red "#e6ffec"
+# # plus-style = green "#ffebe9"
+#
+# commit-decoration-style = yellow ol ul
+# file-decoration-style = yellow box
+# file-style = bold yellow
+# hunk-header-decoration-style =
+# hunk-header-style = bold 146
+# keep-plus-minus-markers = true
+# minus-emph-style = bold red 52
+# minus-empty-line-marker-style = normal
+# minus-non-emph-style = bold red
+# minus-style = bold red
+# plus-emph-style = bold green 22
+# plus-empty-line-marker-style = normal
+# plus-non-emph-style = bold green
+# plus-style = bold green
+#
+# # Disable syntax highlight
+# # zero-style = normal
+#
+# # GitHub style (dark)
+# # minus-style = red bold "#ffd7d5"
+# # plus-style = red bold "#ccffd8"
+#
+# # line-numbers-left-format = ""
+# # line-numbers-right-format = "│ "
+#
+# # delta detects terminal colors automatically; set one of these to disable auto-detection
+# dark = true
+# # light = true
+# features = unobtrusive-line-numbers decorations
+# # features = unobtrusive-line-numbers decorations
+# # whitespace-error-style = 22 reverse
+#
+# # [delta "unobtrusive-line-numbers"]
+# # line-numbers = true
+# # line-numbers-minus-style = "#444444"
+# # line-numbers-zero-style = "#444444"
+# # line-numbers-plus-style = "#444444"
+# # line-numbers-left-format = "{nm:>4}┊"
+# # line-numbers-right-format = "{np:>4}│"
+# # line-numbers-left-style = blue
+# # line-numbers-right-style = blue
+#
+# # [delta "decorations"]
+# # commit-decoration-style = bold yellow box ul
+# # file-style = bold yellow ul
+# # file-decoration-style = none
+# # hunk-header-decoration-style = yellow box
+
+[diff-so-fancy]
+markEmptyLines = false
+stripLeadingSymbols = false
+rulerWidth = 50
+
+[rerere]
+# The "reuse recorded resolution" (rerere) feature, which helps Git
+# automatically resolve merge conflicts by reusing previously recorded conflict
+# resolutions. The setting enabled = 1 indicates that the rerere feature is
+# enabled.
+enabled = 1
+
+[color]
+ui = true
+diff = always
+
+[push]
+# current prevents: fatal: The current branch BRANCH has no upstream branch. To
+# push the current branch and set the remote as upstream, use git push
+# --set-upstream origin fix-readme
+default = current
+# default = simple
+
+# Prevent git push from asking: There is no tracking information for the current
+# branch.
+#
+# This automatically sets up remote tracking information for new branches when
+# they are created. It eliminates the need to manually run
+# `git branch --set-upstream-to` after creating a new branch, automating the
+# process of linking branches to their corresponding remote branches. It's
+# useful for users who frequently create new branches and want to avoid
+# repetitive configuration.
+autoSetupRemote = true
+
+[merge]
+ff = only
+
+# Delta
+# conflictstyle = diff3
+
+# Delta
+# colorMoved = default
+
+[pull]
+ff = only
+
+# [gpg]
+# program = gpg
+
+[init]
+templatedir = ~/.git-templates
+defaultBranch = main
+
+[alias]
+
+# This alias simplifies the process of pulling changes by automatically stashing
+# local changes, rebasing the current branch on top of the remote, and then
+# reapplying the stashed changes, ensuring a clean and linear commit history.
+up = pull --rebase --autostash
+
+s = show
+cia = commit -a
+rc = rebase --continue
+amend = commit --amend
+commend = commit --amend --no-edit
+p = push
+pf = push --force
+a = add
+aa = add -A
+st = status -s
+co = checkout
+b = branch
+rh = reset --hard HEAD
+pl = pull
+pa = pullall
+
+d = diff HEAD
+dc = diff --cached
+
+dw = diff --color-words HEAD
+sw = show --color-words
+
+l = log
+ls = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+logs = log --show-signature --stat
+lp = log -p
+
+chp = cherry-pick
+chpa = cherry-pick --abort
+chpc = cherry-pick --continue
+chpq = cherry-pick --quit
+chps = cherry-pick --skip
+
+# Cleanup: Delete local branches that have been merged, except for master, main,
+# and develop. This command lists merged branches prompts the user to confirm
+# deletion, and then deletes them.
+cleanup = "! f() { git branch --merged | grep  -v '\\*\\|master\\|main\\|develop' | sed -E 's/^[ \t]+//'; }; if [ `f | wc -l | head -n 1` -ne 0 ]; then f; echo Press enter to delete...; read v; f | xargs -n 1 -r git branch -d; fi"
+
+# Create a new branch, switch to it, and push it to the remote repository.
+cbranch = "! git checkout -b $1 && git push -u origin $1"
+
+set-upstream = "!git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`"
+
+contributors = "!git --no-pager shortlog --summary --numbered --no-merges"
+top-contributors = "!t() { c=${1:-10}; git --no-pager shortlog --summary --numbered --no-merges | head -n $c; }; t"
+contributors-merges = "!git --no-pager shortlog --summary --numbered"
+top-contributors-merges = "!t() { c=${1:-10}; git --no-pager shortlog --summary --numbered | head -n $c; }; t"
+
+# uumaster = "!f() { ( git fetch upstream && git rebase -i upstream/master ) || echo Error.; }; f"
+# author = "!f() { echo -n "Name:  "; git config user.name; echo -n "Email: "; git config user.email; }; f"
+# upstream = "! set -u; f() { ! local url=$(git remote get-url upstream 2>&1 || true); test \"$url\" != \"$1\" && ( git remote remove upstream || true ) && git remote add upstream \"$1\"; }; f \"$1\" || true"
+# whodid = "!git log -i -1 --pretty='format:%an <%ae>'"
+# rdate = git find git --no-pager log -1 --format="%ai"
+# rci = rcommit
+# rcip = rpush
+# cdiff = ydiff
+# latest = "! git tag | vsort"
+# diff = diff --color-words
+# cip = "! git commit -a && git push"
+# d = "! f() { ( git submodule foreach 'git --no-pager diff --color'; git diff --color ) | delta; }; f"
+# d = ydiff
+# ds = ydiff --side-by-side
+# cip = rpush
+# di = diff
+# dic = diff --cached
+# diffc = diff --cached
+# diffw = diff --word-diff=plain
+# diw = diff --word-diff=plain
+# ds = diff --stat
+# fpull = "! git fetch && git merge --ff-only"
+# pusha = push --all
+# pulla = pull --all
+# ctag = "! set -u; f() { git tag -s \"$1\" -m \"$1\"; }; f"
+# rem = rebase origin/master
+# up = pull --rebase
+# ca = commit -a
+# r = reset

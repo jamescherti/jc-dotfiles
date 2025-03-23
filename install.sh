@@ -39,6 +39,7 @@ JC_DOTFILES_UNATTENDED="$JC_DOTFILES_UNATTENDED"
 set -euf -o pipefail
 
 LIST_FILES=(
+  .gitconfig
   .tmux.conf
   .profile
   .bashrc
@@ -89,6 +90,7 @@ main() {
   fi
 
   echo rsync "${opts[@]}" "$HOME/"
+  mkdir -p ~/.git-templates
   rsync "${opts[@]}" "$HOME/"
   echo "Success."
 }
