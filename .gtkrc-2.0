@@ -5,5 +5,4 @@ gtk-enable-animations = 0
 gtk-timeout-expand = 0
 gtk-timeout-initial = 0
 gtk-timeout-repeat = 0
-
 gtk-enable-tooltips = 0
