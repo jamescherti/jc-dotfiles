@@ -28,13 +28,14 @@
 ! SOFTWARE.
 !
 
-! Vim hjkl movement with capslock
-keycode 66 = Mode_switch
-keysym h = h H Left NoSymbol NoSymbol NoSymbol
-keysym j = j J Down NoSymbol NoSymbol NoSymbol
-keysym k = k K Up NoSymbol NoSymbol NoSymbol
-keysym l = l L Right NoSymbol NoSymbol NoSymbol
-
-! Capslock-f to Page Down and Capslock-b to Page Up
-keysym f = f F Next NoSymbol NoSymbol NoSymbol
-keysym b = b B Prior NoSymbol NoSymbol NoSymbol
+!! Vim hjkl movement with capslock
+!keysym Caps_Lock = Mode_switch
+!keycode 66 = Mode_switch
+!keysym h = h H Left NoSymbol NoSymbol NoSymbol
+!keysym j = j J Down NoSymbol NoSymbol NoSymbol
+!keysym k = k K Up NoSymbol NoSymbol NoSymbol
+!keysym l = l L Right NoSymbol NoSymbol NoSymbol
+!
+!! Capslock-f to Page Down and Capslock-b to Page Up
+!keysym f = f F Next NoSymbol NoSymbol NoSymbol
+!keysym b = b B Prior NoSymbol NoSymbol NoSymbol
