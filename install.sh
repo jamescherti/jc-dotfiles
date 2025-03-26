@@ -46,7 +46,6 @@ LIST_FILES=(
   .bash_profile
   .inputrc
   .fdignore
-  .Xmodmap
   .wcalcrc
   .colorgcc
   .gtkrc-2.0
