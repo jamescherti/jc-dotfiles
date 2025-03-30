@@ -364,12 +364,6 @@ alias ls='_jc_better_ls'
 if type -P fasd >/dev/null 2>&1; then
   _JC_FASD_ENABLED=1
 
-  _FASD_DATA_DIR="$HOME/.fasd_data"
-  export _FASD_DATA="$_FASD_DATA_DIR/fasd"
-  if ! [[ -d "$_FASD_DATA_DIR" ]]; then
-    mkdir -p "$_FASD_DATA_DIR"
-  fi
-
   _jc_fasd_cd() {
     if [ $# -le 1 ]; then
       fasd "$@"
