@@ -259,7 +259,7 @@ sw = show --color-words
 l = log
 
 # Display commit history in a compact and decorated format
-ls = log --pretty=format:"%C(yellow)%h\ %ad%Cred%d\ %Creset%s%Cblue\ [%cn]" --decorate --date=short
+ls = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
 
 # Show commit history with GPG signature verification and file change summary
 logs = log --show-signature --stat
