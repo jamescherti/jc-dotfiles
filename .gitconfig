@@ -108,6 +108,10 @@ diff = always
 # is complete, the stash is reapplied.
 autoStash = true
 
+# If commits are removed or missing during a rebase, issue a warning rather than
+# silently ignoring them.
+missingCommitsCheck = warn
+
 [merge]
 # This setting enforce fast-forward merges, preventing unnecessary merge commits
 # and maintaining a linear commit history.
@@ -118,7 +122,10 @@ ff = only
 # more readable format, making it easier to resolve complex conflicts.
 conflictstyle = zdiff3
 
-# Before performing a merge, stash local changes and reapply them after
+# Before executing a merge, automatically stash all uncommitted changes in the
+# working directory and index. This ensures the merge proceeds without
+# interference from local modifications. Once the merge completes, the stashed
+# changes are reapplied, restoring the developer's original working state.
 autoStash = true
 
 [pull]
@@ -191,36 +198,86 @@ autocorrect = prompt
 # reapplying the stashed changes, ensuring a clean and linear commit history.
 up = pull --rebase --autostash
 
+# Show details of the most recent commit or a specified object
 s = show
-cia = commit -a
-rc = rebase --continue
-amend = commit --amend
-commend = commit --amend --no-edit
-p = push
-pf = push --force
-a = add
-aa = add -A
-st = status -s
-co = checkout
-b = branch
-rh = reset --hard HEAD
-pl = pull
-pa = pullall
 
+# Commit all tracked changes
+cia = commit -a
+
+# Continue a rebase after resolving conflicts
+rc = rebase --continue
+
+# Amend the most recent commit with staged changes
+amend = commit --amend
+
+# Amend the most recent commit without changing the commit message
+commend = commit --amend --no-edit
+
+# Push commits to the remote repository
+p = push
+
+# Force push to the remote repository, overwriting history
+pf = push --force
+
+# Stage a specific file or files for commit
+a = add
+
+# Stage all changes (including deletions) in the working directory
+aa = add -A
+
+# Show a short summary of the working directory status
+st = status -s
+
+# Switch branches or restore working tree files
+co = checkout
+
+# List, create, or delete branches
+b = branch
+
+# Discard all local changes and reset to the latest commit on the current branch
+rh = reset --hard HEAD
+
+# Fetch and integrate changes from the remote repository
+pl = pull
+
+# Show changes in the working directory relative to the last commit
 d = diff HEAD
+
+# Show staged changes that will be included in the next commit
 dc = diff --cached
+
+# Launch the configured diff tool to view changes
 dt = difftool
 
+# Show word-by-word diff of the working directory against the last commit
 dw = diff --color-words HEAD
+
+# Show word-by-word details of the most recent commit
 sw = show --color-words
 
+# Display the commit history
 l = log
-ls = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+
+# Display commit history in a compact and decorated format
+ls = log --pretty=format:"%C(yellow)%h\ %ad%Cred%d\ %Creset%s%Cblue\ [%cn]" --decorate --date=short
+
+# Show commit history with GPG signature verification and file change summary
 logs = log --show-signature --stat
+
+# Show full commit history with diffs
 lp = log -p
 
+# Apply changes introduced by existing commits
 chp = cherry-pick
+
+# Abort an in-progress cherry-pick operation
 chpa = cherry-pick --abort
+
+# Continue an in-progress cherry-pick after resolving conflicts
 chpc = cherry-pick --continue
+
+# Quit an in-progress cherry-pick without committing
 chpq = cherry-pick --quit
+
+# Skip the current commit during an in-progress cherry-pick
 chps = cherry-pick --skip
