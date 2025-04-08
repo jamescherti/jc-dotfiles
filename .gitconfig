@@ -83,6 +83,10 @@ preloadindex = true
 [diff]
 tool = vimdiff
 
+# Diff algorithm for improved diff accuracy, especially in detecting moved code
+# blocks.
+algorithm = histogram
+
 [rerere]
 # The "reuse recorded resolution" (rerere) feature, which helps Git
 # automatically resolve merge conflicts by reusing previously recorded conflict
