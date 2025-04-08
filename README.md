@@ -63,3 +63,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ## Links
 
 - [jc-dotfiles @GitHub](https://github.com/jamescherti/jc-dotfiles)
+
+Related articles:
+- [Enhancing Git configuration ~/.gitconfig for performance and usability](https://www.jamescherti.com/optimized-git-configuration-for-performance-and-usability/)
