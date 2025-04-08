@@ -78,11 +78,17 @@ precomposeunicode = false
 # commands like status and diff. Setting this to true will make Git load the
 # index into memory early in the execution of commands. This can lead to
 # performance improvements for operations that involve the index, especially in
-# repositories with a large number of files..
+# repositories with a large number of files.
 preloadindex = true
 
 [diff]
 tool = vimdiff
+
+# Git diff replaces a/ and b/ with context-sensitive, mnemonic prefixes based on
+# the file's origin: i/ Index (staged content), w/ Working tree (your current
+# files), c/ Current commit (HEAD), o/ Original (common ancestor in a merge), 1/
+# 2/ 3/ Parent commits in combined merges
+mnemonicPrefix = true
 
 # Diff algorithm for improved diff accuracy, especially in detecting moved code
 # blocks.
