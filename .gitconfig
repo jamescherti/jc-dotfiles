@@ -113,6 +113,10 @@ ff = only
 # and maintaining a linear commit history.
 ff = only
 
+[log]
+# Display dates as YYYY-MM-DD
+date = iso
+
 # This configuration automatically pulls the current branch, which helps prevent
 # "There is no tracking information for the current branch. Please specify which
 # branch you want to merge with. See git-pull(1) for details. git pull <remote>
@@ -135,11 +139,40 @@ default = current
 autoSetupRemote = true
 
 [init]
-templatedir = ~/.git-templates
+# templatedir = ~/.git-templates
 defaultBranch = main
 
-[alias]
+[transfer]
+# Verifies the integrity of all objects during data transfer operations like
+# clone, helping detect corruption or tampering early.
+fsckobjects = true
 
+[fetch]
+# Validates all objects during fetch to ensure no corrupted or malformed data is
+# introduced into the local repository.
+fsckobjects = true
+
+[receive]
+# Verifies the integrity of all objects during data transfer operations like
+# clone, helping detect corruption or tampering early.
+fsckObjects = true
+
+[branch]
+# Configures `git branch` to sort branches by most recently used rather than
+# alphabetically, making it easier to locate active branches.
+sort = -committerdate
+
+[tag]
+# Sort tags by the date they were created.
+sort = taggerdate
+
+[help]
+# When a mistyped Git command closely resembles a valid one, this setting
+# prompts the user with a suggestion before executing the corrected command,
+# preventing accidental execution of unintended commands.
+autocorrect = prompt
+
+[alias]
 # This alias simplifies the process of pulling changes by automatically stashing
 # local changes, rebasing the current branch on top of the remote, and then
 # reapplying the stashed changes, ensuring a clean and linear commit history.
