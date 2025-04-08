@@ -125,7 +125,7 @@ ff = only
 # Uses the 'zdiff3' conflict style for merges, which includes additional context
 # by showing the base, local, and remote versions of conflicting changes in a
 # more readable format, making it easier to resolve complex conflicts.
-conflictstyle = zdiff3
+conflictStyle = zdiff3
 
 # Before executing a merge, automatically stash all uncommitted changes in the
 # working directory and index. This ensures the merge proceeds without
@@ -188,12 +188,12 @@ defaultBranch = main
 [transfer]
 # Verifies the integrity of all objects during data transfer operations like
 # clone, helping detect corruption or tampering early.
-fsckobjects = true
+fsckObjects = true
 
 [fetch]
 # Validates all objects during fetch to ensure no corrupted or malformed data is
 # introduced into the local repository.
-fsckobjects = true
+fsckObjects = true
 
 [receive]
 # Verifies the integrity of all objects during data transfer operations like
