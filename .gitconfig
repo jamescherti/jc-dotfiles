@@ -113,9 +113,9 @@ diff = always
 # is complete, the stash is reapplied.
 autoStash = true
 
-# If commits are removed or missing during a rebase, issue a warning rather than
+# If commits are removed or missing during a rebase, issue an error rather than
 # silently ignoring them.
-missingCommitsCheck = warn
+missingCommitsCheck = error
 
 [merge]
 # This setting enforce fast-forward merges, preventing unnecessary merge commits
