@@ -88,6 +88,22 @@ tool = vimdiff
 # blocks.
 algorithm = histogram
 
+# Enable highlighting of moved lines in diffs. This helps identify blocks of
+# code that have been moved within a file, making it easier to track code
+# movement and understand refactoring changes.
+# Values: no, default, plain, blocks, zebra, dimmed-zebra
+# Details: `man git-diff`
+colorMoved = plain
+
+# Enable highlighting of moved whitespace in diffs. This setting makes it easier
+# to spot changes where only whitespace (e.g., spaces or tabs) has been moved or
+# modified, which is useful for identifying formatting changes without affecting
+# the actual content of the code.
+# Values: no, ignore-space-at-eol, ignore-space-change, ignore-all-space,
+# allow-indentation-change
+# Details: `man git-diff`
+# colorMovedWS = allow-indentation-change
+
 [rerere]
 # The "reuse recorded resolution" (rerere) feature, which helps Git
 # automatically resolve merge conflicts by reusing previously recorded conflict
@@ -98,17 +114,6 @@ enabled = 1
 # After a conflict is resolved manually, Git will automatically store the
 # resolution in the rerere cache, making it available for future use.
 autoUpdate = true
-
-# Enable highlighting of moved lines in diffs. This helps identify blocks of
-# code that have been moved within a file, making it easier to track code
-# movement and understand refactoring changes.
-colorMoved = true
-
-# Enable highlighting of moved whitespace in diffs. This setting makes it easier
-# to spot changes where only whitespace (e.g., spaces or tabs) has been moved or
-# modified, which is useful for identifying formatting changes without affecting
-# the actual content of the code.
-colorMovedWS = true
 
 [commit]
 # This includes the full commit diff in the text editor when composing the
