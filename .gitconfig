@@ -158,6 +158,11 @@ default = current
 # configuration.
 autoSetupRemote = true
 
+# Push all annotated tags to the remote repository along with the branch
+# updates. This ensures that tags created locally are also synchronized with the
+# remote repository during a push operation.
+followTags = true
+
 [init]
 # templatedir = ~/.git-templates
 defaultBranch = main
