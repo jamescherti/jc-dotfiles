@@ -4,6 +4,7 @@
 # Description:
 # ------------
 # Git configuration (.gitconfig).
+# Documentation: https://git-scm.com/docs/git-config
 #
 # License:
 # --------
@@ -94,6 +95,10 @@ algorithm = histogram
 # enabled.
 enabled = 1
 
+# After a conflict is resolved manually, Git will automatically store the
+# resolution in the rerere cache, making it available for future use.
+autoUpdate = true
+
 [commit]
 # This includes the full commit diff in the text editor when composing the
 # commit message, aiding in recalling the context and purpose of the changes.
@@ -127,6 +132,19 @@ conflictstyle = zdiff3
 # interference from local modifications. Once the merge completes, the stashed
 # changes are reapplied, restoring the developer's original working state.
 autoStash = true
+
+# Display a brief summary describing what was merged. This includes information
+# such as the merged branch names and the number of commits.
+summary = true
+
+# Display a diffstat after the merge completes, which summarizes the changes
+# made, showing how many lines were added and removed in each file.
+diffstat = true
+
+# Include up to 60 commit messages from the merged branch in the merge commit
+# message. This provides historical context and helps reviewers understand the
+# scope of the merge.
+log = 60
 
 [pull]
 # This setting enforce fast-forward merges, preventing unnecessary merge commits
@@ -195,7 +213,7 @@ sort = taggerdate
 # When a mistyped Git command closely resembles a valid one, this setting
 # prompts the user with a suggestion before executing the corrected command,
 # preventing accidental execution of unintended commands.
-autocorrect = prompt
+autoCorrect = prompt
 
 [alias]
 # This alias simplifies the process of pulling changes by automatically stashing
