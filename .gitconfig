@@ -102,7 +102,7 @@ colorMoved = plain
 # Values: no, ignore-space-at-eol, ignore-space-change, ignore-all-space,
 # allow-indentation-change
 # Details: `man git-diff`
-# colorMovedWS = allow-indentation-change
+colorMovedWS = allow-indentation-change
 
 [rerere]
 # The "reuse recorded resolution" (rerere) feature, which helps Git
