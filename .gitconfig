@@ -103,6 +103,11 @@ verbose = true
 ui = true
 diff = always
 
+[rebase]
+# Create a stash of any local changes before starting a rebase. After the rebase
+# is complete, the stash is reapplied.
+autoStash = true
+
 [merge]
 # This setting enforce fast-forward merges, preventing unnecessary merge commits
 # and maintaining a linear commit history.
@@ -112,6 +117,9 @@ ff = only
 # by showing the base, local, and remote versions of conflicting changes in a
 # more readable format, making it easier to resolve complex conflicts.
 conflictstyle = zdiff3
+
+# Before performing a merge, stash local changes and reapply them after
+autoStash = true
 
 [pull]
 # This setting enforce fast-forward merges, preventing unnecessary merge commits
