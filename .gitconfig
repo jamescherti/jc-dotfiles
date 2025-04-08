@@ -108,6 +108,11 @@ diff = always
 # and maintaining a linear commit history.
 ff = only
 
+# Uses the 'zdiff3' conflict style for merges, which includes additional context
+# by showing the base, local, and remote versions of conflicting changes in a
+# more readable format, making it easier to resolve complex conflicts.
+conflictstyle = zdiff3
+
 [pull]
 # This setting enforce fast-forward merges, preventing unnecessary merge commits
 # and maintaining a linear commit history.
