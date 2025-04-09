@@ -130,8 +130,7 @@ autoUpdate = true
 verbose = true
 
 [color]
-ui = true
-diff = always
+ui = auto
 
 [rebase]
 # Create a stash of any local changes before starting a rebase. After the rebase
