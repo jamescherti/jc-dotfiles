@@ -1,0 +1,23 @@
+# General
+ctags
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Editors
+*~
+
+# Misc
+__pycache__/
+flymake_*
+flycheck*
+.coverage
+*.log
+*.retry
+*.elc
+*.o
+*.a
+*.so
