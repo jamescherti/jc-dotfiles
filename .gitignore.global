@@ -25,6 +25,9 @@ __pycache__/
 *.pyc
 .coverage
 
+# Ruby
+*.rbc
+
 # macOS
 .DS_Store
 

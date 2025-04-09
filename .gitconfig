@@ -111,8 +111,8 @@ colorMoved = plain
 # Details: `man git-diff`
 colorMovedWS = allow-indentation-change
 
-# Show 6 lines of context around changes in diffs instead of the default 3
-context = 6
+# Show 5 lines of context around changes in diffs instead of the default 3
+context = 5
 
 [rerere]
 # The "reuse recorded resolution" (rerere) feature, which helps Git
