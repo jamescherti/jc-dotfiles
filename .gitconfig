@@ -64,7 +64,7 @@ auto = 8000
 [core]
 pager = less -X -F
 quotepath = off
-editor = vim
+
 excludesfile = ~/.gitignore_global
 
 # trailing-space: look for spaces at the end of a line
@@ -351,3 +351,10 @@ chpq = cherry-pick --quit
 
 # Skip the current commit during an in-progress cherry-pick
 chps = cherry-pick --skip
+
+[include]
+# Load local configurations.
+# This must remain at the end of the file to ensure that any local
+# configurations can override the settings above.
+# See: https://git-scm.com/docs/git-config#_includes
+path = ~/.gitconfig.local
