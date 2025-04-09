@@ -110,6 +110,9 @@ colorMoved = plain
 # Details: `man git-diff`
 colorMovedWS = allow-indentation-change
 
+# Show 6 lines of context around changes in diffs instead of the default 3
+context = 6
+
 [rerere]
 # The "reuse recorded resolution" (rerere) feature, which helps Git
 # automatically resolve merge conflicts by reusing previously recorded conflict
@@ -138,6 +141,16 @@ autoStash = true
 # If commits are removed or missing during a rebase, issue an error rather than
 # silently ignoring them.
 missingCommitsCheck = error
+
+# When you use interactive rebase (e.g., `git rebase -i`), this setting makes
+# Git automatically recognize and handle commits that begin with "fixup!" or
+# "squash!".
+#
+# - A commit with "squash!" means "combine this with another commit and keep
+#   both messages".
+# - A commit with "fixup!" means "combine this with another commit and discard
+#   this message".
+autoSquash = true
 
 [merge]
 # This setting enforce fast-forward merges, preventing unnecessary merge commits
