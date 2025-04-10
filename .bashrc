@@ -57,6 +57,9 @@ HISTFILESIZE="100000"
 # Number of commands to keep in the current session's history list.
 HISTSIZE="$HISTFILESIZE"
 
+HISTTIMEFORMAT="%F %T " # 2018-05-17 19:24:05
+HISTCONTROL=ignoredups:ignorespace
+
 PS1_GIT_BRANCH=1
 PS1_MAILDIR_PATH="$HOME/.maildir"
 PS1_MAILDIR=1
@@ -151,9 +154,6 @@ shopt -s histverify
 
 # Enable appending to the history file, rather than overwriting it.
 shopt -s histappend
-
-HISTTIMEFORMAT="%F %T " # 2018-05-17 19:24:05
-HISTCONTROL=""
 
 #-------------------------------------------------------------------------------
 # Aliases

@@ -350,6 +350,48 @@ autoCorrect = prompt
 # (use "git restore <file>..." to discard changes in working directory)
 statusHints = false
 
+[grep]
+lineNumber = true
+
+[blame]
+# The `ignoreRevsFile` makes `git blame` ignore certain commits.
+# It points to a file that contains a list of commit hashes or revision
+# ranges.
+#
+# This is useful in scenarios such as:
+# - Automatically generated changes (e.g., formatting changes, code cleanup)
+# - Bulk changes for reasons unrelated to the actual development of the code
+#   (e.g., refactoring, dependency updates)
+# - Avoiding noisy commits that can distract from meaningful line-by-line
+#   changes and authorship.
+ignoreRevsFile = .git-blame-ignore-revs
+
+[color "branch"]
+# Uses brighter colors for improved readability and visual comfort
+remote = green
+local = yellow
+current = yellow reverse
+
+[color "branch"]
+# Uses brighter colors for improved readability and visual comfort
+remote = green
+local = cyan
+current = cyan reverse
+
+[color "diff"]
+# Uses brighter colors for improved readability and visual comfort
+frag = magenta bold
+whitespace = red reverse
+meta = yellow bold
+new = green bold
+old = red bold
+
+[color "status"]
+# Uses brighter colors for improved readability and visual comfort
+untracked = cyan
+changed = green
+added = yellow reverse
+
 [alias]
 # This alias simplifies the process of pulling changes by automatically stashing
 # local changes, rebasing the current branch on top of the remote, and then
@@ -398,8 +440,17 @@ rh = reset --hard HEAD
 # Fetch and integrate changes from the remote repository
 pl = pull
 
+# Create, list, delete or verify a tag object
+t = tag
+
 # Show changes in the working directory relative to the last commit
 d = diff HEAD
+
+# Rebase
+rb = rebase
+
+# Reset
+rs = reset
 
 # Show staged changes that will be included in the next commit
 dc = diff --cached
@@ -439,48 +490,6 @@ chpq = cherry-pick --quit
 
 # Skip the current commit during an in-progress cherry-pick
 chps = cherry-pick --skip
-
-[grep]
-lineNumber = true
-
-[blame]
-# The `ignoreRevsFile` makes `git blame` ignore certain commits.
-# It points to a file that contains a list of commit hashes or revision
-# ranges.
-#
-# This is useful in scenarios such as:
-# - Automatically generated changes (e.g., formatting changes, code cleanup)
-# - Bulk changes for reasons unrelated to the actual development of the code
-#   (e.g., refactoring, dependency updates)
-# - Avoiding noisy commits that can distract from meaningful line-by-line
-#   changes and authorship.
-ignoreRevsFile = .git-blame-ignore-revs
-
-[color "branch"]
-# Uses brighter colors for improved readability and visual comfort
-remote = green
-local = yellow
-current = yellow reverse
-
-[color "branch"]
-# Uses brighter colors for improved readability and visual comfort
-remote = green
-local = cyan
-current = cyan reverse
-
-[color "diff"]
-# Uses brighter colors for improved readability and visual comfort
-frag = magenta bold
-whitespace = red reverse
-meta = yellow bold
-new = green bold
-old = red bold
-
-[color "status"]
-# Uses brighter colors for improved readability and visual comfort
-untracked = cyan
-changed = green
-added = yellow reverse
 
 [include]
 # Load local configurations.
