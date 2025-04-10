@@ -107,20 +107,12 @@ tool = vimdiff
 # Diff algorithm for improved diff accuracy, especially in detecting moved code
 # blocks.
 #
-# patience: The Patience algorithm is generally slower than the Histogram
-# algorithm but can produce more human-readable diffs because it tends to create
-# fewer "small" changes and is better at handling reordering. The Patience Diff
-# is useful when the changes are more semantic in nature, such as
-# in code reformatting or text documents with a lot of unchanged content.
-#
-# histogram: The Histogram algorithm tends to perform better than Patience Diff
-# on large files because it is generally faster and more efficient in terms of
-# computational complexity. It handles larger files better but may produce diffs
-# that are harder for humans to read, especially in cases of reordered content
-# or large structural changes. The Histogram Diff is preferred for code diffs or
-# cases where the content has been substantially modified but large sections of
-# the file remain largely unchanged. It is better at handling diffing large
-# files with more structural changes.
+# Patience diff is better at handling reordered text blocks by identifying
+# unique lines first and using a longest-increasing subsequence algorithm for
+# optimal alignment. It results in more intuitive and human-readable diffs.
+# Compared to histogram-based algorithms, patience diff focuses on matching
+# meaningful lines, avoiding superficial matches, which leads to more accurate
+# content representation.
 #
 # algorithm = histogram
 algorithm = patience
