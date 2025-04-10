@@ -40,6 +40,7 @@ set -euf -o pipefail
 
 LIST_FILES=(
   .gitconfig
+  .gitignore_global
   .tmux.conf
   .profile
   .bashrc
@@ -78,8 +79,8 @@ main() {
     opts+=("$file")
   done
 
-  if [[ $JC_DOTFILES_UNATTENDED = "" ]] &&
-    [[ $JC_DOTFILES_UNATTENDED -eq 0 ]]; then
+  if [[ $JC_DOTFILES_UNATTENDED = "" ]] \
+    && [[ $JC_DOTFILES_UNATTENDED -eq 0 ]]; then
     echo
     read -r -p "Install the above files? [y,n] " ANSWER
     if [[ "$ANSWER" != "y" ]]; then

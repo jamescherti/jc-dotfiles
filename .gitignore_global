@@ -5,28 +5,32 @@ tags
 # Editors
 *~
 *.swp
+*.swo
+*#
+
+# Ansible
+*.log
+*.retry
 
 # Emacs
 flymake_*
 flycheck*
 *.elc
 
-# Compilers
-*.o
-*.a
-*.so
-
-# Ansible
-*.log
-*.retry
-
 # Python
 __pycache__/
 *.pyc
+*.pyo
 .coverage
 
 # Ruby
 *.rbc
+
+# Compilers
+*.class
+*.o
+*.a
+*.so
 
 # macOS
 .DS_Store
@@ -38,4 +42,4 @@ ehthumbs.db
 Thumbs.db
 
 # VCS
-.svn
+.svn/
