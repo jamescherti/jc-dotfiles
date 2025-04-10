@@ -173,6 +173,24 @@ autoUpdate = true
 # commit message, aiding in recalling the context and purpose of the changes.
 verbose = true
 
+# This option determines how the commit message should be cleaned up before
+# committing. The available cleanup modes are as follows:
+# - strip: Removes leading and trailing empty lines, trailing whitespace,
+#   comments that start with #, and collapses consecutive empty lines in the
+#   commit message.
+# - whitespace: Similar to strip, but comments (lines starting with #) are
+#   retained in the message.
+# - verbatim: No changes are made to the commit message. It is preserved
+#   exactly as it was supplied.
+# - scissors: Similar to whitespace, but everything from (and including) the
+#   line starting with a custom # marker (by default #
+#   ------------------------ >8 ------------------------) will be truncated if
+#   the message is being edited. This marker can be customized with
+#   core.commentChar.
+# - default: If the commit message is being edited, it behaves like strip. If
+#   not being edited, it behaves like whitespace.
+cleanup = strip
+
 [color]
 ui = auto
 
@@ -195,23 +213,15 @@ missingCommitsCheck = error
 #   this message".
 autoSquash = true
 
-# A rebase is a process of moving or combining a sequence of commits to a new
-# base commit. For instance, if you have a branch `A` and another branch `B`
-# that is built on top of `A`, rebasing `B` onto the latest changes in `A`
-# ensures that `B` is based on the most up-to-date version of `A`. However, when
-# you have multiple stacked branches, it can become complex to handle the
+# when you have multiple stacked branches, it can become complex to handle the
 # rebasing process manually for each branch, especially if you have many commits
 # in each branch.
 #
-# The option `updateRefs = true` simplifies this process. By enabling this
-# option, whenever you perform a rebase operation on one branch, the references
-# to the other dependent branches are automatically updated as well. This
-# ensures that each branch in the stack remains properly aligned with the
-# others, without requiring you to manually update or rebase each one
-# individually.
-#
-# This will save you time and reducing the risk of errors that can arise from
-# manually managing references between branches.
+# Setting updateRefs to true simplifies this process. By enabling this option,
+# whenever you perform a rebase operation on one branch, the references to the
+# other dependent branches are automatically updated as well. This ensures that
+# each branch in the stack remains properly aligned with the others, without
+# requiring you to manually update or rebase each one individually.
 updateRefs = true
 
 [merge]
