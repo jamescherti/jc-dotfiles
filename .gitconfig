@@ -62,10 +62,24 @@ packSizeLimit = 2g
 auto = 8000
 
 [core]
-pager = less -X -F
+# -X: Keep the content visible after closing the pager
+# -R: Ensures that color codes and other control characters in the output
+#     (e.g., from 'git diff --color') are properly displayed in the pager.
+pager = less -X -R
+
+# Displays non-ASCII file names in their original form instead of quoted octal
+# sequences.
 quotepath = off
 
+# Specifies a global ignore file for patterns to exclude across all
+# repositories.
 excludesfile = ~/.gitignore_global
+
+# Enables the untracked cache to speed up performance when checking for
+# untracked files (default: false)
+# This can be beneficial in large repositories where `git status` is run
+# frequently, as it reduces the time spent scanning for untracked files.
+untrackedCache = true
 
 # trailing-space: look for spaces at the end of a line
 # space-before-tab: look for spaces before tabs at beginning of line
@@ -82,14 +96,13 @@ precomposeunicode = false
 # repositories with a large number of files.
 preloadindex = true
 
+[difftool]
+# Disables the prompt asking whether to launch the diff tool for each file when
+# using 'git difftool'
+prompt = false
+
 [diff]
 tool = vimdiff
-
-# Git diff replaces a/ and b/ with context-sensitive, mnemonic prefixes based on
-# the file's origin: i/ Index (staged content), w/ Working tree (your current
-# files), c/ Current commit (HEAD), o/ Original (common ancestor in a merge), 1/
-# 2/ 3/ Parent commits in combined merges
-mnemonicPrefix = true
 
 # Diff algorithm for improved diff accuracy, especially in detecting moved code
 # blocks.
@@ -113,6 +126,27 @@ colorMovedWS = allow-indentation-change
 
 # Show 5 lines of context around changes in diffs instead of the default 3
 context = 5
+
+# Git diff replaces a/ and b/ with context-sensitive, mnemonic prefixes based on
+# the file's origin: i/ Index (staged content), w/ Working tree (your current
+# files), c/ Current commit (HEAD), o/ Original (common ancestor in a merge), 1/
+# 2/ 3/ Parent commits in combined merges
+mnemonicPrefix = true
+
+# Disables the default prefix (e.g., 'a/' and 'b/') in diff output, showing file
+# names directly instead
+noPrefix = true
+
+# Configures Git to detect file copies in addition to renames during diff
+# generation. This helps identify files that were copied, improving the accuracy
+# of the diff output for changes involving file copying.
+renames = copies
+
+# Sets the maximum number of renames to detect in a diff. When there are more
+# than this number of renames, Git will stop trying to detect renames to avoid
+# performance degradation. The default is 1000, but increasing it can help in
+# repos with many file renames.
+renameLimit = 2400
 
 [rerere]
 # The "reuse recorded resolution" (rerere) feature, which helps Git
@@ -180,6 +214,10 @@ diffstat = true
 # message. This provides historical context and helps reviewers understand the
 # scope of the merge.
 log = 60
+
+# Enables the inclusion of branch descriptions in merge commit messages,
+# providing more context about the branches being merged.
+branchdesc = true
 
 [pull]
 # This setting enforce fast-forward merges, preventing unnecessary merge commits
@@ -252,6 +290,11 @@ fsckObjects = true
 # alphabetically, making it easier to locate active branches.
 sort = -committerdate
 
+# Automatically sets up an upstream (merge) tracking branch when creating a new
+# branch from a remote-tracking branch This allows 'git pull' and 'git push' to
+# work without specifying the remote/branch
+autoSetupMerge = true
+
 [tag]
 # Sort tags by the date they were created.
 sort = taggerdate
@@ -261,6 +304,13 @@ sort = taggerdate
 # prompts the user with a suggestion before executing the corrected command,
 # preventing accidental execution of unintended commands.
 autoCorrect = prompt
+
+[advice]
+# Disables the hints shown by 'git status', such as suggestions for the next
+# commands to run:
+# (use "git add <file>..." to update what will be committed)
+# (use "git restore <file>..." to discard changes in working directory)
+statusHints = false
 
 [alias]
 # This alias simplifies the process of pulling changes by automatically stashing
@@ -351,6 +401,35 @@ chpq = cherry-pick --quit
 
 # Skip the current commit during an in-progress cherry-pick
 chps = cherry-pick --skip
+
+[grep]
+lineNumber = true
+
+[color "branch"]
+# Uses brighter colors for improved readability and visual comfort
+remote = green
+local = yellow
+current = yellow reverse
+
+[color "branch"]
+# Uses brighter colors for improved readability and visual comfort
+remote = green
+local = cyan
+current = cyan reverse
+
+[color "diff"]
+# Uses brighter colors for improved readability and visual comfort
+frag = magenta bold
+whitespace = red reverse
+meta = yellow bold
+new = green bold
+old = red bold
+
+[color "status"]
+# Uses brighter colors for improved readability and visual comfort
+untracked = cyan
+changed = green
+added = yellow reverse
 
 [include]
 # Load local configurations.
