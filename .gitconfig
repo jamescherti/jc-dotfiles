@@ -433,6 +433,19 @@ chps = cherry-pick --skip
 [grep]
 lineNumber = true
 
+[blame]
+# The `ignoreRevsFile` makes `git blame` ignore certain commits.
+# It points to a file that contains a list of commit hashes or revision
+# ranges.
+#
+# This is useful in scenarios such as:
+# - Automatically generated changes (e.g., formatting changes, code cleanup)
+# - Bulk changes for reasons unrelated to the actual development of the code
+#   (e.g., refactoring, dependency updates)
+# - Avoiding noisy commits that can distract from meaningful line-by-line
+#   changes and authorship.
+ignoreRevsFile = .git-blame-ignore-revs
+
 [color "branch"]
 # Uses brighter colors for improved readability and visual comfort
 remote = green
