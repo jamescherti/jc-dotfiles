@@ -180,6 +180,7 @@ alias df='df -h -x overlay -x aufs -x tmpfs -x devtmpfs --print-type'
 alias ncdu="ncdu --color off"
 alias tree="tree -C --gitignore"
 alias mv="mv -i"
+alias mode='stat -c "%a %n"'
 
 alias br="git --no-pager branch"
 alias g="git"
@@ -515,6 +516,50 @@ if [[ $_JC_FZF -ne 0 ]]; then
   # Example binding with bash shell.
   bind -x '"\C-n": "__tmux_autocomplete-inline__"'
 fi
+
+#-------------------------------------------------------------------------------
+# Confirm before executing certain commands
+#
+# The function prompts the user for confirmation before running any system
+# command. This helps to prevent accidental execution of potentially dangerous
+# commands, such as shutdown, reboot, or poweroff, by requiring a user to
+# explicitly confirm their intention to proceed.
+#-------------------------------------------------------------------------------
+_jc_confirm_command() {
+  if [ "$#" -eq "0" ]; then
+    return 1
+  fi
+
+  if ! type -P "$1" &>/dev/null; then
+    echo "Error: $1 doesn't exist."
+    return 1
+  fi
+
+  local cmd
+  cmd=$(basename "$1")
+  read -r -p "Do you really want to run '$cmd'? [y,n] " answer
+
+  if [ "$answer" = "y" ]; then
+    echo "$@"
+    "$@"
+    return "$?"
+  else
+    echo "Canceled."
+  fi
+
+  return 1
+}
+
+# /bin/rm  was removed from the lias
+_jc_create_confirm_aliases() {
+  local cmd
+  for cmd in shutdown poweroff reboot; do
+    # shellcheck disable=SC2139
+    alias "$cmd"="_jc_confirm_command $cmd"
+  done
+}
+
+_jc_create_confirm_aliases
 
 #-------------------------------------------------------------------------------
 # macOS
