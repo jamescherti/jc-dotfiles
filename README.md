@@ -37,6 +37,13 @@ Here's how to install James Cherti's dotfiles:
    ./install.sh
    ```
 
+## Usage
+
+### .bashrc
+
+- Tmux/fzf auto complete: Pressing Ctrl-n calls a custom Bash autocomplete function that captures the current tmux scrollback buffer, extracts unique word-like tokens, and presents them via fzf for interactive fuzzy selection. The selected word is then inserted inline at the current cursor position using a readline binding.
+- The `.bashrc` file can be extended by adding configurations to `~/.bashrc.local`.
+
 ## License
 
 Distributed under terms of the MIT license.

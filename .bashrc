@@ -52,7 +52,7 @@ TMOUT=650
 TMOUT_ROOT=60
 
 # Maximum number of lines to retain in the .bash_history file.
-HISTFILESIZE="100000"
+HISTFILESIZE="6000"
 
 # Number of commands to keep in the current session's history list.
 HISTSIZE="$HISTFILESIZE"
@@ -152,8 +152,18 @@ shopt -s histverify
 # History
 #-------------------------------------------------------------------------------
 
+# Combine multi-line commands into a single history entry
+shopt -s cmdhist
+
+# Preserve literal newlines in multi-line commands
+shopt -s lithist
+
 # Enable appending to the history file, rather than overwriting it.
 shopt -s histappend
+
+# Append new commands to history, clear in-memory history, reload from file, and
+# preserve existing PROMPT_COMMAND
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #-------------------------------------------------------------------------------
 # Aliases
@@ -403,6 +413,46 @@ elif [[ -f /usr/share/fzf/key-bindings.bash ]]; then
   # shellcheck disable=SC1091
   source /usr/share/fzf/key-bindings.bash
   _JC_FZF=1
+fi
+
+#-------------------------------------------------------------------------------
+# Tmux/fzf auto complete
+#
+# This defines a custom Bash autocomplete function that captures the current
+# tmux scrollback buffer, extracts unique word-like tokens, and presents them
+# via fzf for interactive fuzzy selection. The selected word is then inserted
+# inline at the current cursor position using a readline binding.
+#-------------------------------------------------------------------------------
+if [[ $_JC_FZF -ne 0 ]]; then
+  __tmux-autocomplete__() {
+    # Capture the last 100,000 lines from the tmux scrollback buffer, reverse
+    # order, and extract valid word-like tokens (including special characters like
+    # -, _, ., /).
+    tmux capture-pane -pS -100000 \
+      |
+      # Reverse the buffer to prioritize earliest matches
+      tac \
+      |
+      # Extract word-like sequences
+      grep -P -o "[\w\d_\-\.\/]+" \
+      |
+      # De-duplicate while preserving order
+      sort -u \
+      |
+      # Use fzf for fuzzy matching and selection
+      fzf --no-sort --exact +i
+  }
+
+  __tmux_autocomplete-inline__() {
+    local selected
+    selected="$(__tmux-autocomplete__)"
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}${selected}"
+    READLINE_LINE="${READLINE_LINE}${READLINE_LINE:$READLINE_POINT}"
+    READLINE_POINT=$((READLINE_POINT + ${#selected}))
+  }
+
+  # Example binding with bash shell.
+  bind -x '"\C-n": "__tmux_autocomplete-inline__"'
 fi
 
 #-------------------------------------------------------------------------------
