@@ -43,6 +43,11 @@ Here's how to install James Cherti's dotfiles:
 
 - Tmux/fzf auto complete: Pressing Ctrl-n calls a custom Bash autocomplete function that captures the current tmux scrollback buffer, extracts unique word-like tokens, and presents them via fzf for interactive fuzzy selection. The selected word is then inserted inline at the current cursor position using a readline binding.
 - The `.bashrc` file can be extended by adding configurations to `~/.bashrc.local`.
+- The `o` alias calls a function that provides a cross-platform way to open files or URLs using the appropriate command for the system. This function opens files or URLs using the appropriate command (`xdg-open` on Linux, `open` on macOS, and `start` on Windows). If more than 7 arguments are passed, the user is prompted for confirmation before proceeding.
+  Example usage:
+  ```
+  o file1.jpg file2.png file3.jpeg
+  ```
 
 ## License
 

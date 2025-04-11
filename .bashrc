@@ -351,6 +351,67 @@ alias ..4='cd ../../../..'
 alias ..5='cd ../../../../..'
 
 #-------------------------------------------------------------------------------
+# The `_jc_xdg_open` function provides a cross-platform way to open files or
+# URLs using the appropriate command for the system, with argument validation,
+# user confirmation for large inputs, and asynchronous execution to prevent
+# blocking the shell session.
+#
+# This function opens files or URLs using the appropriate command:
+# - `xdg-open` on Linux,
+# - `open` on macOS,
+# - `start` on Windows.
+#
+# If more than 7 arguments are passed, the user is prompted for confirmation
+# before proceeding.
+#
+# It checks that each item passed exists before attempting to open it.
+#-------------------------------------------------------------------------------
+_js_open_bin=xdg-open
+
+case "$OSTYPE" in
+darwin*)
+  _js_open_bin=open
+  ;;
+cygwin* | msys* | win32*)
+  _js_open_bin=start
+  ;;
+*)
+  _js_open_bin=xdg-open
+  ;;
+esac
+
+_jc_xdg_open() {
+  local item
+
+  if [[ $# -gt 7 ]]; then
+    echo "$*"
+    read -r -p "Proceed? [y,n] " answer
+    if [[ "$answer" != "y" ]]; then
+      echo "Interrupted." >&2
+      return 1
+    fi
+  fi
+
+  for item in "$@"; do
+    if ! [[ -e "$item" ]]; then
+      echo "Error: $item does not exist." >&2
+      return 1
+    fi
+  done
+
+  for item in "$@"; do
+    (
+      xdg-open "$item" &>/dev/null &
+      disown
+    )
+  done
+
+  return 0
+}
+
+alias o="_jc_xdg_open"
+
+#-------------------------------------------------------------------------------
 # Better ls
 #-------------------------------------------------------------------------------
 _jc_better_ls() {
@@ -454,6 +515,35 @@ if [[ $_JC_FZF -ne 0 ]]; then
   # Example binding with bash shell.
   bind -x '"\C-n": "__tmux_autocomplete-inline__"'
 fi
+
+#-------------------------------------------------------------------------------
+# macOS
+#
+# This block checks if certain GNU utilities (prefixed with 'g' on macOS) are
+# available and creates aliases to use them in place of their BSD counterparts.
+# These aliases help ensure compatibility with GNU commands on macOS for tools
+# like install, rm, ls, and find, if the GNU versions are installed via a
+# package manager like Homebrew.
+#-------------------------------------------------------------------------------
+case "$OSTYPE" in
+darwin*)
+  if type -P ginstall &>/dev/null; then
+    alias install=ginstall
+  fi
+
+  if type -P grm &>/dev/null; then
+    alias rm=grm
+  fi
+
+  if type -P gls &>/dev/null; then
+    alias ls=gls
+  fi
+
+  if type -P gfind &>/dev/null; then
+    alias find=gfind
+  fi
+  ;;
+esac
 
 #-------------------------------------------------------------------------------
 # Emacs integration
