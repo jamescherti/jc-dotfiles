@@ -251,7 +251,7 @@ export GPG_TTY
 ps1-git-branch() {
   if [[ $PS1_GIT_BRANCH -ne 0 ]]; then
     local branch_name
-    branch_name=$("$GIT_BIN_PATH" symbolic-ref --short -q HEAD 2>/dev/null) \
+    branch_name=$("git" symbolic-ref --short -q HEAD 2>/dev/null) \
       || return 0
     echo -e "($branch_name) "
     return 0

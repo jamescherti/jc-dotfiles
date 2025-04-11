@@ -375,8 +375,8 @@ current = yellow reverse
 [color "branch"]
 # Uses brighter colors for improved readability and visual comfort
 remote = green
-local = cyan
-current = cyan reverse
+local = yellow
+current = yellow reverse
 
 [color "diff"]
 # Uses brighter colors for improved readability and visual comfort
