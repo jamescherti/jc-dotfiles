@@ -508,8 +508,7 @@ if [[ $_JC_FZF -ne 0 ]]; then
   __tmux_autocomplete-inline__() {
     local selected
     selected="$(__tmux-autocomplete__)"
-    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}${selected}"
-    READLINE_LINE="${READLINE_LINE}${READLINE_LINE:$READLINE_POINT}"
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
     READLINE_POINT=$((READLINE_POINT + ${#selected}))
   }
 
