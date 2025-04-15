@@ -108,23 +108,33 @@ prompt = false
 [diff]
 tool = vimdiff
 
-[diff "cpp"]
-	xfuncname = "!^[ \\t]*[A-Za-z_][A-Za-z_0-9]*:[[:space:]]*($|/[/*])\n^((::[[:space:]]*)?[A-Za-z_][A-Za-z_0-9]*[[:space:]]*\\(.*)$\n^((#define[[:space:]]|DEFUN).*)$"
-
+# This Git configuration enhances diffs for Emacs Lisp (elisp) files by defining
+# a custom pattern to identify function boundaries. The xfuncname option uses a
+# regular expression to match function definitions, allowing Git to detect
+# functions more accurately. Without this, Git may show line-by-line changes
+# without considering function structure.
+#
+# With this pattern, Git can display diffs at the function level, making them
+# cleaner and more relevant. It highlights changes within the function, rather
+# than showing the entire function as modified, which improves the clarity of
+# code reviews and merges in Emacs Lisp code.
 [diff "elisp"]
-	xfuncname = ^\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
+xfuncname = ^\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
 
-[diff "m4"]
-	xfuncname = ^((m4_)?define|A._DEFUN(_ONCE)?)\\([^),]*
+[diff "cpp"]
+xfuncname = "!^[ \\t]*[A-Za-z_][A-Za-z_0-9]*:[[:space:]]*($|/[/*])\n^((::[[:space:]]*)?[A-Za-z_][A-Za-z_0-9]*[[:space:]]*\\(.*)$\n^((#define[[:space:]]|DEFUN).*)$"
 
 [diff "make"]
-	xfuncname = ^([$.[:alnum:]_].*:|[[:alnum:]_]+[[:space:]]*([*:+]?[:?]?|!?)=|define .*)
+xfuncname = ^([$.[:alnum:]_].*:|[[:alnum:]_]+[[:space:]]*([*:+]?[:?]?|!?)=|define .*)
+
+[diff "m4"]
+xfuncname = ^((m4_)?define|A._DEFUN(_ONCE)?)\\([^),]*
 
 [diff "shell"]
-	xfuncname = ^([[:space:]]*[[:alpha:]_][[:alnum:]_]*[[:space:]]*\\(\\)|[[:alpha:]_][[:alnum:]_]*=)
+xfuncname = ^([[:space:]]*[[:alpha:]_][[:alnum:]_]*[[:space:]]*\\(\\)|[[:alpha:]_][[:alnum:]_]*=)
 
 [diff "texinfo"]
-	xfuncname = ^@node[[:space:]]+([^,[:space:]][^,]+)
+xfuncname = ^@node[[:space:]]+([^,[:space:]][^,]+)
 
 # Diff algorithm for improved diff accuracy, especially in detecting moved code
 # blocks.
