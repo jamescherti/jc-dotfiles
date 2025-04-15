@@ -35,6 +35,7 @@
 # SOFTWARE.
 #
 
+# shellcheck disable=SC2269
 JC_DOTFILES_UNATTENDED="$JC_DOTFILES_UNATTENDED"
 set -euf -o pipefail
 
