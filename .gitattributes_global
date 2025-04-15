@@ -1,0 +1,20 @@
+*.asc -text -diff
+*.gpg -text -diff
+vault.yml -text -diff
+vault.yaml -text -diff
+
+*.css   diff=css
+*.go    diff=golang
+*.html  diff=html
+*.java  diff=java
+*.lisp  diff=lisp
+*.md    diff=markdown
+*.php   diff=php
+*.py    diff=python
+*.rb    diff=ruby
+*.sh    diff=bash
+*.clj   diff=lisp
+*.el    diff=elisp
+
+# *.fnl   diff=fennel
+# *.kt    diff=kotlin

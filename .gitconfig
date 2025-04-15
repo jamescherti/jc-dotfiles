@@ -75,6 +75,10 @@ quotepath = off
 # repositories.
 excludesfile = ~/.gitignore_global
 
+# Use a global gitattributes file for applying attribute rules to all
+# repositories
+attributesfile = ~/.gitattributes_global
+
 # Enables the untracked cache to speed up performance when checking for
 # untracked files (default: false)
 # This can be beneficial in large repositories where `git status` is run
