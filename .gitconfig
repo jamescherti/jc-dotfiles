@@ -425,7 +425,7 @@ old = red bold
 # Uses brighter colors for improved readability and visual comfort
 untracked = cyan
 changed = green
-added = yellow reverse
+added = green
 
 [alias]
 # This alias simplifies the process of pulling changes by automatically stashing
