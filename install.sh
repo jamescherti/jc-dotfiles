@@ -41,6 +41,7 @@ set -euf -o pipefail
 LIST_FILES=(
   .gitconfig
   .gitignore_global
+  .gitattributes_global
   .tmux.conf
   .profile
   .bashrc
