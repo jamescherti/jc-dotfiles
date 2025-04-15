@@ -3,18 +3,52 @@
 vault.yml -text -diff
 vault.yaml -text -diff
 
-*.css   diff=css
-*.go    diff=golang
-*.html  diff=html
-*.java  diff=java
-*.lisp  diff=lisp
-*.md    diff=markdown
-*.php   diff=php
-*.py    diff=python
-*.rb    diff=ruby
-*.sh    diff=bash
-*.clj   diff=lisp
-*.el    diff=elisp
+# Git's builtin diff hunk header styles.
+# *.ad[abs] diff=ada
+# *.[Cch] diff=cpp
+*.[HMm] diff=objc
+*.for diff=fortran
+*.java diff=java
+*.pas diff=pascal
+*.perl diff=perl
+*.php diff=php
+*.pl diff=perl
+*.py diff=python
+*.rb diff=ruby
+*.tex diff=tex
+*.cc diff=cpp
+*.[ch]pp diff=cpp
+*.hh diff=cpp
+*.shtml diff=html
+*.xml diff=html
+*.html diff=html
 
-# *.fnl   diff=fennel
-# *.kt    diff=kotlin
+# Hooks for non-default diff hunk headers
+*.ac diff=m4
+*.el diff=elisp
+*.m4 diff=m4
+*.mk diff=make
+*[Mm]akefile diff=make
+Makefile.in diff=make
+*.texi diff=texinfo
+*[-.]sh diff=shell
+
+# Certain files should not be treated as text during diffing or merging
+*.bmp binary
+*.cur binary
+*.gif binary
+*.gpg binary
+*.gz binary
+*.icns binary
+*.ico binary
+*.jpg binary
+*.kbx binary
+*.key binary
+*.pbm binary
+*.pdf binary
+*.pif binary
+*.png binary
+*.sig binary
+*.tiff binary
+*.webp binary
+*.zip binary
