@@ -526,6 +526,9 @@ chpq = cherry-pick --quit
 # Skip the current commit during an in-progress cherry-pick
 chps = cherry-pick --skip
 
+# Show the absolute path to the root of the current Git repository
+root = rev-parse --show-toplevel
+
 [include]
 # Load local configurations.
 # This must remain at the end of the file to ensure that any local
