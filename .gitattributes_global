@@ -3,6 +3,16 @@
 vault.yml -text -diff
 vault.yaml -text -diff
 
+# Ensure bash scripts use LF line endings to support execution on Unix when
+# accessed over a file share from Windows.
+*.sh text eol=lf
+
+# Ensure batch scripts use CRLF line endings to support execution on Windows
+# when accessed over a file share from Linux.
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
+*.{ics,[iI][cC][sS]} text eol=crlf
+
 # Git's builtin diff hunk header styles.
 *.ad[abs] diff=ada
 *.[Cch] diff=cpp
@@ -36,19 +46,64 @@ Makefile.in diff=make
 # Certain files should not be treated as text during diffing or merging
 *.bmp binary
 *.cur binary
+*.exr binary
 *.gif binary
 *.gpg binary
 *.gz binary
+*.hdr binary
 *.icns binary
 *.ico binary
+*.iff binary
+*.jpeg binary
 *.jpg binary
 *.kbx binary
 *.key binary
 *.pbm binary
-*.pdf binary
+*.pict binary
 *.pif binary
 *.png binary
+*.psd binary
 *.sig binary
+*.tga binary
+*.tif binary
 *.tiff binary
 *.webp binary
+*.xcf binary
+
+*.asf  binary
+*.avi  binary
+*.flv  binary
+*.mov  binary
+*.mp4  binary
+*.mpeg binary
+*.mpg  binary
+*.ogv  binary
+*.wmv  binary
+
+*.aif  binary
+*.aiff binary
+*.it   binary
+*.mod  binary
+*.mp3  binary
+*.ogg  binary
+*.s3m  binary
+*.wav  binary
+*.xm   binary
+
+*.pdf binary
+*.otf binary
+*.ttf binary
+
+*.exe binary
+*.apk binary
+*.so binary
+*.o binary
+*.a binary
+
+*.7z binary
+*.br binary
+*.bz2 binary
+*.gz binary
+*.rar binary
+*.tar binary
 *.zip binary
