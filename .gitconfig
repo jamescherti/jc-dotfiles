@@ -122,19 +122,22 @@ tool = vimdiff
 xfuncname = ^\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
 
 [diff "cpp"]
-xfuncname = "!^[ \\t]*[A-Za-z_][A-Za-z_0-9]*:[[:space:]]*($|/[/*])\n^((::[[:space:]]*)?[A-Za-z_][A-Za-z_0-9]*[[:space:]]*\\(.*)$\n^((#define[[:space:]]|DEFUN).*)$"
+	xfuncname = "!^[ \\t]*[A-Za-z_][A-Za-z_0-9]*:[[:space:]]*($|/[/*])\n^((::[[:space:]]*)?[A-Za-z_][A-Za-z_0-9]*[[:space:]]*\\(.*)$\n^((#define[[:space:]]|DEFUN).*)$"
 
-[diff "make"]
-xfuncname = ^([$.[:alnum:]_].*:|[[:alnum:]_]+[[:space:]]*([*:+]?[:?]?|!?)=|define .*)
+[diff "elisp"]
+	xfuncname = ^\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
 
 [diff "m4"]
-xfuncname = ^((m4_)?define|A._DEFUN(_ONCE)?)\\([^),]*
+	xfuncname = ^((m4_)?define|A._DEFUN(_ONCE)?)\\([^),]*
+
+[diff "make"]
+	xfuncname = ^([$.[:alnum:]_].*:|[[:alnum:]_]+[[:space:]]*([*:+]?[:?]?|!?)=|define .*)
 
 [diff "shell"]
-xfuncname = ^([[:space:]]*[[:alpha:]_][[:alnum:]_]*[[:space:]]*\\(\\)|[[:alpha:]_][[:alnum:]_]*=)
+	xfuncname = ^([[:space:]]*[[:alpha:]_][[:alnum:]_]*[[:space:]]*\\(\\)|[[:alpha:]_][[:alnum:]_]*=)
 
 [diff "texinfo"]
-xfuncname = ^@node[[:space:]]+([^,[:space:]][^,]+)
+	xfuncname = ^@node[[:space:]]+([^,[:space:]][^,]+)
 
 # Diff algorithm for improved diff accuracy, especially in detecting moved code
 # blocks.
