@@ -105,9 +105,6 @@ preloadindex = true
 # using 'git difftool'
 prompt = false
 
-[diff]
-tool = vimdiff
-
 # This Git configuration enhances diffs for Emacs Lisp (elisp) files by defining
 # a custom pattern to identify function boundaries. The xfuncname option uses a
 # regular expression to match function definitions, allowing Git to detect
@@ -138,6 +135,9 @@ xfuncname = ^\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
 
 [diff "texinfo"]
 	xfuncname = ^@node[[:space:]]+([^,[:space:]][^,]+)
+
+[diff]
+tool = vimdiff
 
 # Diff algorithm for improved diff accuracy, especially in detecting moved code
 # blocks.
