@@ -149,8 +149,8 @@ xfuncname = ^\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
 # meaningful lines, avoiding superficial matches, which leads to more accurate
 # content representation.
 #
-# algorithm = histogram
-algorithm = patience
+algorithm = histogram
+# algorithm = patience
 
 # Enable highlighting of moved lines in diffs. This helps identify blocks of
 # code that have been moved within a file, making it easier to track code
