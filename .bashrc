@@ -497,7 +497,7 @@ if [[ $_JC_FZF -ne 0 ]]; then
       grep -P -o "[\w\d_\-\.\/]+" \
       |
       # De-duplicate while preserving order
-      sort -r -u \
+      awk '!seen[$0]++' \
       |
       # Use fzf for fuzzy matching and selection
       fzf --no-sort --exact +i
