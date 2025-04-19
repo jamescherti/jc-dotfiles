@@ -493,7 +493,7 @@ if [[ $_JC_FZF -ne 0 ]]; then
       # Reverse the buffer to prioritize earliest matches
       tac \
       |
-      # Extract word-like sequences
+      # Extract strings
       grep -P -o "[\w\d_\-\.\/]+" \
       |
       # De-duplicate while preserving order
