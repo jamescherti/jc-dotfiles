@@ -479,17 +479,16 @@ fi
 
 #-------------------------------------------------------------------------------
 # Tmux/fzf auto complete
-#
 # This defines a custom Bash autocomplete function that captures the current
 # tmux scrollback buffer, extracts unique word-like tokens, and presents them
 # via fzf for interactive fuzzy selection. The selected word is then inserted
 # inline at the current cursor position using a readline binding.
 #-------------------------------------------------------------------------------
 if [[ $_JC_FZF -ne 0 ]]; then
-  __tmux-autocomplete__() {
+  __tmux_fzf_autocomplete__() {
     # Capture the last 100,000 lines from the tmux scrollback buffer, reverse
-    # order, and extract valid word-like tokens (including special characters like
-    # -, _, ., /).
+    # order, and extract valid word-like tokens (including special characters
+    # like -, _, ., /).
     tmux capture-pane -pS -100000 \
       |
       # Reverse the buffer to prioritize earliest matches
@@ -505,15 +504,15 @@ if [[ $_JC_FZF -ne 0 ]]; then
       fzf --no-sort --exact +i
   }
 
-  __tmux_autocomplete-inline__() {
+  __tmux_fzf_autocomplete_inline__() {
     local selected
-    selected="$(__tmux-autocomplete__)"
+    selected="$(__tmux_fzf_autocomplete__)"
     READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
     READLINE_POINT=$((READLINE_POINT + ${#selected}))
   }
 
   # Example binding with bash shell.
-  bind -x '"\C-n": "__tmux_autocomplete-inline__"'
+  bind -x '"\C-n": "__tmux_fzf_autocomplete_inline__"'
 fi
 
 #-------------------------------------------------------------------------------
