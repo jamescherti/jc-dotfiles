@@ -487,8 +487,7 @@ fi
 if [[ $_JC_FZF -ne 0 ]]; then
   __tmux_fzf_autocomplete__() {
     # Capture the last 100,000 lines from the tmux scrollback buffer, reverse
-    # order, and extract valid word-like tokens (including special characters
-    # like -, _, ., /).
+    # order, and extract strings
     tmux capture-pane -pS -100000 \
       |
       # Reverse the buffer to prioritize earliest matches
@@ -511,7 +510,7 @@ if [[ $_JC_FZF -ne 0 ]]; then
     READLINE_POINT=$((READLINE_POINT + ${#selected}))
   }
 
-  # Example binding with bash shell.
+  # Pressing Ctrl-n autocompletes from the Tmux scrollback buffer
   bind -x '"\C-n": "__tmux_fzf_autocomplete_inline__"'
 fi
 
