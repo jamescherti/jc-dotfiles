@@ -496,7 +496,8 @@ if [[ $_JC_FZF -ne 0 ]]; then
       # Extract strings
       grep -P -o "[^\s]+" \
       |
-      # De-duplicate while preserving order
+      # Remove duplicates while preserving order, and retain only strings longer
+      # than 4 characters
       awk 'length($0) > 4 && !seen[$0]++' \
       |
       # Use fzf for fuzzy matching and selection
