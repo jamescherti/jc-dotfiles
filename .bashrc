@@ -494,10 +494,10 @@ if [[ $_JC_FZF -ne 0 ]]; then
       tac \
       |
       # Extract strings
-      grep -P -o "[\w\d_\-\.\/]+" \
+      grep -P -o "[^\s]+" \
       |
       # De-duplicate while preserving order
-      awk '!seen[$0]++' \
+      awk 'length($0) > 4 && !seen[$0]++' \
       |
       # Use fzf for fuzzy matching and selection
       fzf --no-sort --exact +i
