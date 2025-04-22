@@ -490,24 +490,26 @@ if [[ $_JC_FZF -ne 0 ]]; then
     # order, and extract strings
     tmux capture-pane -pS -100000 \
       |
-      # Reverse the buffer to prioritize earliest matches
-      tac \
+      # Split input on spaces and newlines, remove duplicates while preserving
+      # order, and keep only strings longer than 4 characters
+      awk 'BEGIN { RS = "[ \t\n]" } length($0) > 4 && !seen[$0]++' \
       |
-      # Extract strings
-      grep -P -o "[^\s]+" \
-      |
-      # Remove duplicates while preserving order, and retain only strings longer
-      # than 4 characters
-      awk 'length($0) > 4 && !seen[$0]++' \
-      |
-      # Use fzf for fuzzy matching and selection
-      fzf --no-sort --exact +i
+      # Invoke fzf for case-insensitive exact fuzzy matching, with results shown
+      # in reverse order
+      fzf --no-sort --exact +i --tac
   }
 
   __tmux_fzf_autocomplete_inline__() {
     local selected
     selected="$(__tmux_fzf_autocomplete__)"
-    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+
+    local before
+    before="${READLINE_LINE:0:$READLINE_POINT}"
+
+    local after
+    after="${READLINE_LINE:$READLINE_POINT}"
+
+    READLINE_LINE="${before}${selected}${after}"
     READLINE_POINT=$((READLINE_POINT + ${#selected}))
   }
 
