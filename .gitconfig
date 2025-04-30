@@ -530,7 +530,7 @@ chps = cherry-pick --skip
 root = rev-parse --show-toplevel
 
 # Delete the latest commit
-delete = git reset --hard HEAD~1
+delete = reset --hard HEAD~1
 
 [include]
 # Load local configurations.
