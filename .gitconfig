@@ -257,7 +257,7 @@ autoSquash = true
 # other dependent branches are automatically updated as well. This ensures that
 # each branch in the stack remains properly aligned with the others, without
 # requiring you to manually update or rebase each one individually.
-updateRefs = true
+# updateRefs = true
 
 [merge]
 # This setting enforce fast-forward merges, preventing unnecessary merge commits
