@@ -529,6 +529,9 @@ chps = cherry-pick --skip
 # Show the absolute path to the root of the current Git repository
 root = rev-parse --show-toplevel
 
+# Delete the latest commit
+delete = git reset --hard HEAD~1
+
 [include]
 # Load local configurations.
 # This must remain at the end of the file to ensure that any local
