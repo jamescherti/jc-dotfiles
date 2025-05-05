@@ -121,9 +121,6 @@ xfuncname = ^\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
 [diff "cpp"]
 xfuncname = "!^[ \\t]*[A-Za-z_][A-Za-z_0-9]*:[[:space:]]*($|/[/*])\n^((::[[:space:]]*)?[A-Za-z_][A-Za-z_0-9]*[[:space:]]*\\(.*)$\n^((#define[[:space:]]|DEFUN).*)$"
 
-[diff "elisp"]
-xfuncname = ^\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
-
 [diff "m4"]
 xfuncname = ^((m4_)?define|A._DEFUN(_ONCE)?)\\([^),]*
 
