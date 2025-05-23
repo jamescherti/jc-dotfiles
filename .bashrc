@@ -231,6 +231,8 @@ alias ex=exit
 alias exut=exit
 alias x=exit
 
+alias lsblk-uuid='lsblk -o NAME,UUID,MOUNTPOINT,FSTYPE'
+
 #-------------------------------------------------------------------------------
 # Misc
 #-------------------------------------------------------------------------------
