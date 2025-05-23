@@ -64,7 +64,7 @@ run() {
 }
 
 main() {
-  if ! type -P rsync &>/dev/null; then
+  if ! command -v rsync &>/dev/null; then
     echo "Error: 'rsync' not found in \$PATH" >&2
     exit 1
   fi

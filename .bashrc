@@ -200,12 +200,12 @@ alias gpf="git push --force"
 alias gpl="git pull"
 alias gb='git branch'
 
-if type -P colordiff >/dev/null 2>&1; then
+if command -v colordiff >/dev/null 2>&1; then
   alias diff=colordiff
 fi
 
 alias ipython='ipython --no-confirm-exit'
-if type -P ipython >/dev/null 2>&1; then
+if command -v ipython >/dev/null 2>&1; then
   alias py=ipython
   alias ipy=ipython
 else
@@ -241,9 +241,17 @@ if [[ $TERM != '' ]]; then
   stty -ixon
 fi
 
+#-------------------------------------------------------------------------------
+# GPG
+#-------------------------------------------------------------------------------
 # Fix: gpg: signing failed: Inappropriate ioctl for device
+# Ensure gpg-agent uses the correct terminal for pinentry prompts in TTY-based
+# environments
 GPG_TTY="$(tty)"
 export GPG_TTY
+if command -v gpg-connect-agent &>/dev/null; then
+  gpg-connect-agent updatestartuptty /bye >/dev/null
+fi
 
 #-------------------------------------------------------------------------------
 # PS1
@@ -433,7 +441,7 @@ alias ls='_jc_better_ls'
 #-------------------------------------------------------------------------------
 # Configure FASD
 #-------------------------------------------------------------------------------
-if type -P fasd >/dev/null 2>&1; then
+if command -v fasd >/dev/null 2>&1; then
   _JC_FASD_ENABLED=1
 
   _jc_fasd_cd() {
@@ -530,7 +538,7 @@ _jc_confirm_command() {
     return 1
   fi
 
-  if ! type -P "$1" &>/dev/null; then
+  if ! command -v "$1" &>/dev/null; then
     echo "Error: $1 doesn't exist."
     return 1
   fi
@@ -572,19 +580,19 @@ _jc_create_confirm_aliases
 #-------------------------------------------------------------------------------
 case "$OSTYPE" in
 darwin*)
-  if type -P ginstall &>/dev/null; then
+  if command -v ginstall &>/dev/null; then
     alias install=ginstall
   fi
 
-  if type -P grm &>/dev/null; then
+  if command -v grm &>/dev/null; then
     alias rm=grm
   fi
 
-  if type -P gls &>/dev/null; then
+  if command -v gls &>/dev/null; then
     alias ls=gls
   fi
 
-  if type -P gfind &>/dev/null; then
+  if command -v gfind &>/dev/null; then
     alias find=gfind
   fi
   ;;
