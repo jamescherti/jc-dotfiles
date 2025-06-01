@@ -373,7 +373,8 @@ sort = taggerdate
 # When a mistyped Git command closely resembles a valid one, this setting
 # prompts the user with a suggestion before executing the corrected command,
 # preventing accidental execution of unintended commands.
-autoCorrect = prompt
+# autoCorrect = prompt
+autoCorrect = 0
 
 [advice]
 # Disables the hints shown by 'git status', such as suggestions for the next
@@ -528,6 +529,9 @@ root = rev-parse --show-toplevel
 
 # Delete the latest commit
 delete = reset --hard HEAD~1
+
+sh = stash
+shp = stash pop
 
 [include]
 # Load local configurations.
