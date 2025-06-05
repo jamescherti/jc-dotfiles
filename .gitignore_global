@@ -14,7 +14,7 @@ tags
 
 # Emacs
 flymake_*
-flycheck*
+flycheck_*
 *.elc
 
 # Python

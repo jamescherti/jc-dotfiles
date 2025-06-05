@@ -79,11 +79,9 @@ excludesfile = ~/.gitignore_global
 # repositories
 attributesfile = ~/.gitattributes_global
 
-# Enables the untracked cache to speed up performance when checking for
-# untracked files (default: false)
-# This can be beneficial in large repositories where `git status` is run
-# frequently, as it reduces the time spent scanning for untracked files.
-untrackedCache = true
+# Disable untrackedCache because it may produce stale results or interact poorly
+# with some tools.
+untrackedCache = false
 
 # trailing-space: look for spaces at the end of a line
 # space-before-tab: look for spaces before tabs at beginning of line
@@ -117,9 +115,6 @@ prompt = false
 # code reviews and merges in Emacs Lisp code.
 [diff "elisp"]
 xfuncname = ^\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
-
-[diff "cpp"]
-xfuncname = "!^[ \\t]*[A-Za-z_][A-Za-z_0-9]*:[[:space:]]*($|/[/*])\n^((::[[:space:]]*)?[A-Za-z_][A-Za-z_0-9]*[[:space:]]*\\(.*)$\n^((#define[[:space:]]|DEFUN).*)$"
 
 [diff "m4"]
 xfuncname = ^((m4_)?define|A._DEFUN(_ONCE)?)\\([^),]*
@@ -272,10 +267,6 @@ conflictStyle = zdiff3
 # changes are reapplied, restoring the developer's original working state.
 autoStash = true
 
-# Display a brief summary describing what was merged. This includes information
-# such as the merged branch names and the number of commits.
-summary = true
-
 # Display a diffstat after the merge completes, which summarizes the changes
 # made, showing how many lines were added and removed in each file.
 diffstat = true
@@ -289,14 +280,14 @@ log = 60
 # providing more context about the branches being merged.
 branchdesc = true
 
+[log]
+# Display dates as YYYY-MM-DD
+date = iso
+
 [pull]
 # This setting enforce fast-forward merges, preventing unnecessary merge commits
 # and maintaining a linear commit history.
 ff = only
-
-[log]
-# Display dates as YYYY-MM-DD
-date = iso
 
 # This configuration automatically pulls the current branch, which helps prevent
 # "There is no tracking information for the current branch. Please specify which
@@ -398,12 +389,6 @@ lineNumber = true
 # - Avoiding noisy commits that can distract from meaningful line-by-line
 #   changes and authorship.
 ignoreRevsFile = .git-blame-ignore-revs
-
-[color "branch"]
-# Uses brighter colors for improved readability and visual comfort
-remote = green
-local = yellow
-current = yellow reverse
 
 [color "branch"]
 # Uses brighter colors for improved readability and visual comfort
