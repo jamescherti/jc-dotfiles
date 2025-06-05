@@ -14,9 +14,15 @@ tags
 
 # Emacs
 flymake_*
-flycheck_*
 *.elc
 .cask/
+
+# Emacs: Flycheck
+# To safely ignore Flycheck temporary files without overmatching, consider
+# setting `flycheck-temp-prefix` to "flycheck_" in your Emacs config:
+#   (setq flycheck-temp-prefix "flycheck_")
+# This ensures the pattern `flycheck_*` matches only Flycheck temp files.
+flycheck_*
 
 # Python
 __pycache__/
