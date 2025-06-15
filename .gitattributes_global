@@ -5,7 +5,7 @@ vault.yaml -text -diff
 
 # Ensure bash scripts use LF line endings to support execution on Unix when
 # accessed over a file share from Windows.
-*[-.]sh text diff=shell
+# *[-.]sh text diff=shell
 
 # Git's builtin diff hunk header styles.
 *.ad[abs] diff=ada
