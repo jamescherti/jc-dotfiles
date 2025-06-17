@@ -68,6 +68,9 @@ LIST_FILES=(
   .parallel
   .config
   .ccache
+  .dosbox
+  .elodie
+  .ipython
 )
 
 run() {
