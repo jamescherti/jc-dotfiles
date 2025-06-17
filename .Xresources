@@ -1,0 +1,45 @@
+!==========================================================
+! xterm
+!==========================================================
+xterm*faceSize: 12
+xterm*faceSize1: 9
+xterm*faceSize2: 10
+xterm*faceSize3: 11
+xterm*faceSize4: 12
+xterm*faceSize5: 14
+xterm*faceSize6: 16
+xterm*saveLines: 1000
+xterm*ScrollBar: false
+XTerm.vt100.translations: #override \n\
+  Ctrl Shift <Key>M: maximize() \n\
+  Ctrl Shift <Key>R: restore() \n\
+  Ctrl Shift <Key>F: fullscreen() \n\
+  Ctrl Shift <Key>C: copy-selection(CLIPBOARD) \n\
+  Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n\
+  Ctrl <Key> minus: smaller-vt-font() \n\
+  Ctrl <Key> plus: larger-vt-font() \n\
+  Ctrl <Key> 0: set-vt-font(d)
+
+!==========================================================
+! urxvt
+!==========================================================
+! urxvt.font: xft:Inconsolata:size=12,xft:unifont:size=14
+urxvt.scrollBar: false
+urxvt.saveLines: 5000
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: false
+URxvt*scrollTtyKeypress: true
+URxvt.secondaryScreen: 1
+URxvt.secondaryScroll: 0
+URxvt.mouseWheelScrollPage: false
+urxvt*perl-ext: default,matcher
+urxvt*matcher.Button: 1
+urxvt*background: #000000
+urxvt.foreground: #ffffff
+urxvt.cursorColor: #44dd88
+urxvt.borderColor: #000000
+urxvt.internalBorder: 2
+urxvt.externalBorder: 1
+urxvt.lineSpace: 1
+urxvt.letterSpace: 0
+urxvt*inputMethod: uim

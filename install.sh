@@ -53,7 +53,19 @@ LIST_FILES=(
   .colorgcc
   .gtkrc-2.0
   .rgignore
+  .Xresources
+  .alsoftrc
+  .ansible-lint_global.yml
+  .hidden
+  .mypy.ini
+  .pep257
+  .proselintrc
+  .puppet-lint.rc
+  .pylintrc
+  .yamllint_global.yml
+
   # Dirs
+  .parallel
   .config
   .ccache
 )
