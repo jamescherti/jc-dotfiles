@@ -88,7 +88,13 @@ main() {
   local file
   local opts=(-a)
   for file in "${LIST_FILES[@]}"; do
-    echo "$HOME/$file"
+    if [[ -f "$file" ]]; then
+      echo "$HOME/$file"
+    elif [[ -d "$file" ]]; then
+      echo "$HOME/$file/"
+    else
+      echo "Error: $HOME/$file/" >&2
+    fi
     opts+=("$file")
   done
 
@@ -102,8 +108,10 @@ main() {
     fi
   fi
 
-  echo rsync "${opts[@]}" "$HOME/"
+  # echo rsync "${opts[@]}" "$HOME/"
   mkdir -p ~/.git-templates
+  echo
+
   rsync "${opts[@]}" "$HOME/"
   echo "Success."
 }
