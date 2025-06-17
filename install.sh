@@ -86,8 +86,7 @@ main() {
 
   # Synchronize all files (no delete, just rsync)
   local file
-  local opts=(--recursive --links --human-readable
-    --times --atimes)
+  local opts=(-a)
   for file in "${LIST_FILES[@]}"; do
     echo "$HOME/$file"
     opts+=("$file")
