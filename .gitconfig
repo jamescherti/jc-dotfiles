@@ -390,11 +390,11 @@ lineNumber = true
 #   changes and authorship.
 ignoreRevsFile = .git-blame-ignore-revs
 
-[color "branch"]
+# [color "branch"]
 # Uses brighter colors for improved readability and visual comfort
-remote = green
-local = yellow
-current = yellow reverse
+# remote = green
+# local = yellow
+# current = yellow reverse
 
 [color "diff"]
 # Uses brighter colors for improved readability and visual comfort
