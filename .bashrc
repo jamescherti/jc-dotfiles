@@ -249,10 +249,12 @@ fi
 # Fix: gpg: signing failed: Inappropriate ioctl for device
 # Ensure gpg-agent uses the correct terminal for pinentry prompts in TTY-based
 # environments
-GPG_TTY="$(tty)"
-export GPG_TTY
-if command -v gpg-connect-agent &>/dev/null; then
-  gpg-connect-agent updatestartuptty /bye >/dev/null
+if [[ -f ~/.gnupg/gpg-agent.conf ]]; then
+  GPG_TTY="$(tty)"
+  export GPG_TTY
+  if command -v gpg-connect-agent &>/dev/null; then
+    gpg-connect-agent updatestartuptty /bye >/dev/null
+  fi
 fi
 
 #-------------------------------------------------------------------------------
