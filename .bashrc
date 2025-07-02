@@ -60,9 +60,17 @@ HISTSIZE="$HISTFILESIZE"
 HISTTIMEFORMAT="%F %T " # 2018-05-17 19:24:05
 HISTCONTROL=ignoredups:ignorespace
 
-PS1_GIT_BRANCH=1
-PS1_MAILDIR_PATH="$HOME/.maildir"
-PS1_MAILDIR=1
+#-------------------------------------------------------------------------------
+# FEATURES
+#-------------------------------------------------------------------------------
+# Display the current Git branch in the shell prompt (PS1)
+JC_PS1_GIT_BRANCH=0
+
+# Display the count of unread mails in the shell prompt (PS1)
+JC_PS1_MAILDIR=0
+
+# Directory containing the mail (e.g., to "$HOME/Mail")
+JC_PS1_MAILDIR_PATH="$HOME/Mail"
 
 # Use trash-rm as a safer alternative to rm by moving files to the trash instead
 # of deleting them permanently.
@@ -85,7 +93,7 @@ JC_TRASH_CLI=1
 
 # Enable Emacs integration for vterm and EAT, configuring shell-side support for
 # features such as prompt tracking and message passing
-JC_EMACS_INTEGRATION=1
+JC_EMACS_INTEGRATION=0
 
 #-------------------------------------------------------------------------------
 # INIT
@@ -288,7 +296,7 @@ fi
 # PS1
 #-------------------------------------------------------------------------------
 ps1-git-branch() {
-  if [[ $PS1_GIT_BRANCH -ne 0 ]]; then
+  if [[ $JC_PS1_GIT_BRANCH -ne 0 ]]; then
     local branch_name
     branch_name=$("git" symbolic-ref --short -q HEAD 2>/dev/null) \
       || return 0
@@ -298,11 +306,11 @@ ps1-git-branch() {
 }
 
 ps1-count-mails-maildir() {
-  if [[ $PS1_MAILDIR -ne 0 ]] && [[ $PS1_MAILDIR_PATH != "" ]]; then
+  if [[ $JC_PS1_MAILDIR -ne 0 ]] && [[ $JC_PS1_MAILDIR_PATH != "" ]]; then
     local num_mails=0
     local subdir
     for subdir in cur new; do
-      local maildir="$PS1_MAILDIR_PATH/$subdir"
+      local maildir="$JC_PS1_MAILDIR_PATH/$subdir"
       if [[ -d "$maildir" ]]; then
         local cur_num_mails=0
         cur_num_mails=$(find "$maildir" -maxdepth 1 -type f | wc -l)

@@ -48,7 +48,7 @@ Here's how to install James Cherti's dotfiles:
   ```
   o file1.jpg file2.png file3.jpeg
   ```
-- Customizations in `.bashrc` to add to `~/.profile`:
+- Customizations in `.bashrc` to add to `~/.profile.local`:
   ```sh
   # Use trash-rm as a safer alternative to rm by moving files to the trash instead
   # of deleting them permanently.
@@ -67,11 +67,20 @@ Here's how to install James Cherti's dotfiles:
   # This setup is only activated for non-root users when 'trash-put' is available
   # and 'JC_TRASH_CLI' is set to a non-zero value.
   #
-  JC_TRASH_CLI=1  # Default: 1
+  JC_TRASH_CLI=1
 
   # Enable Emacs integration for vterm and EAT, configuring shell-side support for
   # features such as prompt tracking and message passing
-  JC_EMACS_INTEGRATION=1  # Default 1
+  JC_EMACS_INTEGRATION=1  # Default: 0
+
+  # Display the current Git branch in the shell prompt (PS1)
+  JC_PS1_GIT_BRANCH=1  # Default: 0
+
+  # Display the count of unread mails in the shell prompt (PS1)
+  JC_PS1_MAILDIR=1  # Default: 0
+
+  # Directory containing the mail (e.g., to "$HOME/Mail")
+  JC_PS1_MAILDIR_PATH="$HOME/Mail"
   ```
 
 ## License

@@ -100,10 +100,15 @@ export STARDICT_DATA_DIR=~/.sdcv_dict
 export SDCV_HISTSIZE=0
 export SDCV_PAGER=less
 
+export XZ_OPT=-9e
+
 export TMPDIR="/tmp/tmp_$USER"
 if ! test -d "/tmp/tmp_$USER"; then
   install -d --mode=700 "/tmp/tmp_$USER"
 fi
+
+# Mac: Silence the message "Default Interactive shell is now zsh"
+export BASH_SILENCE_DEPRECATION_WARNING=1
 
 #-------------------------------------------------------------------------------
 # Emacs integration
@@ -129,6 +134,22 @@ export _FASD_DATA="$_FASD_DATA_DIR/fasd"
 if ! test -d "$_FASD_DATA_DIR"; then
   mkdir -p "$_FASD_DATA_DIR"
 fi
+
+#-------------------------------------------------------------------------------
+# FZF
+#-------------------------------------------------------------------------------
+if type -P rg &>/dev/null; then
+  export FZF_DEFAULT_COMMAND='rg --files --hidden --follow 2>/dev/null'
+elif type -P fd &>/dev/null; then
+  export FZF_DEFAULT_COMMAND='fd -H --type f'
+elif type -P fdfind &>/dev/null; then
+  export FZF_DEFAULT_COMMAND='fd -H --type f'
+else
+  export FZF_DEFAULT_COMMAND='find -L -not \( -type d -a -name .git -prune \) \
+    -not \( -type d \)'
+fi
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up"
 
 #-------------------------------------------------------------------------------
 # Local profile
