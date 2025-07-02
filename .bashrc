@@ -83,6 +83,10 @@ PS1_MAILDIR=1
 #
 JC_TRASH_CLI=1
 
+# Enable Emacs integration for vterm and EAT, configuring shell-side support for
+# features such as prompt tracking and message passing
+JC_EMACS_INTEGRATION=1
+
 #-------------------------------------------------------------------------------
 # INIT
 #-------------------------------------------------------------------------------
@@ -519,6 +523,31 @@ elif [[ -f /usr/share/fzf/key-bindings.bash ]]; then
 fi
 
 #-------------------------------------------------------------------------------
+# bash-completion
+#-------------------------------------------------------------------------------
+case "$OSTYPE" in
+# Mac OS X
+darwin*)
+  if [ -f /opt/local/etc/bash_completion ]; then
+    # shellcheck disable=SC1091
+    source /opt/local/etc/bash_completion
+  fi
+
+  if [ -f /opt/local/share/git/contrib/completion/git-completion.bash ]; then
+    # shellcheck disable=SC1091
+    source /opt/local/share/git/contrib/completion/git-completion.bash
+  fi
+  ;;
+# Linux
+linux-gnu*)
+  if [ -r /usr/share/bash-completion/bash_completion ]; then
+    # shellcheck disable=SC1091
+    source /usr/share/bash-completion/bash_completion
+  fi
+  ;;
+esac
+
+#-------------------------------------------------------------------------------
 # Tmux/fzf auto complete
 # This defines a custom Bash autocomplete function that captures the current
 # tmux scrollback buffer, extracts unique word-like tokens, and presents them
@@ -765,31 +794,33 @@ fi
 # Emacs integration
 #-------------------------------------------------------------------------------
 # vterm
-if [ "$INSIDE_EMACS" = 'vterm' ]; then
-  # Some of the most useful features in vterm (e.g., directory-tracking and
-  # prompt-tracking or message passing) require shell-side configurations. The
-  # main goal of these additional functions is to enable the shell to send
-  # information to vterm via properly escaped sequences. A function that helps
-  # in this task, vterm_printf, is defined below. This function is widely used
-  # throughout this readme.
-  vterm_printf() {
-    if [ -n "$TMUX" ] \
-      && { [ "${TERM%%-*}" = "tmux" ] \
-        || [ "${TERM%%-*}" = "screen" ]; }; then
-      # Tell tmux to pass the escape sequences through
-      printf "\ePtmux;\e\e]%s\007\e\\" "$1"
-    elif [ "${TERM%%-*}" = "screen" ]; then
-      # GNU screen (screen, screen-256color, screen-256color-bce)
-      printf "\eP\e]%s\007\e\\" "$1"
-    else
-      printf "\e]%s\e\\" "$1"
-    fi
-  }
-fi
+if [[ $JC_EMACS_INTEGRATION -ne 0 ]]; then
+  if [ "$INSIDE_EMACS" = 'vterm' ]; then
+    # Some of the most useful features in vterm (e.g., directory-tracking and
+    # prompt-tracking or message passing) require shell-side configurations. The
+    # main goal of these additional functions is to enable the shell to send
+    # information to vterm via properly escaped sequences. A function that helps
+    # in this task, vterm_printf, is defined below. This function is widely used
+    # throughout this readme.
+    vterm_printf() {
+      if [ -n "$TMUX" ] \
+        && { [ "${TERM%%-*}" = "tmux" ] \
+          || [ "${TERM%%-*}" = "screen" ]; }; then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+      elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+      else
+        printf "\e]%s\e\\" "$1"
+      fi
+    }
+  fi
 
-# Eat (Emulate A Terminal)
-# shellcheck disable=SC1091
-[ -n "$EAT_SHELL_INTEGRATION_DIR" ] && source "$EAT_SHELL_INTEGRATION_DIR/bash"
+  # Eat (Emulate A Terminal)
+  # shellcheck disable=SC1091
+  [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && source "$EAT_SHELL_INTEGRATION_DIR/bash"
+fi
 
 #-------------------------------------------------------------------------------
 # Local bashrc

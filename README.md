@@ -68,6 +68,10 @@ Here's how to install James Cherti's dotfiles:
   # and 'JC_TRASH_CLI' is set to a non-zero value.
   #
   JC_TRASH_CLI=1  # Default: 1
+
+  # Enable Emacs integration for vterm and EAT, configuring shell-side support for
+  # features such as prompt tracking and message passing
+  JC_EMACS_INTEGRATION=1  # Default 1
   ```
 
 ## License
