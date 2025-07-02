@@ -49,6 +49,28 @@ Here's how to install James Cherti's dotfiles:
   o file1.jpg file2.png file3.jpeg
   ```
 
+Customizations in `.bashrc` to add to `~/.profile`:
+```sh
+# Use trash-rm as a safer alternative to rm by moving files to the trash instead
+# of deleting them permanently.
+#
+# JC_TRASH_CLI=1 replaces the standard 'rm' command with a wrapper function
+# that:
+# - Provides a detailed summary of all specified files and directories,
+#   including total size and file count.
+# - Prompts the user for confirmation before proceeding with the deletion.
+# - Moves files to the trash using 'trash-put' instead of permanently deleting
+#   them with 'rm'.
+# - Reports the current size of the trash in megabytes after each deletion.
+# - Optionally wraps 'trash-empty' with an interactive prompt before purging the
+#   trash.
+#
+# This setup is only activated for non-root users when 'trash-put' is available
+# and 'JC_TRASH_CLI' is set to a non-zero value.
+#
+JC_TRASH_CLI=1  # Default: 1
+```
+
 ## License
 
 Distributed under terms of the MIT license.

@@ -64,6 +64,25 @@ PS1_GIT_BRANCH=1
 PS1_MAILDIR_PATH="$HOME/.maildir"
 PS1_MAILDIR=1
 
+# Use trash-rm as a safer alternative to rm by moving files to the trash instead
+# of deleting them permanently.
+#
+# JC_TRASH_CLI=1 replaces the standard 'rm' command with a wrapper function
+# that:
+# - Provides a detailed summary of all specified files and directories,
+#   including total size and file count.
+# - Prompts the user for confirmation before proceeding with the deletion.
+# - Moves files to the trash using 'trash-put' instead of permanently deleting
+#   them with 'rm'.
+# - Reports the current size of the trash in megabytes after each deletion.
+# - Optionally wraps 'trash-empty' with an interactive prompt before purging the
+#   trash.
+#
+# This setup is only activated for non-root users when 'trash-put' is available
+# and 'JC_TRASH_CLI' is set to a non-zero value.
+#
+JC_TRASH_CLI=1
+
 #-------------------------------------------------------------------------------
 # INIT
 #-------------------------------------------------------------------------------
@@ -200,6 +219,10 @@ alias gpf="git push --force"
 alias gpl="git pull"
 alias gb='git branch'
 
+alias mountall='sudo udiskie-mount -a --recursive'
+alias 7z_level9="7z -r -mx 9"
+alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0'
+
 if command -v colordiff >/dev/null 2>&1; then
   alias diff=colordiff
 fi
@@ -302,6 +325,12 @@ PS1="${PS1}$Yellow$PathShort$Color_Off $ "
 #-------------------------------------------------------------------------------
 # Functions
 #-------------------------------------------------------------------------------
+
+kill-gpg-agent() {
+  pkill gpgconf
+  pkill gpg-agent
+  gpgconf --kill gpg-agent
+}
 
 _jc_better_cd() {
   # Function: _jc_better_cd
@@ -601,6 +630,136 @@ darwin*)
   fi
   ;;
 esac
+
+#-------------------------------------------------------------------------------
+# Trash
+#-------------------------------------------------------------------------------
+if [[ $UID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
+  && type -P trash-put >/dev/null 2>&1; then
+  # Confirm
+  _jc_confirm_proceed() {
+    read -r -p "Proceed? [y,n] " ANSWER
+    if [[ "$ANSWER" != "y" ]]; then
+      return 1
+    fi
+    return 0
+  }
+
+  # Display the trash size
+  _jc_trash_size() {
+    local list_trash_size
+    local total_trash_size=0
+    readarray -t list_trash_size < <(trash-list --size | awk '{ print $1 }')
+    if [[ ${#list_trash_size[@]} -gt 0 ]]; then
+      for trash_size in "${list_trash_size[@]}"; do
+        total_trash_size=$((total_trash_size + trash_size))
+      done
+    fi
+
+    echo "$total_trash_size"
+    return 0
+  }
+
+  _jc_summary_dirs() {
+    local total_files_size=0
+    local size
+    local total_files=0
+    local count
+
+    local arg
+    for arg in "$@"; do
+      if [[ ${arg:0:1} = '-' ]]; then
+        continue
+      fi
+
+      if ! [[ -L "$arg" ]] && ! [[ -e "$arg" ]]; then
+        echo "$arg: no such file or directory" >&2
+        return 1
+      fi
+
+      size=$(du -s "$arg" | awk '{print $1}')
+      total_files_size=$((total_files_size + size))
+
+      count=$(find "$arg" -type f -o -type l | wc -l)
+      total_files=$((total_files + count))
+
+      find "$arg" -type f -o -type l
+    done
+
+    echo
+    total_files_size=$((total_files_size / 1024))
+    echo "Size: $total_files_size Mb"
+    echo "Number of files: $total_files"
+
+    return 0
+  }
+
+  _jc_trash_put_wrapper() {
+    if [[ $# -eq 0 ]]; then
+      echo "Error: missing operand" >&2
+      return 1
+    fi
+
+    # local item
+    local num_files=0
+    for item in "$@"; do
+      if [[ $item =~ ^- ]]; then
+        continue
+      fi
+
+      num_files=$((num_files + 1))
+    done
+
+    if [[ $num_files -eq 0 ]]; then
+      echo "Not enough arguments." >&2
+      return 1
+    fi
+
+    _jc_summary_dirs "$@" || return 1
+    _jc_confirm_proceed || return 1
+
+    # Move it to trash
+    local errno=0
+    trash-put "$@" || errno="$?"
+
+    # Check the size of the trash
+    local total_trash_size
+    total_trash_size=$(_jc_trash_size)
+
+    if [[ $errno -eq 0 ]]; then
+      total_trash_size=$((total_trash_size / 1024 / 1024))
+      if [[ $total_trash_size -gt 0 ]]; then
+        echo
+        echo "(Trash size: $total_trash_size Mb)"
+      fi
+    fi
+
+    return "$errno"
+  }
+
+  _trash_empty_wrapper() {
+    trash-list --size | sort
+    read -r -p "Empty the trash? (y,n) " ANSWER
+    if [[ "$ANSWER" != "y" ]]; then
+      return 1
+    fi
+
+    if command trash-empty --help | grep -- '-f' &>/dev/null; then
+      trash-empty -f
+    else
+      trash-empty
+    fi
+  }
+
+  alias trash-empty=_trash_empty_wrapper
+  alias trash-rm=_jc_trash_put_wrapper
+  alias trash-put=_jc_trash_put_wrapper
+  alias rm=_jc_trash_put_wrapper
+  alias real-rm='$(type -P rm) -I'
+else
+  alias rm='rm -I'
+  alias real-rm=rm
+fi
 
 #-------------------------------------------------------------------------------
 # Emacs integration
