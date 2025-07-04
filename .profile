@@ -39,28 +39,23 @@ else
   _JC_PROFILE_LOADED=1
 fi
 
-# shellcheck disable=SC1091
-[ -f /etc/profile ] && . /etc/profile
-
 #----------------------------------------------------------------------------
 # The PATH environment variable
 #----------------------------------------------------------------------------
-_jc_append_path() {
-  test -L "$1" && return
-  ! test -d "$1" && return
-  case ":$PATH:" in
-  *:"$1":*) ;;
-  *)
-    PATH="${PATH:+$PATH:}$1"
-    ;;
-  esac
+append_path () {
+    case ":$PATH:" in
+        *:"$1":*)
+            ;;
+        *)
+            PATH="${PATH:+$PATH:}$1"
+    esac
 }
 
 _jc_add_local_path() {
   if [ -z "$1" ]; then
     return 1
   fi
-  _jc_append_path "$1/bin"
+  append_path "$1/bin"
   export MANPATH="$1/share/man:$MANPATH"
   export INFOPATH="$1/share/info:$INFOPATH"
   export LD_LIBRARY_PATH="$1/lib:$LD_LIBRARY_PATH"
@@ -68,12 +63,16 @@ _jc_add_local_path() {
   export CMAKE_PREFIX_PATH="$1:$CMAKE_PREFIX_PATH"
 }
 
-_jc_append_path '/sbin'
-_jc_append_path '/bin'
-_jc_append_path '/usr/sbin'
-_jc_append_path '/usr/bin'
-_jc_append_path '/usr/local/sbin'
-_jc_append_path '/usr/local/bin'
+append_path '/usr/local/sbin'
+append_path '/usr/local/bin'
+append_path '/usr/bin'
+
+append_path '/sbin'
+append_path '/bin'
+append_path '/usr/sbin'
+append_path '/usr/bin'
+append_path '/usr/local/sbin'
+append_path '/usr/local/bin'
 
 _jc_add_local_path "$HOME/.local"
 case "$OSTYPE" in
@@ -83,6 +82,31 @@ darwin*)
   PATH="/opt/local/libexec/gnubin:$PATH"
   ;;
 esac
+
+# Force PATH to be environment
+export PATH
+
+# Load profiles from /etc/profile.d
+if test -d /etc/profile.d/; then
+  for profile in /etc/profile.d/*.sh; do
+    test -r "$profile" && . "$profile"
+  done
+  unset profile
+fi
+
+# Unset GLOBSORT, before anything else is sourced This variable will be part of
+# bash => 5.3 The rationale is that the user should always be able to expect
+# that the snippets be processed in a deterministic order.
+unset -v GLOBSORT
+
+# Unload _jc_add_local_path
+# unset -f append_path
+
+# Termcap is outdated, old, and crusty
+unset TERMCAP
+
+# Man is much better than us at figuring this out
+unset MANPATH
 
 #----------------------------------------------------------------------------
 # Other environment variables
