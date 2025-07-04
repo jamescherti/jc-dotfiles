@@ -136,24 +136,10 @@ fi
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
 #-------------------------------------------------------------------------------
-# Emacs integration
-#-------------------------------------------------------------------------------
-if [ "$INSIDE_EMACS" = 'vterm' ]; then
-  # vterm-clear-scrollback does exactly what the name suggests: it clears the
-  # current buffer from the data that it is not currently visible.
-  # vterm-clear-scrollback is bound to C-c C-l. This function is typically used
-  # with the clear function provided by the shell to clear both screen and
-  # scrollback. In order to achieve this behavior, you need to add a new shell
-  # alias.
-  clear() {
-    vterm_printf "51;Evterm-clear-scrollback"
-    tput clear
-  }
-fi
-
-#-------------------------------------------------------------------------------
 # FASD
 #-------------------------------------------------------------------------------
+# Override fasd’s default behavior of cluttering the $HOME directory with its
+# data files by explicitly defining a dedicated subdirectory for its data.
 _FASD_DATA_DIR="$HOME/.fasd_data"
 export _FASD_DATA="$_FASD_DATA_DIR/fasd"
 if ! test -d "$_FASD_DATA_DIR"; then

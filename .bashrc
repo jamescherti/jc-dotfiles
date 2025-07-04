@@ -801,8 +801,8 @@ fi
 #-------------------------------------------------------------------------------
 # Emacs integration
 #-------------------------------------------------------------------------------
-# vterm
 if [[ $JC_EMACS_INTEGRATION -ne 0 ]]; then
+  # vterm
   if [ "$INSIDE_EMACS" = 'vterm' ]; then
     # Some of the most useful features in vterm (e.g., directory-tracking and
     # prompt-tracking or message passing) require shell-side configurations. The
@@ -823,11 +823,18 @@ if [[ $JC_EMACS_INTEGRATION -ne 0 ]]; then
         printf "\e]%s\e\\" "$1"
       fi
     }
+
+    clear() {
+      vterm_printf "51;Evterm-clear-scrollback"
+      tput clear
+    }
   fi
 
   # Eat (Emulate A Terminal)
   # shellcheck disable=SC1091
-  [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && source "$EAT_SHELL_INTEGRATION_DIR/bash"
+  if [ -n "$EAT_SHELL_INTEGRATION_DIR" ]; then
+    source "$EAT_SHELL_INTEGRATION_DIR/bash"
+  fi
 fi
 
 #-------------------------------------------------------------------------------
