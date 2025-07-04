@@ -98,9 +98,9 @@ JC_EMACS_INTEGRATION=0
 #-------------------------------------------------------------------------------
 # INIT
 #-------------------------------------------------------------------------------
-if [[ -f ~/.profile ]]; then
+if [[ -f ~/.bashrc-before.local ]]; then
   # shellcheck disable=SC1090
-  source ~/.profile
+  source ~/.bashrc-before.local
 fi
 
 case $- in
@@ -833,5 +833,7 @@ fi
 #-------------------------------------------------------------------------------
 # Local bashrc
 #-------------------------------------------------------------------------------
-# shellcheck disable=SC1090
-[ -f ~/.bashrc.local ] && source ~/.bashrc.local
+if [[ -f ~/.bashrc-after.local ]]; then
+  # shellcheck disable=SC1090
+  source ~/.bashrc-after.local
+fi
