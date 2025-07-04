@@ -89,6 +89,7 @@ export PATH
 # Load profiles from /etc/profile.d
 if test -d /etc/profile.d/; then
   for profile in /etc/profile.d/*.sh; do
+    # shellcheck disable=SC1090
     test -r "$profile" && . "$profile"
   done
   unset profile
@@ -127,8 +128,8 @@ export SDCV_PAGER=less
 export XZ_OPT=-9e
 
 export TMPDIR="/tmp/tmp_$USER"
-if ! test -d "/tmp/tmp_$USER"; then
-  install -d --mode=700 "/tmp/tmp_$USER"
+if ! test -d "$TMPDIR"; then
+  install -d --mode=700 "$TMPDIR"
 fi
 
 # Mac: Silence the message "Default Interactive shell is now zsh"
