@@ -414,7 +414,7 @@ added = green
 # This alias simplifies the process of pulling changes by automatically stashing
 # local changes, rebasing the current branch on top of the remote, and then
 # reapplying the stashed changes, ensuring a clean and linear commit history.
-up = pull --rebase --autostash
+update = pull --rebase --autostash
 
 # Show details of the most recent commit or a specified object
 s = show
