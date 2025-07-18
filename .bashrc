@@ -786,10 +786,10 @@ if [[ $UID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
       return 1
     fi
 
-    if command trash-empty --help | grep -- '-f' &>/dev/null; then
-      trash-empty -f
+    if command trash-empty --help | command grep -- '-f' &>/dev/null; then
+      command trash-empty -f
     else
-      trash-empty
+      command trash-empty
     fi
   }
 
