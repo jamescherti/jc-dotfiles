@@ -762,7 +762,7 @@ if [[ $UID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
 
     # Move it to trash
     local errno=0
-    trash-put "$@" || errno="$?"
+    command trash-put "$@" || errno="$?"
 
     # Check the size of the trash
     local total_trash_size
