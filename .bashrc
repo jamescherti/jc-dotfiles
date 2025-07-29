@@ -165,10 +165,6 @@ shopt -s dirspell >/dev/null 2>&1
 # preserved in the command line.
 shopt -s progcomp
 
-# The `ignoreeof` option prevents the shell from exiting when you press
-# `CTRL-D` (end-of-file).
-set -o ignoreeof
-
 # The `histverify` option allows users to review and edit commands before
 # execution when recalling them from history with history expansion (`!`
 # commands like `!!`, `!number`, or `!string`).
