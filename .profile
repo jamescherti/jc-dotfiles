@@ -39,6 +39,9 @@ else
   _JC_PROFILE_LOADED=1
 fi
 
+# shellcheck disable=SC1090
+[ -f ~/.profile-before.local ] && source ~/.profile-before.local
+
 #----------------------------------------------------------------------------
 # The PATH environment variable
 #----------------------------------------------------------------------------
@@ -167,3 +170,6 @@ export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up"
 #-------------------------------------------------------------------------------
 # shellcheck disable=SC1090
 [ -f ~/.profile.local ] && source ~/.profile.local
+
+# shellcheck disable=SC1090
+[ -f ~/.profile-after.local ] && source ~/.profile-after.local

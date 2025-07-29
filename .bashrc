@@ -103,11 +103,6 @@ if [[ -f ~/.bashrc-before.local ]]; then
   source ~/.bashrc-before.local
 fi
 
-if [[ -f ~/.profile ]]; then
-  # shellcheck disable=SC1090
-  source ~/.profile
-fi
-
 case $- in
 *i*)
   # Interactive
