@@ -49,7 +49,7 @@ fi
 # GLOBAL VARIABLES
 #-------------------------------------------------------------------------------
 TMOUT=650
-TMOUT_ROOT=60
+[ "$UID" -eq 0 ] && TMOUT="60"
 
 # Maximum number of lines to retain in the .bash_history file.
 HISTFILESIZE="6000"
@@ -112,10 +112,6 @@ case $- in
   return
   ;;
 esac
-
-if [ "$USER" = "root" ]; then
-  TMOUT="$TMOUT_ROOT"
-fi
 
 #-------------------------------------------------------------------------------
 # OPTIONS
