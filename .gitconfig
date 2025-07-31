@@ -83,10 +83,14 @@ attributesfile = ~/.gitattributes_global
 # with some tools.
 untrackedCache = false
 
+# Disable automatic line ending conversion in Git
+autocrlf = false
+
 # trailing-space: look for spaces at the end of a line
 # space-before-tab: look for spaces before tabs at beginning of line
 # removed: indent-with-non-tab
-whitespace = space-before-tab,trailing-space
+# whitespace = space-before-tab,trailing-space
+whitespace =
 
 # Prevent showing files whose names contain non-ASCII symbols as unversioned.
 precomposeunicode = false
