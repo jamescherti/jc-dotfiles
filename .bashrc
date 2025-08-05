@@ -462,15 +462,35 @@ alias o="_jc_xdg_open"
 #-------------------------------------------------------------------------------
 _jc_better_ls() {
   OPTS=()
-  if [[ -n "$TERM" && "$TERM" != "dumb" ]]; then
-    OPTS+=(--color=auto)
-  fi
 
-  command ls "${OPTS[@]}" -X --human-readable \
-    --hide=__pycache__ \
-    --hide=*.elc \
-    --hide=*.egg-info \
-    "$@"
+  local gnu_ls=1
+
+  local ls_cmd
+  ls_cmd="ls"
+
+  case "$OSTYPE" in
+  darwin*)
+    if command -v gls &>/dev/null; then
+      ls_cmd="gls"
+    else
+      gnu_ls=0
+    fi
+    ;;
+  esac
+
+  if [[ $gnu_ls -ne 0 ]]; then
+    if [[ -n "$TERM" && "$TERM" != "dumb" ]]; then
+      OPTS+=(--color=auto)
+    fi
+
+    command "$ls_cmd" "${OPTS[@]}" -X --human-readable \
+      --hide=__pycache__ \
+      --hide=*.elc \
+      --hide=*.egg-info \
+      "$@"
+  else
+    command "$ls_cmd" "${OPTS[@]}" "$@"
+  fi
 }
 
 alias ls='_jc_better_ls'
@@ -648,10 +668,6 @@ darwin*)
 
   if command -v grm &>/dev/null; then
     alias rm=grm
-  fi
-
-  if command -v gls &>/dev/null; then
-    alias ls=gls
   fi
 
   if command -v gfind &>/dev/null; then
