@@ -228,7 +228,7 @@ ui = auto
 [rebase]
 # Create a stash of any local changes before starting a rebase. After the rebase
 # is complete, the stash is reapplied.
-autoStash = true
+# autoStash = true
 
 # If commits are removed or missing during a rebase, issue an error rather than
 # silently ignoring them.
@@ -242,7 +242,7 @@ missingCommitsCheck = error
 #   both messages".
 # - A commit with "fixup!" means "combine this with another commit and discard
 #   this message".
-autoSquash = true
+# autoSquash = true
 
 # when you have multiple stacked branches, it can become complex to handle the
 # rebasing process manually for each branch, especially if you have many commits
@@ -269,7 +269,7 @@ conflictStyle = zdiff3
 # working directory and index. This ensures the merge proceeds without
 # interference from local modifications. Once the merge completes, the stashed
 # changes are reapplied, restoring the developer's original working state.
-autoStash = true
+# autoStash = true
 
 # Display a diffstat after the merge completes, which summarizes the changes
 # made, showing how many lines were added and removed in each file.
