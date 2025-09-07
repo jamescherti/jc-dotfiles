@@ -688,16 +688,7 @@ if [[ $UID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
 
   # Display the trash size
   _jc_trash_size() {
-    local list_trash_size
-    local total_trash_size=0
-    readarray -t list_trash_size < <(trash-list --size | awk '{ print $1 }')
-    if [[ ${#list_trash_size[@]} -gt 0 ]]; then
-      for trash_size in "${list_trash_size[@]}"; do
-        total_trash_size=$((total_trash_size + trash_size))
-      done
-    fi
-
-    echo "$total_trash_size"
+    awk '{sum += $1} END {print sum}' <(trash-list --size)
     return 0
   }
 
