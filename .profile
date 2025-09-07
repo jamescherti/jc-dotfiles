@@ -8,6 +8,8 @@
 # A '.profile' file configuration file that is executed when a user logs into
 # their account or starts a new shell session.
 #
+# This file is POSIX compliant. It can work with POSIX sh.
+#
 # License:
 # --------
 # Distributed under terms of the MIT license.
@@ -33,19 +35,19 @@
 # SOFTWARE.
 #
 
-# shellcheck disable=SC1090
-[ -f ~/.profile-before.local ] && source ~/.profile-before.local
+# shellcheck disable=SC1091
+[ -f "$HOME/.profile-before.local" ] && . "$HOME/.profile-before.local"
 
 #----------------------------------------------------------------------------
 # The PATH environment variable
 #----------------------------------------------------------------------------
-append_path () {
-    case ":$PATH:" in
-        *:"$1":*)
-            ;;
-        *)
-            PATH="${PATH:+$PATH:}$1"
-    esac
+append_path() {
+  case ":$PATH:" in
+  *:"$1":*) ;;
+  *)
+    PATH="${PATH:+$PATH:}$1"
+    ;;
+  esac
 }
 
 _jc_add_local_path() {
@@ -67,16 +69,19 @@ append_path '/usr/bin'
 append_path '/sbin'
 append_path '/bin'
 append_path '/usr/sbin'
-append_path '/usr/bin'
-append_path '/usr/local/sbin'
-append_path '/usr/local/bin'
 
 _jc_add_local_path "$HOME/.local"
+
+if [ -z "$BASH_VERSION" ]; then
+  if [ "$(uname)" = "Darwin" ]; then
+    OSTYPE=darwin
+  fi
+fi
+
 case "$OSTYPE" in
 darwin*)
   # Mac Port
-  PATH="/opt/local/bin:$PATH"
-  PATH="/opt/local/libexec/gnubin:$PATH"
+  PATH="/opt/local/libexec/gnubin:/opt/local/bin:$PATH"
   ;;
 esac
 
@@ -126,7 +131,8 @@ export XZ_OPT=-9e
 
 export TMPDIR="/tmp/tmp_$USER"
 if ! test -d "$TMPDIR"; then
-  install -d --mode=700 "$TMPDIR"
+  mkdir -p "$TMPDIR"
+  chmod 700 "$TMPDIR"
 fi
 
 # Mac: Silence the message "Default Interactive shell is now zsh"
@@ -146,24 +152,21 @@ fi
 #-------------------------------------------------------------------------------
 # FZF
 #-------------------------------------------------------------------------------
-if type -P rg &>/dev/null; then
+if command -v rg >/dev/null 2>&1; then
   export FZF_DEFAULT_COMMAND='rg --files --hidden --follow 2>/dev/null'
-elif type -P fd &>/dev/null; then
+elif command -v fd >/dev/null 2>&1; then
   export FZF_DEFAULT_COMMAND='fd -H --type f'
-elif type -P fdfind &>/dev/null; then
+elif command -v fdfind >/dev/null 2>&1; then
   export FZF_DEFAULT_COMMAND='fd -H --type f'
 else
-  export FZF_DEFAULT_COMMAND='find -L -not \( -type d -a -name .git -prune \) \
-    -not \( -type d \)'
+  export FZF_DEFAULT_COMMAND='find . -type f'
 fi
+
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up"
 
 #-------------------------------------------------------------------------------
 # Local profile
 #-------------------------------------------------------------------------------
-# shellcheck disable=SC1090
-# [ -f ~/.profile.local ] && source ~/.profile.local
-
-# shellcheck disable=SC1090
-[ -f ~/.profile-after.local ] && source ~/.profile-after.local
+# shellcheck disable=SC1091
+[ -f "$HOME/.profile-after.local" ] && . "$HOME/.profile-after.local"
