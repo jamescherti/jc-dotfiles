@@ -39,10 +39,6 @@
 
 if [[ -z "$BASH" ]]; then
   return
-elif [[ $_JC_BASHRC_LOADED != '' ]]; then
-  return
-else
-  _JC_BASHRC_LOADED=1
 fi
 
 #-------------------------------------------------------------------------------

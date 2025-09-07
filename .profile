@@ -33,12 +33,6 @@
 # SOFTWARE.
 #
 
-if test "$_JC_PROFILE_LOADED" != ''; then
-  return
-else
-  _JC_PROFILE_LOADED=1
-fi
-
 # shellcheck disable=SC1090
 [ -f ~/.profile-before.local ] && source ~/.profile-before.local
 
@@ -169,7 +163,7 @@ export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up"
 # Local profile
 #-------------------------------------------------------------------------------
 # shellcheck disable=SC1090
-[ -f ~/.profile.local ] && source ~/.profile.local
+# [ -f ~/.profile.local ] && source ~/.profile.local
 
 # shellcheck disable=SC1090
 [ -f ~/.profile-after.local ] && source ~/.profile-after.local
