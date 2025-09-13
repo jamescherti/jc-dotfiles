@@ -211,7 +211,6 @@ alias l=ls
 alias bc="bc --quiet"
 alias cls="clear"
 alias md="mkdir"
-alias e='ranger'
 alias df='df -h -x overlay -x aufs -x tmpfs -x devtmpfs --print-type'
 alias ncdu="ncdu --color off"
 alias tree="tree -C --gitignore"
