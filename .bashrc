@@ -121,53 +121,53 @@ esac
 # you type ssh, ping, or similar commands. This feature may slow down completion
 # if the network has many hosts or if hostname completion is not needed, so it
 # can be disabled with shopt -u hostcomplete.
-shopt -u hostcomplete
+shopt -u hostcomplete &>/dev/null
 
 # Enable case-insensitive pattern matching for conditional commands, pattern
 # substitution, and programmable completion. When nocasematch is set, pattern
 # matching in case statements, [[ ... ]] conditions, and pattern substitutions
 # becomes case-insensitive.
-shopt -s nocasematch
+shopt -s nocasematch &>/dev/null
 
 # Autocorrect minor typos in 'cd' commands. The cdspell option allows Bash to
 # automatically correct minor spelling errors when using cd. For instance, if
 # you type cd /usr/loacl, Bash will interpret it as cd /usr/local.
-shopt -s cdspell
+shopt -s cdspell &>/dev/null
 
 # Correct minor typos in directory names during pathname expansion. The dirspell
 # option works similarly to cdspell but applies to directory name expansion in
 # general. When enabled, it corrects minor spelling errors in directory names
 # during tab-completion, helping to quickly locate intended directories even if
 # typed inaccurately.
-shopt -s dirspell >/dev/null 2>&1
+shopt -s dirspell &>/dev/null
 
 # Setting progcomp enables pathname expansion without expanding variable
 # expressions ($VAR) within the completion, so the original variable names are
 # preserved in the command line.
-shopt -s progcomp
+shopt -s progcomp &>/dev/null
 
 # The histverify option allows users to review and edit commands before
 # execution when recalling them from history with history expansion (! commands
 # like !!, !number, or !string).
-shopt -s histverify
+shopt -s histverify &>/dev/null
 
 # The nocaseglob option allows case-insensitive matching for filename expansion
 # (also known as "pathname expansion"), which is the feature that expands
 # patterns with wildcards (*, ?, [abc], etc.) to match filenames and directory
 # names.
-shopt -s nocaseglob
+shopt -s nocaseglob &>/dev/null
 
 # Enable "**" pattern to match files, directories, and all nested subdirectories
 # in pathname expansion.
-shopt -s globstar >/dev/null 2>&1
+shopt -s globstar &>/dev/null
 
 # Allows cd VAR to work if $VAR is set to a directory.
 # Convenient if you often use environment variables for directories.
-shopt -s cdable_vars
+shopt -s cdable_vars &>/dev/null
 
 # Lets you type a directory name without cd to change into it. Can speed up
 # navigation in the shell.
-shopt -s autocd
+shopt -s autocd &>/dev/null
 
 # Bash remembers where commands are: When you type a command like ls or mycmd,
 # Bash remembers its location (full path) in a cache called the hash table. This
