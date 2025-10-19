@@ -237,7 +237,8 @@ alias gb='git branch'
 
 alias mountall='sudo udiskie-mount -a --recursive'
 alias 7z_level9="7z -r -mx 9"
-alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0'
+alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf
+  -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0'
 
 if command -v colordiff >/dev/null 2>&1; then
   alias diff=colordiff
@@ -341,6 +342,15 @@ PS1="${PS1}$Yellow$PathShort$Color_Off $ "
 #-------------------------------------------------------------------------------
 # Functions
 #-------------------------------------------------------------------------------
+
+bg-run-and-own() {
+  "$@" &
+}
+
+bg-run() {
+  bg-run-and-own "$@" &>/dev/null
+  disown
+}
 
 kill-gpg-agent() {
   pkill gpgconf

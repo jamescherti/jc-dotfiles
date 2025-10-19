@@ -523,6 +523,23 @@ delete = reset --hard HEAD~1
 sh = stash
 shp = stash pop
 
+# This alias runs Git to display a concise summary of repository commit
+# contributions, showing the number of commits per author, sorted in descending
+# order.
+#
+# This counts only non-merge commits, giving a clearer view of individual
+# authors' direct contributions.
+contrib = !git --no-pager shortlog --summary --numbered --no-merges --email
+
+# This displays a concise summary of commit contributions in the repository. It
+# lists each author along with the number of commits they have made, sorted in
+# descending order by commit count. The --no-pager option ensures the output is
+# printed directly to the terminal without using a pager such as less.
+#
+# This counts all commits, including merges, which can inflate commit counts for
+# authors who frequently merge branches.
+contrib-merge = !git --no-pager shortlog --summary --numbered --email
+
 [include]
 # Load local configurations.
 # This must remain at the end of the file to ensure that any local
