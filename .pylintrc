@@ -123,6 +123,7 @@ disable=
     bad-builtin,
     simplifiable-if-statement,
     use-set-for-membership,
+    consider-alternative-union-syntax,
     unnecessary-lambda-assignment
     # CUSTOM JC --> END
 

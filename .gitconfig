@@ -73,11 +73,11 @@ quotepath = off
 
 # Specifies a global ignore file for patterns to exclude across all
 # repositories.
-excludesfile = ~/.gitignore_global
+excludesfile = ~/.gitignore.local
 
 # Use a global gitattributes file for applying attribute rules to all
 # repositories
-attributesfile = ~/.gitattributes_global
+attributesfile = ~/.gitattributes.local
 
 # Disable untrackedCache because it may produce stale results or interact poorly
 # with some tools.
