@@ -59,6 +59,14 @@ HISTCONTROL=ignoredups:ignorespace
 #-------------------------------------------------------------------------------
 # FEATURES
 #-------------------------------------------------------------------------------
+# Automatically restore the last working directory from the previous
+# interactive Bash session.
+JC_RESTORE_LAST_DIR=0
+
+# Path of the file that records the last working directory, enabling automatic
+# restoration when $JC_RESTORE_LAST_DIR is set to a non-zero value.
+JC_RESTORE_LAST_DIR_FILE="$HOME/.bash_lastdir"
+
 # Display the current Git branch in the shell prompt (PS1)
 JC_PS1_GIT_BRANCH=0
 
@@ -868,7 +876,7 @@ fi
 # Otherwise, create a new session. If already running inside a Screen session,
 # print a diagnostic message and fail.
 #-------------------------------------------------------------------------------
-screen_auto_attach() {
+_jc_screen_auto_attach() {
   if [ -z "${STY}" ]; then
     if screen -ls >/dev/null 2>&1; then
       screen -rx
@@ -883,7 +891,33 @@ screen_auto_attach() {
   fi
 }
 
-alias sc='screen_auto_attach'
+alias sc='_jc_screen_auto_attach'
+
+#-------------------------------------------------------------------------------
+# Restore the last recorded working directory at shell startup and persist
+# the current directory on each prompt for reuse by future interactive sessions.
+#-------------------------------------------------------------------------------
+if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
+  _jc_restore_last_directory() {
+    if ! [[ -f "$JC_RESTORE_LAST_DIR_FILE" ]]; then
+      return
+    fi
+
+    local lastdir
+    lastdir=$(head -n 1 "$JC_RESTORE_LAST_DIR_FILE")
+    if [[ -d "$lastdir" ]]; then
+      cd "$lastdir" >/dev/null 2>&1 || return 1
+    fi
+  }
+
+  _jc_persist_last_directory() {
+    pwd "$JC_RESTORE_LAST_DIR_FILE"
+  }
+
+  _jc_restore_last_directory
+
+  PROMPT_COMMAND="_jc_persist_last_directory; $PROMPT_COMMAND"
+fi
 
 #-------------------------------------------------------------------------------
 # Local bashrc

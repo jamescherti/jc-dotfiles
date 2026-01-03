@@ -81,6 +81,10 @@ Here's how to install James Cherti's dotfiles:
 
   # Directory containing the mail (e.g., to "$HOME/Mail")
   JC_PS1_MAILDIR_PATH="$HOME/Mail"
+
+  # Automatically restore the last working directory from the previous
+  # interactive Bash session.
+  JC_RESTORE_LAST_DIR=1  # Default: 0
   ```
 
 ## License
