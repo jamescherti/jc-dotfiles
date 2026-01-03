@@ -235,7 +235,6 @@ alias gpf="git push --force"
 alias gpl="git pull"
 alias gb='git branch'
 
-alias mountall='sudo udiskie-mount -a --recursive'
 alias 7z_level9="7z -r -mx 9"
 alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf
   -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0'
@@ -857,6 +856,34 @@ if [[ $JC_EMACS_INTEGRATION -ne 0 ]]; then
     source "$EAT_SHELL_INTEGRATION_DIR/bash"
   fi
 fi
+
+#-------------------------------------------------------------------------------
+# screen
+#
+# This function starts or attaches to a GNU Screen session when not already
+# inside one.
+#
+# If at least one detached or attached session exists, attach to it.
+#
+# Otherwise, create a new session. If already running inside a Screen session,
+# print a diagnostic message and fail.
+#-------------------------------------------------------------------------------
+screen_auto_attach() {
+  if [ -z "${STY}" ]; then
+    if screen -ls >/dev/null 2>&1; then
+      screen -rx
+      return $?
+    else
+      screen
+      return $?
+    fi
+  else
+    printf '%s\n' "Already running inside a GNU Screen session."
+    return 1
+  fi
+}
+
+alias sc='screen_auto_attach'
 
 #-------------------------------------------------------------------------------
 # Local bashrc
