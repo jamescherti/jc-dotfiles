@@ -11,7 +11,7 @@
 # --------
 # Distributed under terms of the MIT license.
 #
-# Copyright (C) 2004-2025 James Cherti
+# Copyright (C) 2004-2026 James Cherti
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the “Software”), to deal
@@ -154,48 +154,48 @@ $endif
 
 # Vi mode settings
 $if mode=vi
-    set show-mode-in-prompt on
+set show-mode-in-prompt on
 
-    # Set vi insert and command mode strings for the terminal
-    # set vi-cmd-mode-string "\1\e[6 q\2"
-    # set vi-ins-mode-string "\1\e[2 q\2"
+# Set vi insert and command mode strings for the terminal
+# set vi-cmd-mode-string "\1\e[6 q\2"
+# set vi-ins-mode-string "\1\e[2 q\2"
 
-    $if term=linux
-        set vi-ins-mode-string \1\e[?0c\2
-        set vi-cmd-mode-string \1\e[?8c\2
-    $else
-        set vi-ins-mode-string \1\e[6 q\2
-        set vi-cmd-mode-string \1\e[2 q\2
-    $endif
+$if term=linux
+set vi-ins-mode-string \1\e[?0c\2
+set vi-cmd-mode-string \1\e[?8c\2
+$else
+set vi-ins-mode-string \1\e[6 q\2
+set vi-cmd-mode-string \1\e[2 q\2
+$endif
 
-    set keymap vi-command
+set keymap vi-command
 
-    # Key bindings for vi-command mode
-    #
-    # "\e[A": history-search-backward
-    # "\e[B": history-search-forward
-    j: history-search-forward
-    k: history-search-backward
-    Control-l: clear-screen
-    "p": "i !!*\r"
+# Key bindings for vi-command mode
+#
+# "\e[A": history-search-backward
+# "\e[B": history-search-forward
+j: history-search-forward
+k: history-search-backward
+Control-l: clear-screen
+"p": "i !!*\r"
 
-    # Disable the 'V' key (visual mode) in Vi mode
-    v: ""
+# Disable the 'V' key (visual mode) in Vi mode
+v: ""
 
-    # Key bindings for vi-insert mode
-    #
-    set keymap vi-insert
-    # "\e[A": history-search-backward
-    # "\e[B": history-search-forward
-    Control-l: clear-screen
+# Key bindings for vi-insert mode
+#
+set keymap vi-insert
+# "\e[A": history-search-backward
+# "\e[B": history-search-forward
+Control-l: clear-screen
 
-    # Pressing Tab will list all completions and select the first one. Pressing
-    # it again will cycle through available completions. Shift+Tab cycles
-    # completions backward
-    TAB: menu-complete
-    "\e[Z": menu-complete-backward
+# Pressing Tab will list all completions and select the first one. Pressing
+# it again will cycle through available completions. Shift+Tab cycles
+# completions backward
+TAB: menu-complete
+"\e[Z": menu-complete-backward
 
-    # Option-up/Option-down should also apply to insert mode
-    "\e\e[A": history-search-backward
-    "\e\e[B": history-search-forward
+# Option-up/Option-down should also apply to insert mode
+"\e\e[A": history-search-backward
+"\e\e[B": history-search-forward
 $endif
