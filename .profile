@@ -50,11 +50,20 @@ append_path() {
   esac
 }
 
+prepend_path() {
+  case ":$PATH:" in
+  *:"$1":*) ;;
+  *)
+    PATH="$1${PATH:+:$PATH}"
+    ;;
+  esac
+}
+
 _jc_add_local_path() {
   if [ -z "$1" ]; then
     return 1
   fi
-  append_path "$1/bin"
+  prepend_path "$1/bin"
   export MANPATH="$1/share/man:$MANPATH"
   export INFOPATH="$1/share/info:$INFOPATH"
   export LD_LIBRARY_PATH="$1/lib:$LD_LIBRARY_PATH"

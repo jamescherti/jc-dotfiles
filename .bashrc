@@ -229,7 +229,10 @@ alias br="git --no-pager branch"
 alias g="git"
 alias glp="git log -p"
 alias grep="grep --color=auto --exclude-dir=.git"
+
 alias rg="rg --hidden --no-messages --no-heading"
+alias fd="fd --threads "
+
 alias fd="fd --hidden"
 alias fdf="fd --type file"
 alias fdd="fd --type d"
