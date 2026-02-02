@@ -97,15 +97,6 @@ esac
 # Force PATH to be environment
 export PATH
 
-# Load profiles from /etc/profile.d
-if test -d /etc/profile.d/; then
-  for profile in /etc/profile.d/*.sh; do
-    # shellcheck disable=SC1090
-    test -r "$profile" && . "$profile"
-  done
-  unset profile
-fi
-
 # Unset GLOBSORT, before anything else is sourced This variable will be part of
 # bash => 5.3 The rationale is that the user should always be able to expect
 # that the snippets be processed in a deterministic order.
