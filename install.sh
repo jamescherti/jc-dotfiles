@@ -114,6 +114,38 @@ main() {
   echo
 
   rsync "${opts[@]}" "$HOME/"
+
+  if type -P devemacs &>/dev/null; then
+    # Set the core Git editor to devemacs
+    git config --global core.editor "devemacs -nw"
+  fi
+
+  if type -P difft &>/dev/null; then
+    # Set the external diff tool (This handles 'git diff')
+    git config --global diff.external difft
+
+    # git d  -> Structural diff
+    git config --global alias.d "-c diff.external=difft diff"
+
+    # git ds -> Show recent commit with difftastic
+    git config --global alias.ds "-c diff.external=difft show --ext-diff"
+
+    # git dl -> Log with structural patches
+    git config --global alias.dl "-c diff.external=difft log -p --ext-diff"
+
+    # Don't prompt when running difftool
+    git config --global difftool.prompt false
+
+    # Use a pager for difftool output
+    git config --global pager.difftool true
+
+    # Define the tool and the command
+    git config --global diff.tool "difftastic"
+
+    # shellcheck disable=SC2016
+    git config --global difftool.difftastic.cmd 'difft "$LOCAL" "$REMOTE"'
+  fi
+
   echo "Success."
 }
 
