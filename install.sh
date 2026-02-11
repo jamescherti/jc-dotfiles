@@ -144,6 +144,9 @@ main() {
 
     # shellcheck disable=SC2016
     git config --global difftool.difftastic.cmd 'difft "$LOCAL" "$REMOTE"'
+
+    # Normal git diff
+    git config --global alias.ndiff 'diff --no-ext-diff'
   fi
 
   echo "Success."
