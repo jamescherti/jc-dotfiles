@@ -918,7 +918,11 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
   }
 
   _jc_persist_last_directory() {
-    pwd >"$JC_RESTORE_LAST_DIR_FILE"
+    local lastdir=""
+    lastdir=$(pwd)
+
+    lastdir=$(readlink -m "$lastdir")
+    echo "$lastdir" >"$JC_RESTORE_LAST_DIR_FILE"
   }
 
   _jc_restore_last_directory
