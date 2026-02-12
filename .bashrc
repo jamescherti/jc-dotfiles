@@ -896,9 +896,10 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
     fi
 
     local lastdir
-    lastdir=$(head -n 1 "$JC_RESTORE_LAST_DIR_FILE")
-    if [[ -d "$lastdir" ]]; then
-      cd "$lastdir" >/dev/null 2>&1 || return 1
+    if lastdir=$(head -n 1 "$JC_RESTORE_LAST_DIR_FILE") \
+      && lastdir=$(readlink -m "$lastdir") \
+      && [[ -d "$lastdir" ]]; then
+      cd "$lastdir" >/dev/null || return 1
     fi
   }
 
