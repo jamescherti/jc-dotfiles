@@ -386,7 +386,7 @@ _jc_better_cd() {
   fi
 
   # Canonicalize path without requirement on path existence
-  path=$(readlink -m "$path")
+  path=$(realpath -s -m "$path")
 
   # Checks
   local errno=0
@@ -897,7 +897,7 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
 
     local lastdir
     if lastdir=$(head -n 1 "$JC_RESTORE_LAST_DIR_FILE") \
-      && lastdir=$(realpath -s "$lastdir") \
+      && lastdir=$(realpath -s -m "$lastdir") \
       && [[ -d "$lastdir" ]]; then
       cd "$lastdir" >/dev/null || return 1
     fi
@@ -907,7 +907,7 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
     local lastdir=""
     lastdir=$(pwd)
 
-    if lastdir=$(realpath -s "$lastdir"); then
+    if lastdir=$(realpath -s -m "$lastdir"); then
       echo "$lastdir" >"$JC_RESTORE_LAST_DIR_FILE"
     else
       echo ".bashrc _jc_persist_last_directory Error:" \
