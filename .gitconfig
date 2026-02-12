@@ -264,7 +264,9 @@ ff = only
 # Uses the 'zdiff3' conflict style for merges, which includes additional context
 # by showing the base, local, and remote versions of conflicting changes in a
 # more readable format, making it easier to resolve complex conflicts.
-conflictStyle = zdiff3
+# Default merge (only two blocks: Yours vs Theirs)
+conflictStyle = merge
+# conflictStyle = zdiff3
 
 # Before executing a merge, automatically stash all uncommitted changes in the
 # working directory and index. This ensures the merge proceeds without
