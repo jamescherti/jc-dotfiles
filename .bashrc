@@ -897,7 +897,7 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
 
     local lastdir
     if lastdir=$(head -n 1 "$JC_RESTORE_LAST_DIR_FILE") \
-      && lastdir=$(readlink -m "$lastdir") \
+      && lastdir=$(realpath -s "$lastdir") \
       && [[ -d "$lastdir" ]]; then
       cd "$lastdir" >/dev/null || return 1
     fi
@@ -907,7 +907,7 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
     local lastdir=""
     lastdir=$(pwd)
 
-    if lastdir=$(readlink -m "$lastdir"); then
+    if lastdir=$(realpath -s "$lastdir"); then
       echo "$lastdir" >"$JC_RESTORE_LAST_DIR_FILE"
     else
       echo ".bashrc _jc_persist_last_directory Error:" \
