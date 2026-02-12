@@ -921,8 +921,12 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
     local lastdir=""
     lastdir=$(pwd)
 
-    lastdir=$(readlink -m "$lastdir")
-    echo "$lastdir" >"$JC_RESTORE_LAST_DIR_FILE"
+    if lastdir=$(readlink -m "$lastdir"); then
+      echo "$lastdir" >"$JC_RESTORE_LAST_DIR_FILE"
+    else
+      echo ".bashrc _jc_persist_last_directory Error:" \
+        "invalid or non-existent directory: '$lastdir'" >&2
+    fi
   }
 
   _jc_restore_last_directory
