@@ -54,7 +54,6 @@ HISTFILESIZE="6000"
 HISTSIZE="$HISTFILESIZE"
 
 HISTTIMEFORMAT="%F %T " # 2018-05-17 19:24:05
-HISTCONTROL=ignoredups:ignorespace
 
 #-------------------------------------------------------------------------------
 # FEATURES
@@ -195,23 +194,6 @@ shopt -s autocd &>/dev/null
 # like ~ for the home directory, are replaced with the fully expanded path
 # (e.g., /home/user) upon completion.
 # shopt -s direxpand >/dev/null 2>&1
-
-#-------------------------------------------------------------------------------
-# History
-#-------------------------------------------------------------------------------
-
-# Combine multi-line commands into a single history entry
-shopt -s cmdhist
-
-# Preserve literal newlines in multi-line commands
-shopt -s lithist
-
-# Enable appending to the history file, rather than overwriting it.
-shopt -s histappend
-
-# Append new commands to history, clear in-memory history, reload from file, and
-# preserve existing PROMPT_COMMAND
-PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #-------------------------------------------------------------------------------
 # Aliases
@@ -402,6 +384,9 @@ _jc_better_cd() {
       path="${path} ${item}"
     done
   fi
+
+  # Canonicalize path without requirement on path existence
+  path=$(readlink -m "$path")
 
   # Checks
   local errno=0
@@ -933,6 +918,56 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
 
   PROMPT_COMMAND="_jc_persist_last_directory; $PROMPT_COMMAND"
 fi
+
+#-------------------------------------------------------------------------------
+# History
+#-------------------------------------------------------------------------------
+
+# 'ignoreboth' combines 'ignorespace' (commands starting with space) and
+# 'ignoredups' (consecutive duplicates).
+# 'erasedups' removes older instances of the same command to keep the list unique.
+# NOTE: If you want to record absolutely every keystroke (including mistakes
+# and duplicates), set this to an empty string.
+HISTCONTROL=ignoredups
+
+# Append to the history file, do not overwrite it.
+shopt -s histappend
+
+# Save multi-line commands as a single history entry.
+shopt -s cmdhist
+
+# Save multi-line commands with embedded newlines instead of semicolons.
+shopt -s lithist
+
+# ignoredups: Do not save consecutive duplicates.
+# ignorespace: Do not save lines starting with a space.
+HISTCONTROL=ignoreboth
+HISTCONTROL=ignoredups
+
+# History Option 1:
+# -----------------
+# Why Option 1 (history -a; history -n) is superior:
+# - Performance: It appends only new commands to disk (-a) and reads only new
+#   lines from disk (-n) into your current memory. It is fast and efficient.
+# - Stability: It preserves your current session's command list. You can see what
+#   you typed in this terminal versus what came from others.
+#
+# Enable appending to the history file, rather than overwriting it. Append new
+# commands to history, clear in-memory history, reload from file, and preserve
+# existing PROMPT_COMMAND:
+#
+# shopt -s histappend
+PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+
+# History Option 2:
+# - Destructive: history -c clears your current session's memory entirely.
+# - Slow: history -r re-reads the entire history file from disk every time you
+#   press Enter. As your history grows to 100,000+ lines, this causes noticeable
+#   lag.
+# - Context Loss: Because it clears memory, you lose the distinction between
+#   "what I just typed in this specific window" and "what I typed in another
+#   window 5 seconds ago."
+# PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #-------------------------------------------------------------------------------
 # Local bashrc
