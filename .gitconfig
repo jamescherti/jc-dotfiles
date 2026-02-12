@@ -261,10 +261,19 @@ missingCommitsCheck = error
 # and maintaining a linear commit history.
 ff = only
 
-# Uses the 'zdiff3' conflict style for merges, which includes additional context
-# by showing the base, local, and remote versions of conflicting changes in a
-# more readable format, making it easier to resolve complex conflicts.
-# Default merge (only two blocks: Yours vs Theirs)
+# zdiff3: Before zdiff3 was introduced (in Git 2.35), this was the standard
+# recommendation for anyone doing serious merge resolution. It shows you the
+# Common Ancestor (the ||||||| block), which is critical for understanding why a
+# conflict occurred. It can be "noisy." If the conflict block contains lines
+# that are actually identical at the top or bottom of the block (but were
+# technically touched by the merge logic), diff3 keeps them inside the conflict
+# markers.
+#
+# merge: This is the default style Git. It is the cleanest and simplest to look
+# at (only 2 blocks: Yours vs. Theirs). It hides the "Common Ancestor." You have
+# no way of knowing what the code looked like before the divergence. This makes
+# it hard to resolve complex conflicts correctly (e.g., distinguishing between a
+# deletion and an addition).
 conflictStyle = merge
 # conflictStyle = zdiff3
 
