@@ -364,12 +364,33 @@ _jc_better_cd() {
   # 3. 'cd path/to/dir with spaces' changes the directory to "path/to/dir with
   #    spaces".
   # 4. 'cd file:///home/user' changes the directory to "/home/user".
+  # 5. Supports 'cd' flags (e.g. -P, -L) and '--' to handle paths starting with -.
 
-  # Previous directory ('cd -')
-  if [[ $# -eq 1 ]] && [[ $1 = '-' ]]; then
-    popd >/dev/null || return 1
-    return 0
-  fi
+  # Parse cd options (e.g. -P, -L)
+  local -a opts
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    -)
+      popd >/dev/null || return 1
+      return 0
+      ;;
+    --help)
+      builtin cd --help || return "$?"
+      return
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -[!-]*)
+      opts+=("$1")
+      shift
+      ;;
+    *)
+      break
+      ;;
+    esac
+  done
 
   # Join paths
   local path
@@ -395,13 +416,15 @@ _jc_better_cd() {
   fi
 
   if ! [[ -d "$path" ]]; then
-    echo "$(basename "$0"):" "cd: $path: No such file or directory" >&2
+    echo "Error: cd: $path: No such file or directory" >&2
     return 1
   fi
 
   # Change the directory
   pushd . >/dev/null || return 1
-  builtin cd "$path" >/dev/null 2>&1 || errno=1
+
+  # Use -- to ensure path is not interpreted as a flag
+  builtin cd "${opts[@]}" -- "$path" || errno=1
   if [[ $errno -ne 0 ]]; then
     echo "Error." >&2
     popd >/dev/null || return 1
