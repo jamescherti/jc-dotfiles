@@ -99,6 +99,10 @@ JC_TRASH_CLI=1
 # features such as prompt tracking and message passing
 JC_EMACS_INTEGRATION=0
 
+# Enable support for the fasd command-line utility, which provides fast access
+# to frequently used files and directories.
+JC_FASD=0
+
 #-------------------------------------------------------------------------------
 # INIT
 #-------------------------------------------------------------------------------
@@ -530,7 +534,7 @@ alias ls='_jc_better_ls'
 #-------------------------------------------------------------------------------
 # Configure FASD
 #-------------------------------------------------------------------------------
-if command -v fasd >/dev/null 2>&1; then
+if [[ $JC_FASD -ne 0 ]] && command -v fasd >/dev/null 2>&1; then
   _JC_FASD_ENABLED=1
 
   _jc_fasd_cd() {

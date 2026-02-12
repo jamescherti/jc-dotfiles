@@ -85,6 +85,10 @@ Here's how to install James Cherti's dotfiles:
   # Automatically restore the last working directory from the previous
   # interactive Bash session.
   JC_RESTORE_LAST_DIR=1  # Default: 0
+
+  # Enable support for the fasd command-line utility, which provides fast access
+  # to frequently used files and directories.
+  JC_FASD=0  # Default: 0
   ```
 
 ## License
