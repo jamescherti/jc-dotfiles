@@ -480,9 +480,6 @@ t = tag
 # Show changes in the working directory relative to the last commit
 d = diff HEAD
 
-# Normal diff (When difftastic is installed, install.sh changes this alias)
-ndiff = diff
-
 # Rebase
 rb = rebase
 

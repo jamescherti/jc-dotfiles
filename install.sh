@@ -147,6 +147,9 @@ main() {
 
     # Normal git diff
     git config --global alias.ndiff 'diff --no-ext-diff'
+  else
+    # Normal git diff
+    git config --global alias.ndiff 'diff'
   fi
 
   echo "Success."
