@@ -44,7 +44,7 @@ threads = 0
 
 # Allocate up to 5GB as the amount of memory consumed by each thread in
 # git-pack-objects for pack window memory when no limit is specified on the
-# command line. This enhances Git’s efficiency for large repositories.
+# command line. This enhances Git's efficiency for large repositories.
 windowMemory = 5g
 
 # The packSizeLimit configuration in Git determines the maximum size of a
@@ -79,11 +79,19 @@ excludesfile = ~/.gitignore.local
 # repositories
 attributesfile = ~/.gitattributes.global
 
+# Enables the built-in file system monitor. Git will ask the OS for a list of
+# changed files instead of scanning the entire directory tree.
+fsmonitor = true
+
 # Disable untrackedCache because it may produce stale results or interact poorly
 # with some tools.
 untrackedCache = false
 
-# Disable automatic line ending conversion in Git
+# Disable automatic line ending conversion in Git: Write the files to your
+# working directory exactly byte-for-byte as they are stored in the repository
+# index.
+#
+# Changing this to true can cause issues with tools such as git-crypt
 autocrlf = false
 
 # trailing-space: look for spaces at the end of a line
@@ -344,6 +352,11 @@ fsckObjects = true
 # introduced into the local repository.
 fsckObjects = true
 
+[receive]
+# Verifies the integrity of all objects during data transfer operations like
+# clone, helping detect corruption or tampering early.
+fsckObjects = true
+
 # Automatically remove remote-tracking branches that no longer exist on the
 # remote repository during a 'git fetch'. This helps keep the local repository
 # clean by removing outdated references to remote branches that have been
@@ -355,11 +368,6 @@ prune = true
 # your local tags list is up-to-date and prevents the accumulation of tags that
 # # no longer exist on the remote.
 pruneTags = true
-
-[receive]
-# Verifies the integrity of all objects during data transfer operations like
-# clone, helping detect corruption or tampering early.
-fsckObjects = true
 
 [branch]
 # Configures `git branch` to sort branches by most recently used rather than
