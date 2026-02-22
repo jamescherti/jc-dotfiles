@@ -37,6 +37,14 @@
 # 'git tag -a'.
 forceSignAnnotated = true
 
+[checkout]
+	# Allows Git to check out files in parallel, utilizing multiple CPU cores.
+	workers = 0
+
+[grep]
+	# Enables parallel processing when searching through the repository tree.
+	threads = 0
+
 [pack]
 # Configures Git to auto-detect the number of CPUs and set the number of threads
 # accordingly.
@@ -83,9 +91,10 @@ attributesfile = ~/.gitattributes.global
 # changed files instead of scanning the entire directory tree.
 fsmonitor = true
 
-# Disable untrackedCache because it may produce stale results or interact poorly
-# with some tools.
-untrackedCache = false
+# While disabling this avoids stale results with certain external tools,
+# enabling it is strictly required for maximum 'git status' performance. It
+# caches the metadata of untracked files.
+untrackedCache = true
 
 # Disable automatic line ending conversion in Git: Write the files to your
 # working directory exactly byte-for-byte as they are stored in the repository
@@ -557,6 +566,11 @@ contrib = !git --no-pager shortlog --summary --numbered --no-merges --email
 # This counts all commits, including merges, which can inflate commit counts for
 # authors who frequently merge branches.
 contrib-merge = !git --no-pager shortlog --summary --numbered --email
+
+[index]
+# Uses a more compact index format. This reduces the size of the index file on
+# disk and speeds up read/write operations.
+version = 4
 
 [include]
 # Load local configurations.
