@@ -38,12 +38,12 @@
 forceSignAnnotated = true
 
 [checkout]
-	# Allows Git to check out files in parallel, utilizing multiple CPU cores.
-	workers = 0
+# Allows Git to check out files in parallel, utilizing multiple CPU cores.
+workers = 0
 
 [grep]
-	# Enables parallel processing when searching through the repository tree.
-	threads = 0
+# Enables parallel processing when searching through the repository tree.
+threads = 0
 
 [pack]
 # Configures Git to auto-detect the number of CPUs and set the number of threads
