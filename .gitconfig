@@ -77,7 +77,7 @@ excludesfile = ~/.gitignore.local
 
 # Use a global gitattributes file for applying attribute rules to all
 # repositories
-attributesfile = ~/.gitattributes.local
+attributesfile = ~/.gitattributes.global
 
 # Disable untrackedCache because it may produce stale results or interact poorly
 # with some tools.
@@ -118,8 +118,7 @@ prompt = false
 # than showing the entire function as modified, which improves the clarity of
 # code reviews and merges in Emacs Lisp code.
 [diff "elisp"]
-# xfuncname = ^\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
-xfuncname = "^(((;;;+ )|\\(use-package|\\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)).*)$"
+xfuncname = ^\\([^[:space:]]*(cl-)?def[^[:space:]]+[[:space:]]+([^()[:space:]]+)
 
 [diff "m4"]
 xfuncname = ^((m4_)?define|A._DEFUN(_ONCE)?)\\([^),]*

@@ -40,6 +40,7 @@ JC_DOTFILES_UNATTENDED="$JC_DOTFILES_UNATTENDED"
 set -euf -o pipefail
 
 LIST_FILES=(
+  .gitattributes.global
   .gitconfig
   .tmux.conf
   .profile

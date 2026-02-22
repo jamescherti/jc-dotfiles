@@ -1,0 +1,94 @@
+# Git's builtin diff hunk header styles.
+# *[-.]sh diff=shell
+# *.ad[abs] diff=ada
+# *.[Cch] diff=cpp
+# *.cc diff=cpp
+# *.[ch]pp diff=cpp
+# *.hh diff=cpp
+# *.for diff=fortran
+# *.html diff=html
+# *.shtml diff=html
+# *.xml diff=html
+# *.java diff=java
+# *.[HMm] diff=objc
+# *.pas diff=pascal
+# *.perl diff=perl
+# *.pl diff=perl
+# *.php diff=php
+# *.py diff=python
+# *.rb diff=ruby
+# *.tex diff=tex
+
+# Hooks for non-default diff hunk headers
+# *.ac diff=m4
+*.el diff=elisp
+# *.m4 diff=m4
+# *.mk diff=make
+# *[Mm]akefile diff=make
+# Makefile.in diff=make
+# *.texi diff=texinfo
+
+# Certain files should not be treated as text during diffing or merging
+# *.bmp binary
+# *.cur binary
+# *.exr binary
+# *.gif binary
+# *.gpg binary
+# *.gz binary
+# *.hdr binary
+# *.icns binary
+# *.ico binary
+# *.iff binary
+# *.jpeg binary
+# *.jpg binary
+# *.kbx binary
+# *.key binary
+# *.pbm binary
+# *.pict binary
+# *.pif binary
+# *.png binary
+# *.psd binary
+# *.sig binary
+# *.tga binary
+# *.tif binary
+# *.tiff binary
+# *.webp binary
+# *.xcf binary
+#
+# *.asf  binary
+# *.avi  binary
+# *.flv  binary
+# *.mov  binary
+# *.mp4  binary
+# *.mpeg binary
+# *.mpg  binary
+# *.ogv  binary
+# *.wmv  binary
+#
+# *.aif  binary
+# *.aiff binary
+# *.it   binary
+# *.mod  binary
+# *.mp3  binary
+# *.ogg  binary
+# *.s3m  binary
+# *.wav  binary
+# *.xm   binary
+#
+# *.pdf binary
+# *.otf binary
+# *.ttf binary
+#
+# *.exe binary
+# *.apk binary
+# *.so binary
+# *.o binary
+# *.a binary
+#
+# *.7z binary
+# *.br binary
+# *.bz2 binary
+# *.gz binary
+# *.rar binary
+# *.tar binary
+# *.zip binary
