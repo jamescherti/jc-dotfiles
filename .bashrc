@@ -105,9 +105,9 @@ JC_FASD=0
 #-------------------------------------------------------------------------------
 # INIT
 #-------------------------------------------------------------------------------
-if [[ -f ~/.pre-bashrc.local ]]; then
+if [[ -f ~/.bashrc-before.local ]]; then
   # shellcheck disable=SC1090
-  source ~/.pre-bashrc.local
+  source ~/.bashrc-before.local
 fi
 
 case $- in
@@ -996,7 +996,7 @@ PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
 #-------------------------------------------------------------------------------
 # Local bashrc
 #-------------------------------------------------------------------------------
-if [[ -f ~/.post-bashrc.local ]]; then
+if [[ -f ~/.bashrc-after.local ]]; then
   # shellcheck disable=SC1090
-  source ~/.post-bashrc.local
+  source ~/.bashrc-after.local
 fi
