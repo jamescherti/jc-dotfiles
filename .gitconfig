@@ -81,7 +81,7 @@ quotepath = off
 
 # Specifies a global ignore file for patterns to exclude across all
 # repositories.
-excludesfile = ~/.gitignore.local
+excludesfile = ~/.gitignore.global
 
 # Use a global gitattributes file for applying attribute rules to all
 # repositories
