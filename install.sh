@@ -36,7 +36,6 @@
 #
 
 # shellcheck disable=SC2269
-JC_DOTFILES_UNATTENDED="$JC_DOTFILES_UNATTENDED"
 set -euf -o pipefail
 
 LIST_FILES=(
@@ -100,8 +99,8 @@ main() {
     opts+=("$file")
   done
 
-  if [[ $JC_DOTFILES_UNATTENDED = "" ]] \
-    && [[ $JC_DOTFILES_UNATTENDED -eq 0 ]]; then
+  if [[ "${JC_DOTFILES_UNATTENDED:-}" = "" ]] \
+    && [[ "${JC_DOTFILES_UNATTENDED:-}" -eq 0 ]]; then
     echo
     read -r -p "Install the above files? [y,n] " ANSWER
     if [[ "$ANSWER" != "y" ]]; then
