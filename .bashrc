@@ -354,6 +354,10 @@ kill-gpg-agent() {
   gpgconf --kill gpg-agent
 }
 
+fix-gpg-agent() {
+  gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
+}
+
 _jc_better_cd() {
   # Function: _jc_better_cd
   # Description:
