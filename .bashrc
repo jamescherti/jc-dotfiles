@@ -282,15 +282,25 @@ fi
 #-------------------------------------------------------------------------------
 # GPG
 #-------------------------------------------------------------------------------
-# Fix: gpg: signing failed: Inappropriate ioctl for device
-# Ensure gpg-agent uses the correct terminal for pinentry prompts in TTY-based
-# environments
-if [[ -f ~/.gnupg/gpg-agent.conf ]]; then
-  GPG_TTY="$(tty)"
-  export GPG_TTY
-  if command -v gpg-connect-agent &>/dev/null; then
-    gpg-connect-agent updatestartuptty /bye >/dev/null
+update_gpg_tty() {
+  local current_tty
+  current_tty=$(tty)
+
+  # Only update the agent if the TTY has changed
+  if [[ "$GPG_TTY" != "$current_tty" ]]; then
+    export GPG_TTY="$current_tty"
+
+    if type -P gpg-connect-agent &>/dev/null; then
+      gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
+    fi
   fi
+}
+
+# Safely append to existing PROMPT_COMMAND
+if [[ -z "$PROMPT_COMMAND" ]]; then
+  PROMPT_COMMAND="update_gpg_tty"
+else
+  PROMPT_COMMAND="update_gpg_tty; $PROMPT_COMMAND"
 fi
 
 #-------------------------------------------------------------------------------
@@ -839,7 +849,7 @@ if [[ $UID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
   alias trash-rm=_jc_trash_put_wrapper
   alias trash-put=_jc_trash_put_wrapper
   alias rm=_jc_trash_put_wrapper
-  alias real-rm='$(type -P rm) -I'
+  alias real-rm='command rm -I'
 else
   alias rm='rm -I'
   alias real-rm=rm
