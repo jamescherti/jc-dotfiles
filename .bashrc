@@ -110,6 +110,11 @@ JC_FASD=0
 JC_FIX_GPG_TTY=0
 
 #-------------------------------------------------------------------------------
+# Reset variables
+#-------------------------------------------------------------------------------
+PROMPT_COMMAND=""
+
+#-------------------------------------------------------------------------------
 # INIT
 #-------------------------------------------------------------------------------
 if [[ -f ~/.bashrc-before.local ]]; then
@@ -963,7 +968,11 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
 
   _jc_restore_last_directory
 
-  PROMPT_COMMAND="_jc_persist_last_directory; $PROMPT_COMMAND"
+  if [[ -z "$PROMPT_COMMAND" ]]; then
+    PROMPT_COMMAND="_jc_persist_last_directory"
+  else
+    PROMPT_COMMAND="_jc_persist_last_directory; $PROMPT_COMMAND"
+  fi
 fi
 
 #-------------------------------------------------------------------------------
@@ -1004,7 +1013,11 @@ HISTCONTROL=ignoredups
 # existing PROMPT_COMMAND:
 #
 # shopt -s histappend
-PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+if [[ -z "$PROMPT_COMMAND" ]]; then
+  PROMPT_COMMAND="history -a; history -n"
+else
+  PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+fi
 
 # History Option 2:
 # - Destructive: history -c clears your current session's memory entirely.
