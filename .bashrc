@@ -32,6 +32,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
+#
 
 #-------------------------------------------------------------------------------
 # CHECKS
@@ -45,7 +46,9 @@ fi
 # GLOBAL VARIABLES
 #-------------------------------------------------------------------------------
 TMOUT=650
-[ "$UID" -eq 0 ] && TMOUT="60"
+if ((UID == 0)); then
+  TMOUT="60"
+fi
 
 # Maximum number of lines to retain in the .bash_history file.
 HISTFILESIZE="6000"
@@ -138,7 +141,7 @@ esac
 #-------------------------------------------------------------------------------
 # Adjust terminal dimensions dynamically after each command, updating LINES and
 # COLUMNS as needed.
-[[ $DISPLAY ]] && shopt -s checkwinsize
+[[ -n "$DISPLAY" ]] && shopt -s checkwinsize
 
 # By default, Bash can autocomplete hostnames (such as those in /etc/hosts) when
 # you type ssh, ping, or similar commands. This feature may slow down completion
@@ -154,7 +157,7 @@ shopt -s nocasematch &>/dev/null
 
 # Autocorrect minor typos in 'cd' commands. The cdspell option allows Bash to
 # automatically correct minor spelling errors when using cd. For instance, if
-# you type cd /usr/loacl, Bash will interpret it as cd /usr/local.
+# you type cd /usr/local, Bash interpret it as cd /usr/local.
 shopt -s cdspell &>/dev/null
 
 # Correct minor typos in directory names during pathname expansion. The dirspell
@@ -194,7 +197,7 @@ shopt -s autocd &>/dev/null
 
 # Bash remembers where commands are: When you type a command like ls or mycmd,
 # Bash remembers its location (full path) in a cache called the hash table. This
-# makes Bash faster because it doesn’t have to search your PATH every time.
+# makes Bash faster because it doesn't have to search your PATH every time.
 # Problem: If you replace a command during your session (for example, you
 # install a new version of a program, or overwrite a script with a different
 # version), Bash might still use the old cached path instead of the new one.
@@ -245,7 +248,7 @@ alias gpl="git pull"
 alias gb='git branch'
 
 alias 7z_level9="7z -r -mx 9"
-alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf
+alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf \
   -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0'
 
 if command -v colordiff >/dev/null 2>&1; then
@@ -284,11 +287,11 @@ alias lsblk-uuid='lsblk -o NAME,UUID,MOUNTPOINT,FSTYPE'
 #-------------------------------------------------------------------------------
 # Misc
 #-------------------------------------------------------------------------------
-if [[ $TERM != '' ]]; then
+if [[ -n "$TERM" ]]; then
   # Disable flow control to prevent Vim from freezing when CTRL-s is pressed.
   # The 'stty -ixon' command disables the XON/XOFF flow control, which is
   # typically triggered by CTRL-s (pause) and CTRL-q (resume) in the terminal.
-  stty -ixon
+  stty -ixon 2>/dev/null
 fi
 
 #-------------------------------------------------------------------------------
@@ -296,7 +299,7 @@ fi
 #-------------------------------------------------------------------------------
 fix-gpg-tty() {
   local current_tty
-  current_tty=$(tty)
+  current_tty=$(tty 2>/dev/null) || return
 
   # Only update the agent if the TTY has changed
   if [[ "$GPG_TTY" != "$current_tty" ]]; then
@@ -343,7 +346,7 @@ ps1-count-mails-maildir() {
       fi
     done
 
-    if [[ $num_mails -gt 0 ]]; then
+    if ((num_mails > 0)); then
       echo "[Mails:$num_mails] "
     fi
   fi
@@ -373,9 +376,9 @@ bg-run() {
 }
 
 kill-gpg-agent() {
-  pkill gpgconf
-  pkill gpg-agent
-  gpgconf --kill gpg-agent
+  pkill gpgconf || :
+  pkill gpg-agent || :
+  gpgconf --kill gpg-agent || :
 }
 
 fix-gpg-agent() {
@@ -435,7 +438,7 @@ _jc_better_cd() {
   fi
 
   # Canonicalize path without requirement on path existence
-  path=$(realpath -s -m "$path")
+  path=$(realpath -s -m "$path" 2>/dev/null || echo "$path")
 
   # Checks
   local errno=0
@@ -484,25 +487,26 @@ alias ..5='cd ../../../../..'
 #
 # It checks that each item passed exists before attempting to open it.
 #-------------------------------------------------------------------------------
-_js_open_bin=xdg-open
+_JS_OPEN_BIN=xdg-open
 
 case "$OSTYPE" in
 darwin*)
-  _js_open_bin=open
+  _JS_OPEN_BIN=open
   ;;
 cygwin* | msys* | win32*)
-  _js_open_bin=start
+  _JS_OPEN_BIN=start
   ;;
 *)
-  _js_open_bin=xdg-open
+  _JS_OPEN_BIN=xdg-open
   ;;
 esac
 
 _jc_xdg_open() {
   local item
 
-  if [[ $# -gt 7 ]]; then
+  if (($# > 7)); then
     echo "$*"
+    local answer
     read -r -p "Proceed? [y,n] " answer
     if [[ "$answer" != "y" ]]; then
       echo "Interrupted." >&2
@@ -518,10 +522,8 @@ _jc_xdg_open() {
   done
 
   for item in "$@"; do
-    (
-      xdg-open "$item" &>/dev/null &
-      disown
-    )
+    "$_JS_OPEN_BIN" "$item" &>/dev/null &
+    disown
   done
 
   return 0
@@ -646,7 +648,7 @@ esac
 # via fzf for interactive fuzzy selection. The selected word is then inserted
 # inline at the current cursor position using a readline binding.
 #-------------------------------------------------------------------------------
-if [[ $_JC_FZF -ne 0 ]]; then
+if [[ "${_JC_FZF:-0}" -ne 0 ]]; then
   __tmux_fzf_autocomplete__() {
     # Capture the last 100,000 lines from the tmux scrollback buffer, reverse
     # order, and extract strings
@@ -688,7 +690,7 @@ fi
 # explicitly confirm their intention to proceed.
 #-------------------------------------------------------------------------------
 _jc_confirm_command() {
-  if [ "$#" -eq "0" ]; then
+  if [[ $# -eq 0 ]]; then
     return 1
   fi
 
@@ -699,6 +701,7 @@ _jc_confirm_command() {
 
   local cmd
   cmd=$(basename "$1")
+  local answer
   read -r -p "Do you really want to run '$cmd'? [y,n] " answer
 
   if [ "$answer" = "y" ]; then
@@ -755,6 +758,7 @@ if [[ $UID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
   && type -P trash-put >/dev/null 2>&1; then
   # Confirm
   _jc_confirm_proceed() {
+    local ANSWER
     read -r -p "Proceed? [y,n] " ANSWER
     if [[ "$ANSWER" != "y" ]]; then
       return 1
@@ -764,7 +768,7 @@ if [[ $UID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
 
   # Display the trash size
   _jc_trash_size() {
-    awk '{sum += $1} END {print sum}' <(trash-list --size)
+    awk '{sum += $1} END {print sum}' <(trash-list --size 2>/dev/null)
     return 0
   }
 
@@ -847,6 +851,7 @@ if [[ $UID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
 
   _trash_empty_wrapper() {
     trash-list --size | sort
+    local ANSWER
     read -r -p "Empty the trash? (y,n) " ANSWER
     if [[ "$ANSWER" != "y" ]]; then
       return 1
@@ -872,9 +877,9 @@ fi
 #-------------------------------------------------------------------------------
 # Emacs integration
 #-------------------------------------------------------------------------------
-if [[ $JC_EMACS_INTEGRATION -ne 0 ]]; then
+if [[ "${JC_EMACS_INTEGRATION:-0}" -ne 0 ]]; then
   # vterm
-  if [ "$INSIDE_EMACS" = 'vterm' ]; then
+  if [[ "$INSIDE_EMACS" == 'vterm' ]]; then
     # Some of the most useful features in vterm (e.g., directory-tracking and
     # prompt-tracking or message passing) require shell-side configurations. The
     # main goal of these additional functions is to enable the shell to send
@@ -882,9 +887,9 @@ if [[ $JC_EMACS_INTEGRATION -ne 0 ]]; then
     # in this task, vterm_printf, is defined below. This function is widely used
     # throughout this readme.
     vterm_printf() {
-      if [ -n "$TMUX" ] \
-        && { [ "${TERM%%-*}" = "tmux" ] \
-          || [ "${TERM%%-*}" = "screen" ]; }; then
+      if [[ -n "$TMUX" ]] \
+        && { [[ "${TERM%%-*}" == "tmux" ]] \
+          || [[ "${TERM%%-*}" == "screen" ]]; }; then
         # Tell tmux to pass the escape sequences through
         printf "\ePtmux;\e\e]%s\007\e\\" "$1"
       elif [ "${TERM%%-*}" = "screen" ]; then
@@ -903,7 +908,7 @@ if [[ $JC_EMACS_INTEGRATION -ne 0 ]]; then
 
   # Eat (Emulate A Terminal)
   # shellcheck disable=SC1091
-  if [ -n "$EAT_SHELL_INTEGRATION_DIR" ]; then
+  if [[ -n "$EAT_SHELL_INTEGRATION_DIR" ]]; then
     source "$EAT_SHELL_INTEGRATION_DIR/bash"
   fi
 fi
@@ -920,7 +925,7 @@ fi
 # print a diagnostic message and fail.
 #-------------------------------------------------------------------------------
 _jc_screen_auto_attach() {
-  if [ -z "${STY}" ]; then
+  if [[ -z "${STY}" ]]; then
     if screen -ls >/dev/null 2>&1; then
       screen -rx
       return $?
@@ -955,10 +960,10 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
   }
 
   _jc_persist_last_directory() {
-    local lastdir=""
+    local lastdir
     lastdir=$(pwd)
 
-    if lastdir=$(realpath -s -m "$lastdir"); then
+    if lastdir=$(realpath -s -m "$lastdir" 2>/dev/null); then
       echo "$lastdir" >"$JC_RESTORE_LAST_DIR_FILE"
     else
       echo ".bashrc _jc_persist_last_directory Error:" \
