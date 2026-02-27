@@ -102,6 +102,13 @@ JC_EMACS_INTEGRATION=0
 # to frequently used files and directories.
 JC_FASD=0
 
+# Change JC_FIX_GPG_TTY to 1 to synchronize the GPG agent with the current
+# terminal environment by detecting the active TTY and informing the agent where
+# to display passphrase prompts. This fix runs automatically via PROMPT_COMMAND,
+# which ensures that GPG prompts follow the user when switching between
+# different terminal windows or tmux panes.
+JC_FIX_GPG_TTY=0
+
 #-------------------------------------------------------------------------------
 # INIT
 #-------------------------------------------------------------------------------
@@ -282,7 +289,7 @@ fi
 #-------------------------------------------------------------------------------
 # GPG
 #-------------------------------------------------------------------------------
-update_gpg_tty() {
+fix-gpg-tty() {
   local current_tty
   current_tty=$(tty)
 
@@ -297,10 +304,12 @@ update_gpg_tty() {
 }
 
 # Safely append to existing PROMPT_COMMAND
-if [[ -z "$PROMPT_COMMAND" ]]; then
-  PROMPT_COMMAND="update_gpg_tty"
-else
-  PROMPT_COMMAND="update_gpg_tty; $PROMPT_COMMAND"
+if [[ $JC_FIX_GPG_TTY -ne 0 ]]; then
+  if [[ -z "$PROMPT_COMMAND" ]]; then
+    PROMPT_COMMAND="fix-gpg-tty"
+  else
+    PROMPT_COMMAND="fix-gpg-tty; $PROMPT_COMMAND"
+  fi
 fi
 
 #-------------------------------------------------------------------------------
