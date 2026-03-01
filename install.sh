@@ -83,7 +83,7 @@ main() {
     exit 1
   fi
 
-  SCRIPT_DIR=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
+  SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
   cd "$SCRIPT_DIR"
 
   # Required directories
