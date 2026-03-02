@@ -61,6 +61,26 @@ windowMemory = 5g
 # format.
 packSizeLimit = 2g
 
+[repack]
+# Groups objects into isolated "islands" based on branch or tag references
+# before performing delta compression. By default, Git compresses objects across
+# the entire repository. This can cause issues during a 'git push' if a commit
+# on your main branch is compressed against a file in a local, unpushed feature
+# branch. When this happens, Git must decompress and recalculate new deltas on
+# the fly before sending the data over the network.
+#
+# Benefit: By restricting compression to objects within the same island, Git can
+# send pre-compressed packfiles directly over the network. This makes network
+# operations like 'git push' and 'git fetch' noticeably faster by avoiding
+# expensive on-the-fly recalculations.
+#
+# Drawback: Restricting the compression pool means Git might miss some
+# opportunities to deduplicate data across different branches, which can lead to
+# slightly larger local repository sizes. It also increases the CPU and memory
+# usage required during local garbage collection ('git gc') to calculate these
+# isolated islands.
+useDeltaIslands = true
+
 [gc]
 # Instructs Git to update the commit-graph file during garbage collection. This
 # maintains the performance benefits of the commit-graph over time as new
