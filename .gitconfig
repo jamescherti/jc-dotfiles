@@ -377,6 +377,15 @@ fsckObjects = true
 
 [fetch]
 # Speeds up finding a common ancestor with the remote.
+#
+# The choice between negotiation algorithms depends on whether your primary
+# bottleneck is the network or the CPU:
+# - Use "consecutive" when the network is your bottleneck. It spends more CPU
+#   cycles calculating an exact history match, which minimizes the amount of
+#   data downloaded.
+# - Use "skipping" when the CPU is your bottleneck. It reduces calculation time
+#   by jumping through history, but often results in downloading larger,
+#   redundant packfiles over the network.
 negotiationAlgorithm = skipping
 
 # Updates the commit-graph immediately after fetching from a remote. This
