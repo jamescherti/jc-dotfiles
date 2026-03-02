@@ -417,6 +417,18 @@ writeCommitGraph = true
 # validation is rarely needed for daily work.
 fsckObjects = false
 
+# Automatically remove remote-tracking branches that no longer exist on the
+# remote repository during a 'git fetch'. This helps keep the local repository
+# clean by removing outdated references to remote branches that have been
+# deleted.
+prune = true
+
+# Automatically delete remote tags in your local repository that have been #
+# removed from the remote repository during a 'git fetch'. This ensures that #
+# your local tags list is up-to-date and prevents the accumulation of tags that
+# # no longer exist on the remote.
+pruneTags = true
+
 [receive]
 # Verifies the integrity of all objects during data transfer operations like
 # clone, helping detect corruption or tampering early.
@@ -430,18 +442,6 @@ fsckObjects = false
 # default behavior). Git already performs lightweight checks, and full object
 # validation is rarely needed for daily work.
 fsckObjects = false
-
-# Automatically remove remote-tracking branches that no longer exist on the
-# remote repository during a 'git fetch'. This helps keep the local repository
-# clean by removing outdated references to remote branches that have been
-# deleted.
-prune = true
-
-# Automatically delete remote tags in your local repository that have been #
-# removed from the remote repository during a 'git fetch'. This ensures that #
-# your local tags list is up-to-date and prevents the accumulation of tags that
-# # no longer exist on the remote.
-pruneTags = true
 
 [branch]
 # Configures `git branch` to sort branches by most recently used rather than
