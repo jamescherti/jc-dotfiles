@@ -62,6 +62,11 @@ windowMemory = 5g
 packSizeLimit = 2g
 
 [gc]
+# Instructs Git to update the commit-graph file during garbage collection. This
+# maintains the performance benefits of the commit-graph over time as new
+# commits are added to the repository.
+writeCommitGraph = true
+
 # Automatically triggers garbage collection when the number of loose objects
 # exceeds 8,000, optimizing repository storage and performance. When there are
 # more than this number of loose objects in the repository, git gc --auto will
@@ -70,6 +75,11 @@ packSizeLimit = 2g
 auto = 8000
 
 [core]
+# Enables reading the commit-graph file. This speeds up commit traversal
+# operations like 'git log' and branch calculations by avoiding the need to
+# parse individual commit objects.
+commitGraph = true
+
 # -X: Keep the content visible after closing the pager
 # -R: Ensures that color codes and other control characters in the output
 #     (e.g., from 'git diff --color') are properly displayed in the pager.
@@ -357,6 +367,11 @@ defaultBranch = main
 fsckObjects = true
 
 [fetch]
+# Updates the commit-graph immediately after fetching from a remote. This
+# ensures that operations involving newly fetched commits are fast right away,
+# without waiting for the next garbage collection cycle.
+writeCommitGraph = true
+
 # Validates all objects during fetch to ensure no corrupted or malformed data is
 # introduced into the local repository.
 fsckObjects = true
@@ -578,3 +593,8 @@ version = 4
 # configurations can override the settings above.
 # See: https://git-scm.com/docs/git-config#_includes
 path = ~/.gitconfig.local
+
+[status]
+# Disables the calculation of ahead/behind counts. 'git status' will execute
+# nearly instantly.
+aheadBehind = false
