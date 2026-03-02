@@ -32,11 +32,6 @@
 # SOFTWARE.
 #
 
-[tag]
-# This setting forces all annotated tags to be GPG-signed when using
-# 'git tag -a'.
-forceSignAnnotated = true
-
 [checkout]
 # Allows Git to check out files in parallel, utilizing multiple CPU cores.
 workers = 0
@@ -44,6 +39,8 @@ workers = 0
 [grep]
 # Enables parallel processing when searching through the repository tree.
 threads = 0
+
+lineNumber = true
 
 [pack]
 # Configures Git to auto-detect the number of CPUs and set the number of threads
@@ -351,12 +348,6 @@ date = iso
 # and maintaining a linear commit history.
 ff = only
 
-# This configuration automatically pulls the current branch, which helps prevent
-# "There is no tracking information for the current branch. Please specify which
-# branch you want to merge with. See git-pull(1) for details. git pull <remote>
-# <branch>"
-default = current
-
 [push]
 # This configuration automatically pushes the current branch, which helps
 # prevent the error: “fatal: The current branch BRANCH has no upstream branch.”
@@ -393,7 +384,7 @@ defaultBranch = main
 # If maximum performance is your goal, change these to false (which is the
 # default behavior). Git already performs lightweight checks, and full object
 # validation is rarely needed for daily work.
-fsckObjects = true
+fsckObjects = false
 
 [fetch]
 # Speeds up finding a common ancestor with the remote.
@@ -424,7 +415,7 @@ writeCommitGraph = true
 # If maximum performance is your goal, change these to false (which is the
 # default behavior). Git already performs lightweight checks, and full object
 # validation is rarely needed for daily work.
-fsckObjects = true
+fsckObjects = false
 
 [receive]
 # Verifies the integrity of all objects during data transfer operations like
@@ -438,7 +429,7 @@ fsckObjects = true
 # If maximum performance is your goal, change these to false (which is the
 # default behavior). Git already performs lightweight checks, and full object
 # validation is rarely needed for daily work.
-fsckObjects = true
+fsckObjects = false
 
 # Automatically remove remote-tracking branches that no longer exist on the
 # remote repository during a 'git fetch'. This helps keep the local repository
@@ -466,6 +457,10 @@ autoSetupMerge = true
 # Sort tags by the date they were created.
 sort = taggerdate
 
+# This setting forces all annotated tags to be GPG-signed when using
+# 'git tag -a'.
+forceSignAnnotated = true
+
 [help]
 # When a mistyped Git command closely resembles a valid one, this setting
 # prompts the user with a suggestion before executing the corrected command,
@@ -479,9 +474,6 @@ autoCorrect = 0
 # (use "git add <file>..." to update what will be committed)
 # (use "git restore <file>..." to discard changes in working directory)
 statusHints = false
-
-[grep]
-lineNumber = true
 
 [blame]
 # The `ignoreRevsFile` makes `git blame` ignore certain commits.
