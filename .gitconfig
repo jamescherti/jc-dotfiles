@@ -76,7 +76,7 @@ packSizeLimit = 2g
 # slightly larger local repository sizes. It also increases the CPU and memory
 # usage required during local garbage collection ('git gc') to calculate these
 # isolated islands.
-useDeltaIslands = true
+# useDeltaIslands = true
 
 [gc]
 # Instructs Git to update the commit-graph file during garbage collection. This
