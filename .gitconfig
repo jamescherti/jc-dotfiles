@@ -520,6 +520,8 @@ s = show
 # Commit all tracked changes
 cia = commit -a
 
+ci = commit
+
 # Continue a rebase after resolving conflicts
 rc = rebase --continue
 
