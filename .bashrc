@@ -131,6 +131,11 @@ case $- in
   ;;
 *)
   # If not running interactively, don't do anything
+  if [[ -f ~/.bashrc-after.local ]]; then
+    # shellcheck disable=SC1090
+    source ~/.bashrc-after.local
+  fi
+
   return
   ;;
 esac

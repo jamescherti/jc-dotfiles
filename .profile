@@ -66,9 +66,9 @@ _jc_add_local_path() {
   prepend_path "$1/bin"
   export MANPATH="$1/share/man:$MANPATH"
   export INFOPATH="$1/share/info:$INFOPATH"
-  export LD_LIBRARY_PATH="$1/lib:$LD_LIBRARY_PATH"
-  export PKG_CONFIG_PATH="$1/lib/pkgconfig:$PKG_CONFIG_PATH"
-  export CMAKE_PREFIX_PATH="$1:$CMAKE_PREFIX_PATH"
+  export LD_LIBRARY_PATH="$1/lib64:$1/lib:$LD_LIBRARY_PATH"
+  export C_INCLUDE_PATH="$1/include:$LD_LIBRARY_PATH"
+  export CPLUS_INCLUDE_PATH="$1/include:$LD_LIBRARY_PATH"
 }
 
 append_path '/usr/local/sbin'
