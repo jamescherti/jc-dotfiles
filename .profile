@@ -170,3 +170,85 @@ export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up"
 #-------------------------------------------------------------------------------
 # shellcheck disable=SC1091
 [ -f "$HOME/.profile-after.local" ] && . "$HOME/.profile-after.local"
+
+#-------------------------------------------------------------------------------
+# Custom environment
+#-------------------------------------------------------------------------------
+env_path_delete() {
+  # Validate to avoid, for example, `env_path_delete 'PATH; rm -rf /' /tmp`
+  case $1 in
+  *[!A-Za-z0-9_]* | '') return 1 ;;
+  esac
+
+  eval "_pr_val=\${$1}"
+  _pr_new=""
+
+  while [ -n "$_pr_val" ]; do
+    # Extract the first path component using POSIX parameter
+    # expansion.
+    _pr_dir="${_pr_val%%:*}"
+
+    # This avoids an infinite loop when no : exists.
+    if [ "$_pr_val" = "$_pr_dir" ]; then
+      _pr_val=""
+    else
+      _pr_val="${_pr_val#*:}"
+    fi
+
+    # Reconstruction
+    if [ "$_pr_dir" != "$2" ] && [ -n "$_pr_dir" ]; then
+      _pr_new="${_pr_new}${_pr_new:+:}${_pr_dir}"
+    fi
+  done
+
+  eval "export ${1}=\"\$_pr_new\""
+  unset _pr_val _pr_new _pr_dir
+}
+
+# Usage: env_path_append VAR "/path/to/dir"
+env_path_append() {
+  # Validate to avoid, for example, `env_path_append 'PATH; rm -rf /' /tmp`
+  case $1 in
+  *[!A-Za-z0-9_]* | '')
+    return 1
+    ;;
+  esac
+
+  env_path_delete "$1" "$2"
+
+  eval "_pa_val=\${$1}"
+
+  if [ -z "$_pa_val" ]; then
+    eval "$1=\"\$2\""
+  else
+    eval "$1=\"\$_pa_val:\$2\""
+  fi
+
+  eval 'export $1'
+
+  unset _pa_val
+}
+
+# Usage: path_prepend VAR "/path/to/dir"
+env_path_prepend() {
+  # Validate to avoid, for example, `path_prepend 'PATH; rm -rf /' /tmp`
+  case $1 in
+  *[!A-Za-z0-9_]* | '')
+    return 1
+    ;;
+  esac
+
+  env_path_delete "$1" "$2"
+
+  eval "_pp_val=\${$1}"
+
+  if [ -z "$_pp_val" ]; then
+    eval "$1=\"\$2\""
+  else
+    eval "$1=\"\$2:\$_pp_val\""
+  fi
+
+  eval 'export $1'
+
+  unset _pp_val
+}
