@@ -35,6 +35,8 @@
 # SOFTWARE.
 #
 
+_JC_PROFILE_LOADED=1
+
 # shellcheck disable=SC1091
 [ -f "$HOME/.profile-before.local" ] && . "$HOME/.profile-before.local"
 
@@ -166,12 +168,6 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up"
 
 #-------------------------------------------------------------------------------
-# Local profile
-#-------------------------------------------------------------------------------
-# shellcheck disable=SC1091
-[ -f "$HOME/.profile-after.local" ] && . "$HOME/.profile-after.local"
-
-#-------------------------------------------------------------------------------
 # Custom environment
 #-------------------------------------------------------------------------------
 jc_env_path_delete() {
@@ -252,3 +248,20 @@ jc_env_path_prepend() {
 
   unset _pp_val
 }
+
+#-------------------------------------------------------------------------------
+# Local profile
+#-------------------------------------------------------------------------------
+# shellcheck disable=SC1091
+[ -f "$HOME/.profile-after.local" ] && . "$HOME/.profile-after.local"
+
+if test "$BASH" &&\
+   test "$PS1" &&\
+   test -z "$POSIXLY_CORRECT" &&\
+   test "${0#-}" != sh &&\
+   test -r ~/.bashrc
+then
+  if [[ $_JC_BASHRC_LOADED = "" ]]; then
+    . ~/.bashrc
+  fi
+fi
