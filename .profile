@@ -174,8 +174,8 @@ export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up"
 #-------------------------------------------------------------------------------
 # Custom environment
 #-------------------------------------------------------------------------------
-env_path_delete() {
-  # Validate to avoid, for example, `env_path_delete 'PATH; rm -rf /' /tmp`
+jc_env_path_delete() {
+  # Validate to avoid, for example, `jc_env_path_delete 'PATH; rm -rf /' /tmp`
   case $1 in
   *[!A-Za-z0-9_]* | '') return 1 ;;
   esac
@@ -205,16 +205,16 @@ env_path_delete() {
   unset _pr_val _pr_new _pr_dir
 }
 
-# Usage: env_path_append VAR "/path/to/dir"
-env_path_append() {
-  # Validate to avoid, for example, `env_path_append 'PATH; rm -rf /' /tmp`
+# Usage: jc_env_path_append VAR "/path/to/dir"
+jc_env_path_append() {
+  # Validate to avoid, for example, `jc_env_path_append 'PATH; rm -rf /' /tmp`
   case $1 in
   *[!A-Za-z0-9_]* | '')
     return 1
     ;;
   esac
 
-  env_path_delete "$1" "$2"
+  jc_env_path_delete "$1" "$2"
 
   eval "_pa_val=\${$1}"
 
@@ -230,7 +230,7 @@ env_path_append() {
 }
 
 # Usage: path_prepend VAR "/path/to/dir"
-env_path_prepend() {
+jc_env_path_prepend() {
   # Validate to avoid, for example, `path_prepend 'PATH; rm -rf /' /tmp`
   case $1 in
   *[!A-Za-z0-9_]* | '')
@@ -238,7 +238,7 @@ env_path_prepend() {
     ;;
   esac
 
-  env_path_delete "$1" "$2"
+  jc_env_path_delete "$1" "$2"
 
   eval "_pp_val=\${$1}"
 
