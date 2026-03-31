@@ -350,10 +350,10 @@ fi
 ps1-git-branch() {
   if [[ $JC_PS1_GIT_BRANCH -ne 0 ]]; then
     local branch_name
-    branch_name=$("git" symbolic-ref --short -q HEAD 2>/dev/null) \
-      || return 0
-    printf '(%s) ' "$branch_name"
-    return 0
+    # Run the plumbing command directly in the condition to avoid a separate evaluation step
+    if branch_name=$(git symbolic-ref --short -q HEAD 2>/dev/null); then
+      printf '(%s) ' "$branch_name"
+    fi
   fi
 }
 
