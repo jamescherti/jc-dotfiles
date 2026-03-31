@@ -419,15 +419,22 @@ ps1-count-mails-maildir() {
   fi
 }
 
+# shellcheck disable=SC2034
 Color_Off="\[\033[0m\]" # Text Reset
-Green="\[\033[0;32m\]"  # Green
-Blue="\[\033[0;34m\]"   # Blue
+# shellcheck disable=SC2034
+Green="\[\033[0;32m\]" # Green
+# shellcheck disable=SC2034
+Blue="\[\033[0;34m\]" # Blue
+# shellcheck disable=SC2034
 Yellow="\[\033[0;33m\]" # Yellow
 PathShort="\w"
 PS1="$Green\$(ps1-git-branch)$Color_Off$Blue"
 PS1="${PS1}\$(ps1-count-mails-maildir)$Color_Off"
 PS1="${PS1}$MYPROMPT$PS1_USER_COLOR\$USER$Color_Off "
 PS1="${PS1}$Yellow$PathShort$Color_Off $ "
+
+# PS1="\$(ps1-git-branch)"
+# PS1="${PS1}\$(ps1-count-mails-maildir)$MYPROMPT\$USER $PathShort $ "
 
 #-------------------------------------------------------------------------------
 # Functions
