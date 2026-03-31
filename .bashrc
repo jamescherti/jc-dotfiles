@@ -323,13 +323,13 @@ fix-gpg-tty() {
 }
 
 # Safely append to existing PROMPT_COMMAND
-if [[ $JC_FIX_GPG_TTY -ne 0 ]]; then
-  if [[ -z "$PROMPT_COMMAND" ]]; then
-    PROMPT_COMMAND="fix-gpg-tty"
-  else
-    PROMPT_COMMAND="fix-gpg-tty; $PROMPT_COMMAND"
-  fi
-fi
+# if [[ $JC_FIX_GPG_TTY -ne 0 ]]; then
+#   if [[ -z "$PROMPT_COMMAND" ]]; then
+#     PROMPT_COMMAND="fix-gpg-tty"
+#   else
+#     PROMPT_COMMAND="fix-gpg-tty; $PROMPT_COMMAND"
+#   fi
+# fi
 
 #-------------------------------------------------------------------------------
 # PS1
