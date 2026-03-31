@@ -1015,13 +1015,12 @@ alias sc='_jc_screen_auto_attach'
 #-------------------------------------------------------------------------------
 if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
   _jc_restore_last_directory() {
-    if ! [[ -f "$JC_RESTORE_LAST_DIR_FILE" ]]; then
+    if [[ ! -f "$JC_RESTORE_LAST_DIR_FILE" ]]; then
       return
     fi
 
     local lastdir
-    if lastdir=$(head -n 1 "$JC_RESTORE_LAST_DIR_FILE") \
-      && lastdir=$(realpath -s -m "$lastdir") \
+    if IFS= read -r lastdir <"$JC_RESTORE_LAST_DIR_FILE" \
       && [[ -d "$lastdir" ]]; then
       cd "$lastdir" >/dev/null || return 1
     fi
@@ -1078,11 +1077,14 @@ HISTCONTROL=ignoredups
 # - Stability: It preserves your current session's command list. You can see what
 #   you typed in this terminal versus what came from others.
 #
+# shopt -s histappend executes only once, at the very end of your session when
+# you close the terminal or type exit.
+# shopt -s histappend
+
 # Enable appending to the history file, rather than overwriting it. Append new
 # commands to history, clear in-memory history, reload from file, and preserve
 # existing PROMPT_COMMAND:
 #
-# shopt -s histappend
 if [[ -z "$PROMPT_COMMAND" ]]; then
   PROMPT_COMMAND="history -a"
 else
