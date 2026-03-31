@@ -350,7 +350,8 @@ fi
 ps1-git-branch-slow() {
   if [[ $JC_PS1_GIT_BRANCH -ne 0 ]]; then
     local branch_name
-    # Run the plumbing command directly in the condition to avoid a separate evaluation step
+    # Run the plumbing command directly in the condition to avoid a separate
+    # evaluation step
     if branch_name=$(git symbolic-ref --short -q HEAD 2>/dev/null); then
       printf '(%s) ' "$branch_name"
     fi
@@ -384,7 +385,8 @@ ps1-git-branch() {
       fi
     fi
 
-    # Slow path fallback: Use the git binary for submodules, worktrees, or detached HEADs
+    # Slow path fallback: Use the git binary for submodules, worktrees, or
+    # detached HEADs
     local branch_name
     if branch_name=$("git" symbolic-ref --short -q HEAD 2>/dev/null); then
       printf '(%s) ' "$branch_name"
@@ -453,14 +455,15 @@ fix-gpg-agent() {
 _jc_better_cd() {
   # Function: _jc_better_cd
   # Description:
-  # 1. 'cd path/to/file' changes the directory to 'path/to' (the parent directory
-  #    of 'file').
+  # 1. 'cd path/to/file' changes the directory to 'path/to' (the parent
+  #    directory of 'file').
   # 2. You can switch to the previous directory using 'popd' or 'cd -' (the
   #    function adds directories to the top of the directory stack).
   # 3. 'cd path/to/dir with spaces' changes the directory to "path/to/dir with
   #    spaces".
   # 4. 'cd file:///home/user' changes the directory to "/home/user".
-  # 5. Supports 'cd' flags (e.g. -P, -L) and '--' to handle paths starting with -.
+  # 5. Supports 'cd' flags (e.g. -P, -L) and '--' to handle paths starting with
+  #    -.
 
   # Parse cd options (e.g. -P, -L)
   local -a opts
@@ -1025,11 +1028,8 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
   }
 
   _jc_persist_last_directory() {
-    local lastdir
-    lastdir=$(pwd)
-
-    if lastdir=$(realpath -s -m "$lastdir" 2>/dev/null); then
-      echo "$lastdir" >"$JC_RESTORE_LAST_DIR_FILE"
+    if [[ -d "$PWD" ]]; then
+      printf "%s\n" "$PWD" >"$JC_RESTORE_LAST_DIR_FILE"
     else
       echo ".bashrc _jc_persist_last_directory Error:" \
         "invalid or non-existent directory: '$lastdir'" >&2
@@ -1084,9 +1084,9 @@ HISTCONTROL=ignoredups
 #
 # shopt -s histappend
 if [[ -z "$PROMPT_COMMAND" ]]; then
-  PROMPT_COMMAND="history -a; history -n"
+  PROMPT_COMMAND="history -a"
 else
-  PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+  PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 fi
 
 # History Option 2:
