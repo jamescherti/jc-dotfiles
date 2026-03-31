@@ -316,20 +316,20 @@ fix-gpg-tty() {
   if [[ "$GPG_TTY" != "$current_tty" ]]; then
     export GPG_TTY="$current_tty"
 
-    if type -P gpg-connect-agent &>/dev/null; then
-      gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
-    fi
+    # if type -P gpg-connect-agent &>/dev/null; then
+    #   gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
+    # fi
   fi
 }
 
 # Safely append to existing PROMPT_COMMAND
-# if [[ $JC_FIX_GPG_TTY -ne 0 ]]; then
-#   if [[ -z "$PROMPT_COMMAND" ]]; then
-#     PROMPT_COMMAND="fix-gpg-tty"
-#   else
-#     PROMPT_COMMAND="fix-gpg-tty; $PROMPT_COMMAND"
-#   fi
-# fi
+if [[ $JC_FIX_GPG_TTY -ne 0 ]]; then
+  if [[ -z "$PROMPT_COMMAND" ]]; then
+    PROMPT_COMMAND="fix-gpg-tty"
+  else
+    PROMPT_COMMAND="fix-gpg-tty; $PROMPT_COMMAND"
+  fi
+fi
 
 #-------------------------------------------------------------------------------
 # PS1
