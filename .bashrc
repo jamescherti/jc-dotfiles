@@ -347,11 +347,46 @@ fi
 #-------------------------------------------------------------------------------
 # PS1
 #-------------------------------------------------------------------------------
-ps1-git-branch() {
+ps1-git-branch-slow() {
   if [[ $JC_PS1_GIT_BRANCH -ne 0 ]]; then
     local branch_name
     # Run the plumbing command directly in the condition to avoid a separate evaluation step
     if branch_name=$(git symbolic-ref --short -q HEAD 2>/dev/null); then
+      printf '(%s) ' "$branch_name"
+    fi
+  fi
+}
+
+ps1-git-branch() {
+  if [[ $JC_PS1_GIT_BRANCH -ne 0 ]]; then
+    local dir="$PWD"
+    local head_file=""
+
+    # Fast path: Find .git/HEAD by walking up the directory tree in pure Bash
+    while [[ -n "$dir" && "$dir" != "/" ]]; do
+      if [[ -f "$dir/.git/HEAD" ]]; then
+        head_file="$dir/.git/HEAD"
+        break
+      fi
+      dir="${dir%/*}"
+    done
+
+    # If we found a standard Git repository
+    if [[ -n "$head_file" ]]; then
+      local head_ref
+      # Read the first line of the file directly
+      read -r head_ref <"$head_file" 2>/dev/null
+
+      # If it is a standard branch, extract the name and exit immediately
+      if [[ "$head_ref" == ref:\ refs/heads/* ]]; then
+        printf '(%s) ' "${head_ref#ref: refs/heads/}"
+        return 0
+      fi
+    fi
+
+    # Slow path fallback: Use the git binary for submodules, worktrees, or detached HEADs
+    local branch_name
+    if branch_name=$("git" symbolic-ref --short -q HEAD 2>/dev/null); then
       printf '(%s) ' "$branch_name"
     fi
   fi
