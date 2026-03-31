@@ -316,18 +316,31 @@ fix-gpg-tty() {
   if [[ "$GPG_TTY" != "$current_tty" ]]; then
     export GPG_TTY="$current_tty"
 
-    # if type -P gpg-connect-agent &>/dev/null; then
-    #   gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
-    # fi
+    # This MUST remain active to update the background daemon
+    if type -P gpg-connect-agent &>/dev/null; then
+      gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
+    fi
   fi
 }
 
-# Safely append to existing PROMPT_COMMAND
-if [[ $JC_FIX_GPG_TTY -ne 0 ]]; then
-  if [[ -z "$PROMPT_COMMAND" ]]; then
-    PROMPT_COMMAND="fix-gpg-tty"
+if [[ ${JC_FIX_GPG_TTY:-1} -ne 0 ]]; then
+  # Check if running inside tmux or GNU screen
+  if [[ -n "$TMUX" || -n "$STY" ]]; then
+    # Multiplexer detected: hook into PROMPT_COMMAND.
+    #
+    # It must be in the PROMPT_COMMAND if you use tools like tmux, screen, or
+    # frequently detach and reattach to Emacs daemon frames.
+    if [[ $_JC_FIX_GPG_TTY_DONE = "" ]]; then
+      _JC_FIX_GPG_TTY_DONE=1
+      if [[ -z "${PROMPT_COMMAND:-}" ]]; then
+        PROMPT_COMMAND="fix-gpg-tty"
+      else
+        PROMPT_COMMAND="fix-gpg-tty; $PROMPT_COMMAND"
+      fi
+    fi
   else
-    PROMPT_COMMAND="fix-gpg-tty; $PROMPT_COMMAND"
+    # Standard terminal detected: run exactly once during startup
+    fix-gpg-tty
   fi
 fi
 
