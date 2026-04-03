@@ -440,13 +440,15 @@ else
   Safe_User_Color=""
 fi
 
-PS1="${Green}\$(ps1-git-branch)${Color_Off}"
-PS1="${PS1}${Blue}\$(ps1-count-mails-maildir)${Color_Off}"
-PS1="${PS1}${MYPROMPT:-}${Safe_User_Color}\$USER${Color_Off} "
-PS1="${PS1}${Yellow}${PathShort}${Color_Off} $ "
-
-# PS1="\$(ps1-git-branch)"
-# PS1="${PS1}\$(ps1-count-mails-maildir)$MYPROMPT\$USER $PathShort $ "
+if command -v tput >/dev/null 2>&1 && [[ $(tput colors 2>/dev/null) -ge 8 ]]; then
+  PS1="${Green}\$(ps1-git-branch)${Color_Off}"
+  PS1="${PS1}${Blue}\$(ps1-count-mails-maildir)${Color_Off}"
+  PS1="${PS1}${MYPROMPT:-}${Safe_User_Color}\$USER${Color_Off} "
+  PS1="${PS1}${Yellow}${PathShort}${Color_Off} $ "
+else
+  PS1="\$(ps1-git-branch)"
+  PS1="${PS1}\$(ps1-count-mails-maildir)$MYPROMPT\$USER $PathShort $ "
+fi
 
 #-------------------------------------------------------------------------------
 # Functions
