@@ -422,25 +422,25 @@ ps1-count-mails-maildir() {
   fi
 }
 
-# shellcheck disable=SC2034
-Color_Off="\[\033[0m\]" # Text Reset
-# shellcheck disable=SC2034
-Green="\[\033[0;32m\]" # Green
-# shellcheck disable=SC2034
-Blue="\[\033[0;34m\]" # Blue
-# shellcheck disable=SC2034
-Yellow="\[\033[0;33m\]" # Yellow
-PathShort="\w"
-
-# Ensure PS1_USER_COLOR is wrapped if it only contains a raw color code
-# If it is already wrapped where it is defined, you can remove the \[ and \] here.
-if [[ -n "${PS1_USER_COLOR:-}" ]]; then
-  Safe_User_Color="\[${PS1_USER_COLOR}\]"
-else
-  Safe_User_Color=""
-fi
-
 if command -v tput >/dev/null 2>&1 && [[ $(tput colors 2>/dev/null) -ge 8 ]]; then
+  # shellcheck disable=SC2034
+  Color_Off="\[\033[0m\]" # Text Reset
+  # shellcheck disable=SC2034
+  Green="\[\033[0;32m\]" # Green
+  # shellcheck disable=SC2034
+  Blue="\[\033[0;34m\]" # Blue
+  # shellcheck disable=SC2034
+  Yellow="\[\033[0;33m\]" # Yellow
+  PathShort="\w"
+
+  # Ensure PS1_USER_COLOR is wrapped if it only contains a raw color code If it
+  # is already wrapped where it is defined, you can remove the \[ and \] here.
+  if [[ -n "${PS1_USER_COLOR:-}" ]]; then
+    Safe_User_Color="\[${PS1_USER_COLOR}\]"
+  else
+    Safe_User_Color=""
+  fi
+
   PS1="${Green}\$(ps1-git-branch)${Color_Off}"
   PS1="${PS1}${Blue}\$(ps1-count-mails-maildir)${Color_Off}"
   PS1="${PS1}${MYPROMPT:-}${Safe_User_Color}\$USER${Color_Off} "
