@@ -45,7 +45,10 @@ fi
 _JC_BASHRC_LOADED=1
 
 if [[ $_JC_PROFILE_LOADED = "" ]]; then
-  source ~/.profile
+  # shellcheck disable=SC1090
+  if [[ -f ~/.profile ]]; then
+    source ~/.profile
+  fi
 fi
 
 #-------------------------------------------------------------------------------
@@ -428,10 +431,19 @@ Blue="\[\033[0;34m\]" # Blue
 # shellcheck disable=SC2034
 Yellow="\[\033[0;33m\]" # Yellow
 PathShort="\w"
-PS1="$Green\$(ps1-git-branch)$Color_Off$Blue"
-PS1="${PS1}\$(ps1-count-mails-maildir)$Color_Off"
-PS1="${PS1}$MYPROMPT$PS1_USER_COLOR\$USER$Color_Off "
-PS1="${PS1}$Yellow$PathShort$Color_Off $ "
+
+# Ensure PS1_USER_COLOR is wrapped if it only contains a raw color code
+# If it is already wrapped where it is defined, you can remove the \[ and \] here.
+if [[ -n "${PS1_USER_COLOR:-}" ]]; then
+  Safe_User_Color="\[${PS1_USER_COLOR}\]"
+else
+  Safe_User_Color=""
+fi
+
+PS1="${Green}\$(ps1-git-branch)${Color_Off}"
+PS1="${PS1}${Blue}\$(ps1-count-mails-maildir)${Color_Off}"
+PS1="${PS1}${MYPROMPT:-}${Safe_User_Color}\$USER${Color_Off} "
+PS1="${PS1}${Yellow}${PathShort}${Color_Off} $ "
 
 # PS1="\$(ps1-git-branch)"
 # PS1="${PS1}\$(ps1-count-mails-maildir)$MYPROMPT\$USER $PathShort $ "
