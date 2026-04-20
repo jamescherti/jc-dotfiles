@@ -1035,33 +1035,44 @@ alias sc='_jc_screen_auto_attach'
 # the current directory on each prompt for reuse by future interactive sessions.
 #-------------------------------------------------------------------------------
 if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
-  _jc_restore_last_directory() {
-    if [[ ! -f "$JC_RESTORE_LAST_DIR_FILE" ]]; then
-      return
-    fi
-
+  _jc_get_lastdir() {
     local lastdir
-    if IFS= read -r lastdir <"$JC_RESTORE_LAST_DIR_FILE" \
+    if lastdir=$(head -n 1 "$JC_RESTORE_LAST_DIR_FILE" 2>/dev/null) \
       && [[ -d "$lastdir" ]]; then
+      printf "%s\n" "$lastdir"
+    else
+      return 1
+    fi
+  }
+
+  _jc_restore_lastdir() {
+    local lastdir
+    if lastdir=$(_jc_get_lastdir) && [[ -n $lastdir ]]; then
       cd "$lastdir" >/dev/null || return 1
     fi
   }
 
-  _jc_persist_last_directory() {
+  _JC_PREVIOUS_LASTDIR=""
+  _jc_persist_lastdir() {
     if [[ -d "$PWD" ]]; then
-      printf "%s\n" "$PWD" >"$JC_RESTORE_LAST_DIR_FILE"
+      local lastdir
+      if lastdir=$(_jc_get_lastdir) \
+        && [[ $lastdir != "$_JC_PREVIOUS_LASTDIR" ]]; then
+        _JC_PREVIOUS_LASTDIR="$PWD"
+        printf "%s\n" "$PWD" >"$JC_RESTORE_LAST_DIR_FILE"
+      fi
     else
-      echo ".bashrc _jc_persist_last_directory Error:" \
-        "invalid or non-existent directory: '$lastdir'" >&2
+      echo ".bashrc _jc_persist_lastdir Error:" \
+        "invalid or non-existent directory: '$PWD'" >&2
     fi
   }
 
-  _jc_restore_last_directory
+  _jc_restore_lastdir
 
   if [[ -z "$PROMPT_COMMAND" ]]; then
-    PROMPT_COMMAND="_jc_persist_last_directory"
+    PROMPT_COMMAND="_jc_persist_lastdir"
   else
-    PROMPT_COMMAND="_jc_persist_last_directory; $PROMPT_COMMAND"
+    PROMPT_COMMAND="_jc_persist_lastdir; $PROMPT_COMMAND"
   fi
 fi
 
