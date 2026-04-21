@@ -1045,19 +1045,22 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
     fi
   }
 
+  _JC_PREVIOUS_LASTDIR=""
+
   _jc_restore_lastdir() {
     local lastdir
     if lastdir=$(_jc_get_lastdir) && [[ -n $lastdir ]]; then
       cd "$lastdir" >/dev/null || return 1
     fi
+
+    # Initialize the tracking variable to the starting directory
+    _JC_PREVIOUS_LASTDIR="$PWD"
   }
 
-  _JC_PREVIOUS_LASTDIR=""
   _jc_persist_lastdir() {
     if [[ -d "$PWD" ]]; then
-      local lastdir
-      if lastdir=$(_jc_get_lastdir) \
-        && [[ $lastdir != "$_JC_PREVIOUS_LASTDIR" ]]; then
+      # Compare the current PWD to the shell's last known PWD
+      if [[ "$PWD" != "$_JC_PREVIOUS_LASTDIR" ]]; then
         _JC_PREVIOUS_LASTDIR="$PWD"
         printf "%s\n" "$PWD" >"$JC_RESTORE_LAST_DIR_FILE"
       fi
