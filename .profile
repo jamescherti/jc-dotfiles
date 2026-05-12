@@ -119,6 +119,9 @@ unset MANPATH
 export LESS="-X -F -R"
 export PAGER="less"
 
+MAKEFLAGS="-j `nproc` -l `nproc --ignore=1`"
+export MAKEFLAGS
+
 export MANWIDTH=79
 export MANPAGER=less
 export EDITOR=vim
@@ -255,12 +258,11 @@ jc_env_path_prepend() {
 # shellcheck disable=SC1091
 [ -f "$HOME/.profile-after.local" ] && . "$HOME/.profile-after.local"
 
-if test "$BASH" &&\
-   test "$PS1" &&\
-   test -z "$POSIXLY_CORRECT" &&\
-   test "${0#-}" != sh &&\
-   test -r ~/.bashrc
-then
+if test "$BASH" \
+  && test "$PS1" \
+  && test -z "$POSIXLY_CORRECT" \
+  && test "${0#-}" != sh \
+  && test -r ~/.bashrc; then
   if [[ $_JC_BASHRC_LOADED = "" ]]; then
     . ~/.bashrc
   fi
