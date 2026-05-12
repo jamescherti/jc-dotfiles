@@ -119,9 +119,6 @@ unset MANPATH
 export LESS="-X -F -R"
 export PAGER="less"
 
-MAKEFLAGS="-j `nproc` -l `nproc --ignore=1`"
-export MAKEFLAGS
-
 export MANWIDTH=79
 export MANPAGER=less
 export EDITOR=vim

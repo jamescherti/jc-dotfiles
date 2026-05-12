@@ -265,6 +265,13 @@ alias 7z_level9="7z -r -mx 9"
 alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf \
   -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0'
 
+# Scale build concurrency to the hardware thread count and restrict the load
+# average to ensure the environment stays responsive by leaving one core
+# available for other tasks.
+#
+# Alternative to: export MAKEFLAGS="-j `nproc` -l `nproc --ignore=1`"
+alias make='make -j$(nproc) -l$(nproc --ignore=1)'
+
 if command -v colordiff >/dev/null 2>&1; then
   alias diff=colordiff
 fi
