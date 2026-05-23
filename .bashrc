@@ -548,13 +548,20 @@ _jc_better_cd() {
   fi
 
   # Change the directory
-  pushd . >/dev/null || return 1
+  # || true to skip "Permission denied" when the directory is read-only.
+
+  local run_popd=0
+  if ! pushd . >/dev/null; then
+    run_popd=0
+  fi
 
   # Use -- to ensure path is not interpreted as a flag
   builtin cd "${opts[@]}" -- "$path" || errno=1
   if [[ $errno -ne 0 ]]; then
     echo "Error." >&2
-    popd >/dev/null || return 1
+    if [[ $run_popd -ne 0 ]]; then
+      popd >/dev/null || return 1
+    fi
   fi
 
   return "$errno"
