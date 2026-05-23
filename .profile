@@ -35,8 +35,6 @@
 # SOFTWARE.
 #
 
-_JC_PROFILE_LOADED=1
-
 # shellcheck disable=SC1091
 [ -f "$HOME/.profile-before.local" ] && . "$HOME/.profile-before.local"
 

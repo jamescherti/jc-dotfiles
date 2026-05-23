@@ -635,6 +635,8 @@ contrib = !git --no-pager shortlog --summary --numbered --no-merges --email
 # authors who frequently merge branches.
 contrib-merge = !git --no-pager shortlog --summary --numbered --email
 
+gpg = check-gpg -i
+
 [index]
 # Uses a more compact index format. This reduces the size of the index file on
 # disk and speeds up read/write operations.
