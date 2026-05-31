@@ -141,7 +141,7 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 #-------------------------------------------------------------------------------
 # FASD
 #-------------------------------------------------------------------------------
-# Override fasd’s default behavior of cluttering the $HOME directory with its
+# Override fasd's default behavior of cluttering the $HOME directory with its
 # data files by explicitly defining a dedicated subdirectory for its data.
 _FASD_DATA_DIR="$HOME/.fasd_data"
 export _FASD_DATA="$_FASD_DATA_DIR/fasd"
