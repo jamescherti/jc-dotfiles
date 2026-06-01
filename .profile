@@ -138,6 +138,19 @@ fi
 # Mac: Silence the message "Default Interactive shell is now zsh"
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
+# Instruct difftastic to silently exit when it evaluates files with identical
+# content.
+#
+# When Git pipes a 0-byte file (such as your .nosearch) to difftastic, the
+# parser determines there is zero textual difference. By default, difftastic
+# explicitly reports 'No changes.'.
+#
+# Enabling this variable modifies that default behavior:
+# - Difftastic suppresses the text parsing fallback header.
+# - Difftastic suppresses the 'No changes.' output string.
+# - The command exits cleanly without printing to stdout.
+export DFT_SKIP_UNCHANGED=true
+
 #-------------------------------------------------------------------------------
 # FASD
 #-------------------------------------------------------------------------------
