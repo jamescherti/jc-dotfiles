@@ -119,10 +119,10 @@ main() {
 
   rsync "${opts[@]}" "$HOME/"
 
-  # if type -P devemacs &>/dev/null; then
-  #   # Set the core Git editor to devemacs
-  #   git config --global core.editor "devemacs -nw"
-  # fi
+  if type -P devemacs &>/dev/null; then
+    # Set the core Git editor to devemacs
+    git config --global core.editor "devemacs -nw"
+  fi
 
   if type -P difft &>/dev/null; then
     # Set the external diff tool (This handles 'git diff')
