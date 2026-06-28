@@ -47,11 +47,10 @@ LIST_FILES=(
   .bashrc
   .bash_profile
   .inputrc
-  .fdignore
+  .ignore
   .wcalcrc
   .colorgcc
   .gtkrc-2.0
-  .rgignore
   .Xresources
   .alsoftrc
   .ansible-lint_global.yml
