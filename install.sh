@@ -155,6 +155,15 @@ main() {
     git config --global alias.ndiff 'diff'
   fi
 
+  # Legacy
+  rm -f ~/.config/mpv/scripts/autoload.lua
+  rm -f ~/.config/mpv/scripts/delete-file.lua
+  rm -f ~/.config/mpv/scripts/freeze-geometry.lua
+  rm -f ~/.config/mpv/scripts/keep-session.lua
+  rm -f ~/.config/mpv/scripts/pause-indicator.lua
+  rm -f ~/.config/mpv/scripts/regularly-write-watch-later-config.lua
+  rm -f ~/.config/mpv/scripts/show-filename.lua
+
   echo "Success."
 }
 
