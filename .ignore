@@ -1,3 +1,28 @@
+# Version Control
 .git/
 .svn/
 .hg/
+
+# Python Environments & Caching
+__pycache__/
+*.pyc
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Compiled Binaries & Objects
+*.o
+*.a
+*.so
+
+# Emacs Artifacts
+*.elc
+*~
+\#*\#
+/.emacs.d/eln-cache/
+
+# System & Editor Directories
+/.cache/
+/.local/share/Trash/
+/.lightvim.d/var/swap/
+/.lightvim.d/var/undo/
