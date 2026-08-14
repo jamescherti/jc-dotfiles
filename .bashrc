@@ -1062,9 +1062,14 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
   _JC_PREVIOUS_LASTDIR=""
 
   _jc_restore_lastdir() {
-    local lastdir
-    if lastdir=$(_jc_get_lastdir) && [[ -n $lastdir ]]; then
-      cd "$lastdir" >/dev/null || return 1
+    # Do not restore the directory if ncdu_level is defined. This supports the
+    # ncdu command-line tool when the user presses 'b' to open a shell,
+    # preventing the script from overriding the directory ncdu intends to open.
+    if [[ -z "${NCDU_LEVEL+x}" ]]; then
+      local lastdir
+      if lastdir=$(_jc_get_lastdir) && [[ -n $lastdir ]]; then
+        cd "$lastdir" >/dev/null || return 1
+      fi
     fi
 
     # Initialize the tracking variable to the starting directory
