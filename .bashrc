@@ -1082,13 +1082,9 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
       return 0
     fi
 
-    if [[ -d "$PWD" ]]; then
-      _JC_PREVIOUS_LASTDIR="$PWD"
-      printf "%s\n" "$PWD" >"$JC_RESTORE_LAST_DIR_FILE"
-    else
-      echo "_jc_persist_lastdir Error:" \
-        "invalid or non-existent directory: '$PWD'" >&2
-    fi
+    # Remove comment
+    _JC_PREVIOUS_LASTDIR="$PWD"
+    printf "%s\n" "$PWD" >"$JC_RESTORE_LAST_DIR_FILE"
   }
 
   _jc_restore_lastdir
