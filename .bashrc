@@ -1077,14 +1077,16 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
   }
 
   _jc_persist_lastdir() {
+    # Compare the current PWD to the shell's last known PWD in memory first
+    if [[ "$PWD" == "$_JC_PREVIOUS_LASTDIR" ]]; then
+      return 0
+    fi
+
     if [[ -d "$PWD" ]]; then
-      # Compare the current PWD to the shell's last known PWD
-      if [[ "$PWD" != "$_JC_PREVIOUS_LASTDIR" ]]; then
-        _JC_PREVIOUS_LASTDIR="$PWD"
-        printf "%s\n" "$PWD" >"$JC_RESTORE_LAST_DIR_FILE"
-      fi
+      _JC_PREVIOUS_LASTDIR="$PWD"
+      printf "%s\n" "$PWD" >"$JC_RESTORE_LAST_DIR_FILE"
     else
-      echo ".bashrc _jc_persist_lastdir Error:" \
+      echo "_jc_persist_lastdir Error:" \
         "invalid or non-existent directory: '$PWD'" >&2
     fi
   }
