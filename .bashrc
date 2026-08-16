@@ -333,26 +333,26 @@ fix-gpg-tty() {
   fi
 }
 
-if [[ ${JC_FIX_GPG_TTY:-1} -ne 0 ]]; then
-  # Check if running inside tmux or GNU screen
-  if [[ -n "$TMUX" || -n "$STY" ]]; then
-    # Multiplexer detected: hook into PROMPT_COMMAND.
-    #
-    # It must be in the PROMPT_COMMAND if you use tools like tmux, screen, or
-    # frequently detach and reattach to Emacs daemon frames.
-    if [[ $_JC_FIX_GPG_TTY_DONE = "" ]]; then
-      _JC_FIX_GPG_TTY_DONE=1
-      if [[ -z "${PROMPT_COMMAND:-}" ]]; then
-        PROMPT_COMMAND="fix-gpg-tty"
-      else
-        PROMPT_COMMAND="fix-gpg-tty; $PROMPT_COMMAND"
-      fi
-    fi
-  else
-    # Standard terminal detected: run exactly once during startup
-    fix-gpg-tty
-  fi
-fi
+# if [[ ${JC_FIX_GPG_TTY:-1} -ne 0 ]]; then
+#   # Check if running inside tmux or GNU screen
+#   if [[ -n "$TMUX" || -n "$STY" ]]; then
+#     # Multiplexer detected: hook into PROMPT_COMMAND.
+#     #
+#     # It must be in the PROMPT_COMMAND if you use tools like tmux, screen, or
+#     # frequently detach and reattach to Emacs daemon frames.
+#     if [[ $_JC_FIX_GPG_TTY_DONE = "" ]]; then
+#       _JC_FIX_GPG_TTY_DONE=1
+#       if [[ -z "${PROMPT_COMMAND:-}" ]]; then
+#         PROMPT_COMMAND="fix-gpg-tty"
+#       else
+#         PROMPT_COMMAND="fix-gpg-tty; $PROMPT_COMMAND"
+#       fi
+#     fi
+#   else
+#     # Standard terminal detected: run exactly once during startup
+#     fix-gpg-tty
+#   fi
+# fi
 
 #-------------------------------------------------------------------------------
 # PS1
