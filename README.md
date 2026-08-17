@@ -1,12 +1,14 @@
 # jc-dotfiles - James Cherti's Dotfiles
 
 The [jc-dotfiles](https://github.com/jamescherti/jc-dotfiles) repository houses James Cherti's dotfiles and configuration scripts:
+
 * **Shell Configuration (.bashrc, .profile, and .bash_profile):** Optimized Bash shell settings for efficient command execution and interactive sessions.
 * **Terminal Multiplexer (.tmux.conf):** Configuration for Tmux, enhancing terminal session management and productivity.
 * **Readline configuration (.inputrc)**: Inputrc configuration that also allows using Alt-h, Alt-j, Alt-k, and Alt-l as a way to move the cursor.
 * **Other:** .gitconfig (with support for difftastic), ranger, .ignore, .wcalcrc, mpv, picom, feh, and various scripts and configuration files for managing system settings, aliases, and more.
 
 Here are additional dotfiles and configuration files maintained by the same author:
+
 - [jc-dotfiles @GitHub](https://github.com/jamescherti/jc-dotfiles): A collection of UNIX/Linux configuration files. You can either install them directly or use them as inspiration your own dotfiles.
 - [bash-stdops @GitHub](https://github.com/jamescherti/bash-stdops): A collection of Bash helper shell scripts.
 - [jc-gnome-settings](https://github.com/jamescherti/jc-gnome-settings): GNOME customizations that can be applied programmatically.
