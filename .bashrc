@@ -398,7 +398,7 @@ ps1-git-branch() {
     # Slow path fallback: Use the git binary for submodules, worktrees, or
     # detached HEADs
     local branch_name
-    if branch_name=$("git" symbolic-ref --short -q HEAD 2>/dev/null); then
+    if branch_name=$(command git symbolic-ref --short -q HEAD 2>/dev/null); then
       printf '(%s) ' "$branch_name"
     fi
   fi
