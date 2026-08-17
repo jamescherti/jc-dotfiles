@@ -687,7 +687,21 @@ if [[ $JC_FASD -ne 0 ]] && command -v fasd >/dev/null 2>&1; then
       [ -d "$_fasd_ret" ] && cd "$_fasd_ret" || echo "$_fasd_ret"
     fi
   }
-  eval "$(command fasd --init bash-hook bash-ccomp bash-ccomp-install)"
+
+  # This spawns a subshell, executes the fasd binary, captures the output, and
+  # then evaluates it. Doing this on every single startup adds measurable
+  # latency:
+  # eval "$(command fasd --init bash-hook bash-ccomp bash-ccomp-install)"
+  #
+  # Cache the initialization script to a file and source it. You only need to
+  # regenerate the cache if the fasd binary gets updated.
+  _fasd_cache="$HOME/.fasd-init.bash"
+  if [[ ! -s "$_fasd_cache" ]]; then
+    command fasd --init bash-hook bash-ccomp bash-ccomp-install >"$_fasd_cache"
+  fi
+  # shellcheck disable=SC1090
+  source "$_fasd_cache"
+
   alias j="_jc_fasd_cd -d"
 fi
 
