@@ -1129,11 +1129,6 @@ shopt -s cmdhist
 # Save multi-line commands with embedded newlines instead of semicolons.
 shopt -s lithist
 
-# ignoredups: Do not save consecutive duplicates.
-# ignorespace: Do not save lines starting with a space.
-HISTCONTROL=ignoreboth
-HISTCONTROL=ignoredups
-
 # History Option 1:
 # -----------------
 # Why Option 1 (history -a; history -n) is superior:
