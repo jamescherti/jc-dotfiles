@@ -523,7 +523,7 @@ _jc_better_cd() {
   if [[ $# -eq 0 ]]; then
     path="$HOME"
   else
-    path=$(echo "$1" | command sed -e 's/^file:\/\///')
+    path=$(echo "$1" | sed -e 's/^file:\/\///')
     shift
 
     local item
@@ -772,7 +772,7 @@ if [[ "${_JC_FZF:-0}" -ne 0 ]]; then
       |
       # Split input on spaces and newlines, remove duplicates while preserving
       # order, and keep only strings longer than 4 characters
-      command awk 'BEGIN { RS = "[ \t\n]" } length($0) > 4 && !seen[$0]++' \
+      awk 'BEGIN { RS = "[ \t\n]" } length($0) > 4 && !seen[$0]++' \
       |
       # Invoke fzf for case-insensitive exact fuzzy matching, with results shown
       # in reverse order
@@ -884,7 +884,7 @@ if [[ $EUID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
 
   # Display the trash size
   _jc_trash_size() {
-    command awk '{sum += $1} END {print sum}' <(command trash-list --size 2>/dev/null)
+    awk '{sum += $1} END {print sum}' <(command trash-list --size 2>/dev/null)
     return 0
   }
 
@@ -905,7 +905,7 @@ if [[ $EUID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
         return 1
       fi
 
-      size=$(command du -s "$arg" | command awk '{print $1}')
+      size=$(command du -s "$arg" | awk '{print $1}')
       total_files_size=$((total_files_size + size))
 
       count=$(command find "$arg" -type f -o -type l | command wc -l)
