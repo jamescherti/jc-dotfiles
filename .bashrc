@@ -270,7 +270,7 @@ alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf \
 # available for other tasks.
 #
 # Alternative to: export MAKEFLAGS="-j `nproc` -l `nproc --ignore=1`"
-alias make='make -j$(nproc) -l$(nproc --ignore=1)'
+alias make='make -j$(command nproc) -l$(command nproc --ignore=1)'
 
 if command -v colordiff >/dev/null 2>&1; then
   alias diff=colordiff
@@ -312,7 +312,7 @@ if [[ -n "$TERM" ]]; then
   # Disable flow control to prevent Vim from freezing when CTRL-s is pressed.
   # The 'stty -ixon' command disables the XON/XOFF flow control, which is
   # typically triggered by CTRL-s (pause) and CTRL-q (resume) in the terminal.
-  stty -ixon 2>/dev/null
+  command stty -ixon 2>/dev/null
 fi
 
 #-------------------------------------------------------------------------------
@@ -320,7 +320,7 @@ fi
 #-------------------------------------------------------------------------------
 fix-gpg-tty() {
   local current_tty
-  current_tty=$(tty 2>/dev/null) || return
+  current_tty=$(command tty 2>/dev/null) || return
 
   # Only update the agent if the TTY has changed
   if [[ "$GPG_TTY" != "$current_tty" ]]; then
@@ -328,7 +328,7 @@ fix-gpg-tty() {
 
     # This MUST remain active to update the background daemon
     if type -P gpg-connect-agent &>/dev/null; then
-      gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
+      command gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
     fi
   fi
 }
@@ -362,7 +362,7 @@ ps1-git-branch-slow() {
     local branch_name
     # Run the plumbing command directly in the condition to avoid a separate
     # evaluation step
-    if branch_name=$(git symbolic-ref --short -q HEAD 2>/dev/null); then
+    if branch_name=$(command git symbolic-ref --short -q HEAD 2>/dev/null); then
       printf '(%s) ' "$branch_name"
     fi
   fi
@@ -427,7 +427,8 @@ ps1-count-mails-maildir() {
   fi
 }
 
-if command -v tput >/dev/null 2>&1 && [[ $(tput colors 2>/dev/null) -ge 8 ]]; then
+if command -v tput >/dev/null 2>&1 \
+  && [[ $(command tput colors 2>/dev/null) -ge 8 ]]; then
   # shellcheck disable=SC2034
   Color_Off="\[\033[0m\]" # Text Reset
   # shellcheck disable=SC2034
@@ -469,13 +470,13 @@ bg-run() {
 }
 
 kill-gpg-agent() {
-  pkill gpgconf || :
-  pkill gpg-agent || :
-  gpgconf --kill gpg-agent || :
+  command pkill gpgconf || :
+  command pkill gpg-agent || :
+  command gpgconf --kill gpg-agent || :
 }
 
 fix-gpg-agent() {
-  gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
+  command gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
 }
 
 _jc_better_cd() {
@@ -522,7 +523,7 @@ _jc_better_cd() {
   if [[ $# -eq 0 ]]; then
     path="$HOME"
   else
-    path=$(echo "$1" | sed -e 's/^file:\/\///')
+    path=$(echo "$1" | command sed -e 's/^file:\/\///')
     shift
 
     local item
@@ -532,12 +533,12 @@ _jc_better_cd() {
   fi
 
   # Canonicalize path without requirement on path existence
-  path=$(realpath -s -m "$path" 2>/dev/null || echo "$path")
+  path=$(command realpath -s -m "$path" 2>/dev/null || echo "$path")
 
   # Checks
   local errno=0
   if [[ -f "$path" ]]; then
-    path=$(dirname "$path")
+    path=$(command dirname "$path")
   fi
 
   if ! [[ -d "$path" ]]; then
@@ -623,7 +624,7 @@ _jc_xdg_open() {
   done
 
   for item in "$@"; do
-    "$_JS_OPEN_BIN" "$item" &>/dev/null &
+    command "$_JS_OPEN_BIN" "$item" &>/dev/null &
     disown
   done
 
@@ -678,15 +679,15 @@ if [[ $JC_FASD -ne 0 ]] && command -v fasd >/dev/null 2>&1; then
 
   _jc_fasd_cd() {
     if [ $# -le 1 ]; then
-      fasd "$@"
+      command fasd "$@"
     else
       local _fasd_ret
-      _fasd_ret="$(fasd -e 'printf %s' "$@")"
+      _fasd_ret="$(command fasd -e 'printf %s' "$@")"
       [ -z "$_fasd_ret" ] && return
       [ -d "$_fasd_ret" ] && cd "$_fasd_ret" || echo "$_fasd_ret"
     fi
   }
-  eval "$(fasd --init bash-hook bash-ccomp bash-ccomp-install)"
+  eval "$(command fasd --init bash-hook bash-ccomp bash-ccomp-install)"
   alias j="_jc_fasd_cd -d"
 fi
 
@@ -753,15 +754,15 @@ if [[ "${_JC_FZF:-0}" -ne 0 ]]; then
   __tmux_fzf_autocomplete__() {
     # Capture the last 100,000 lines from the tmux scrollback buffer, reverse
     # order, and extract strings
-    tmux capture-pane -pS -100000 \
+    command tmux capture-pane -pS -100000 \
       |
       # Split input on spaces and newlines, remove duplicates while preserving
       # order, and keep only strings longer than 4 characters
-      awk 'BEGIN { RS = "[ \t\n]" } length($0) > 4 && !seen[$0]++' \
+      command awk 'BEGIN { RS = "[ \t\n]" } length($0) > 4 && !seen[$0]++' \
       |
       # Invoke fzf for case-insensitive exact fuzzy matching, with results shown
       # in reverse order
-      fzf --no-sort --exact +i --tac
+      command fzf --no-sort --exact +i --tac
   }
 
   __tmux_fzf_autocomplete_inline__() {
@@ -801,7 +802,7 @@ _jc_confirm_command() {
   fi
 
   local cmd
-  cmd=$(basename "$1")
+  cmd=$(command basename "$1")
   local answer
   read -r -p "Do you really want to run '$cmd'? [y,n] " answer
 
@@ -869,7 +870,7 @@ if [[ $EUID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
 
   # Display the trash size
   _jc_trash_size() {
-    awk '{sum += $1} END {print sum}' <(trash-list --size 2>/dev/null)
+    command awk '{sum += $1} END {print sum}' <(command trash-list --size 2>/dev/null)
     return 0
   }
 
@@ -890,13 +891,13 @@ if [[ $EUID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
         return 1
       fi
 
-      size=$(du -s "$arg" | awk '{print $1}')
+      size=$(command du -s "$arg" | command awk '{print $1}')
       total_files_size=$((total_files_size + size))
 
-      count=$(find "$arg" -type f -o -type l | wc -l)
+      count=$(command find "$arg" -type f -o -type l | command wc -l)
       total_files=$((total_files + count))
 
-      find "$arg" -type f -o -type l
+      command find "$arg" -type f -o -type l
     done
 
     echo
@@ -951,7 +952,7 @@ if [[ $EUID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
   }
 
   _trash_empty_wrapper() {
-    trash-list --size | sort
+    command trash-list --size | command sort
     local ANSWER
     read -r -p "Empty the trash? (y,n) " ANSWER
     if [[ "$ANSWER" != "y" ]]; then
@@ -1003,7 +1004,7 @@ if [[ "${JC_EMACS_INTEGRATION:-0}" -ne 0 ]]; then
 
     clear() {
       vterm_printf "51;Evterm-clear-scrollback"
-      tput clear
+      command tput clear
     }
   fi
 
@@ -1027,11 +1028,11 @@ fi
 #-------------------------------------------------------------------------------
 _jc_screen_auto_attach() {
   if [[ -z "${STY}" ]]; then
-    if screen -ls >/dev/null 2>&1; then
-      screen -rx
+    if command screen -ls >/dev/null 2>&1; then
+      command screen -rx
       return $?
     else
-      screen
+      command screen
       return $?
     fi
   else
@@ -1049,7 +1050,7 @@ alias sc='_jc_screen_auto_attach'
 if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
   _jc_get_lastdir() {
     local lastdir
-    if lastdir=$(head -n 1 "$JC_RESTORE_LAST_DIR_FILE" 2>/dev/null) \
+    if lastdir=$(command head -n 1 "$JC_RESTORE_LAST_DIR_FILE" 2>/dev/null) \
       && [[ -d "$lastdir" ]]; then
       printf "%s\n" "$lastdir"
     else
