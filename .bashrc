@@ -405,26 +405,24 @@ ps1-git-branch() {
 }
 
 ps1-count-mails-maildir() {
-  if [[ $JC_PS1_MAILDIR -ne 0 ]] && [[ $JC_PS1_MAILDIR_PATH != "" ]]; then
-    local num_mails=0
-    local subdir
-
-    for subdir in cur new; do
-      local maildir="$JC_PS1_MAILDIR_PATH/$subdir"
-      if [[ -d "$maildir" ]]; then
-        # Expand the directory contents into an array
-        local files=("$maildir"/*)
-
-        # If the directory is empty, Bash leaves the literal asterisk string.
-        # We test if the first array element actually exists as a file.
-        if [[ -e "${files[0]}" ]]; then
-          num_mails=$((num_mails + ${#files[@]}))
+  if [[ $JC_PS1_MAILDIR -ne 0 ]] && [[ "$JC_PS1_MAILDIR_PATH" != "" ]]; then
+    # The Maildir specification dictates that unread messages reside exclusively
+    # in the 'new/' subdirectory.
+    local maildir="$JC_PS1_MAILDIR_PATH/new"
+    if [[ -d "$maildir" ]]; then
+      local file
+      # Use a loop with an immediate break to achieve O(1) time and memory
+      # complexity. This avoids expanding thousands of files into an array if
+      # the mailbox is large.
+      for file in "$maildir"/*; do
+        # If the directory is empty, Bash evaluates the glob as a literal
+        # asterisk. Checking for existence (-e) or a symbolic link (-L) prevents
+        # false positives.
+        if [[ -e "$file" || -L "$file" ]]; then
+          printf '[Unread mail] '
+          break
         fi
-      fi
-    done
-
-    if ((num_mails > 0)); then
-      printf '[Mails:%d] ' "$num_mails"
+      done
     fi
   fi
 }
