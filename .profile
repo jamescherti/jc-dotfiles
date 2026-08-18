@@ -151,6 +151,8 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 # - The command exits cleanly without printing to stdout.
 export DFT_SKIP_UNCHANGED=true
 
+export PYLINTRC="$HOME/.pylintrc"
+
 #-------------------------------------------------------------------------------
 # FASD
 #-------------------------------------------------------------------------------
@@ -272,6 +274,7 @@ if test "$BASH" \
   && test "${0#-}" != sh \
   && test -r ~/.bashrc; then
   if [[ $_JC_BASHRC_LOADED = "" ]]; then
+    # shellcheck disable=SC1090
     . ~/.bashrc
   fi
 fi
