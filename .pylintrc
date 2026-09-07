@@ -110,22 +110,21 @@ disable=
     format,
     # We anticipate #3512 where it will become optional
     fixme,
-    consider-using-assignment-expr,
-    # CUSTOM JC --> BEGIN
-    consider-using-any-or-all,
-    consider-using-namedtuple-or-dataclass,
-    consider-using-with,
-    consider-using-f-string,
-    too-many-ancestors,
-    overlapping-except,
-    no-else-return,
-    else-if-used,
-    bad-builtin,
-    simplifiable-if-statement,
-    use-set-for-membership,
-    consider-alternative-union-syntax,
-    unnecessary-lambda-assignment
-    # CUSTOM JC --> END
+    consider-using-assignment-expr
+# # CUSTOM JC --> BEGIN
+# consider-using-any-or-all,
+# consider-using-with,
+# consider-using-f-string,
+# too-many-ancestors,
+# overlapping-except,
+# no-else-return,
+# else-if-used,
+# bad-builtin,
+# simplifiable-if-statement,
+# use-set-for-membership,
+# consider-alternative-union-syntax,
+# unnecessary-lambda-assignment
+# # CUSTOM JC --> END
 
 [REPORTS]
 
