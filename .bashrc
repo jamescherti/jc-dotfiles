@@ -324,12 +324,16 @@ fix-gpg-tty() {
 
   # Only update the agent if the TTY has changed
   if [[ "$GPG_TTY" != "$current_tty" ]]; then
+    # Fix:
+    # gpg: signing failed: Inappropriate ioctl for device [GNUPG:] FAILURE sign
+    # gpg: signing failed: Inappropriate ioctl for device fatal: failed to write
+    # commit object
     export GPG_TTY="$current_tty"
 
     # This MUST remain active to update the background daemon
-    if type -P gpg-connect-agent &>/dev/null; then
-      command gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
-    fi
+    # if type -P gpg-connect-agent &>/dev/null; then
+    #   command gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
+    # fi
   fi
 }
 
