@@ -332,7 +332,7 @@ fix-gpg-tty() {
 
     # When using tmux, ensure gpg-agent updates its TTY when the session is
     # reattached
-    if -n "$TMUX" && type -P gpg-connect-agent &>/dev/null; then
+    if [[ -n "$TMUX" ]] && type -P gpg-connect-agent &>/dev/null; then
       command gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
     fi
   fi
