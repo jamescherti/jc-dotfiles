@@ -330,10 +330,11 @@ fix-gpg-tty() {
     # commit object
     export GPG_TTY="$current_tty"
 
-    # This MUST remain active to update the background daemon
-    # if type -P gpg-connect-agent &>/dev/null; then
-    #   command gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
-    # fi
+    # When using tmux, ensure gpg-agent updates its TTY when the session is
+    # reattached
+    if -n "$TMUX" && type -P gpg-connect-agent &>/dev/null; then
+      command gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
+    fi
   fi
 }
 
