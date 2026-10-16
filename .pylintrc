@@ -40,7 +40,7 @@ load-plugins=
 
 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
 # number of processors available to use.
-jobs=1
+jobs=0
 
 # When enabled, pylint would attempt to guess common misconfiguration and emit
 # user-friendly hints instead of false-positive error messages.
@@ -110,7 +110,7 @@ disable=
     format,
     # We anticipate #3512 where it will become optional
     fixme,
-    consider-using-assignment-expr
+    consider-using-assignment-expr,
 # # CUSTOM JC --> BEGIN
 # consider-using-any-or-all,
 # consider-using-with,
