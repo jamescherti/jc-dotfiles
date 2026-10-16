@@ -52,8 +52,7 @@ select = [
 ]
 
 # select = [...]  # See the Default Rules page for the full listing.
-ignore = []
-
+#
 # The Ruff formatter intentionally conflicts with rule ISC001 (Implicit String
 # Concatenation). While you don't currently have the ISC rule class enabled in
 # your select list, explicitly ignoring ISC001 is standard practice to prevent
