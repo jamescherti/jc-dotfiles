@@ -36,15 +36,51 @@ indent-width = 4
 target-version = "py311"
 
 [lint]
+select = [
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "F",   # pyflakes
+  "I",   # isort
+  "B",   # flake8-bugbear
+  "UP",  # pyupgrade (enforces PEP 585, PEP 604, and modern exceptions)
+  "D",   # pydocstyle (enforces PEP 257)
+  "PTH", # flake8-use-pathlib (enforces pathlib over os.path and open)
+  "C4",  # flake8-comprehensions
+  "SIM", # flake8-simplify
+  "RUF", # Ruff-specific rules
+]
+
 # select = [...]  # See the Default Rules page for the full listing.
 ignore = []
 
+# The Ruff formatter intentionally conflicts with rule ISC001 (Implicit String
+# Concatenation). While you don't currently have the ISC rule class enabled in
+# your select list, explicitly ignoring ISC001 is standard practice to prevent
+# terminal warnings and format loops if you ever expand your rule set.
+ignore = [
+  "ISC001", # Conflicts with Ruff formatter
+]
+
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
-unfixable = []
+
+# Prevent automatic removal of unused imports and variables during active development
+#
+# If you leave unfixable = [], running ruff check --fix (or formatting on save
+# in your editor) will aggressively delete imports and variables that you are
+# currently writing but haven't used yet. Uncommenting this prevents the
+# auto-fixer from destroying your work-in-progress code while debugging.
+unfixable = [
+  "F401",
+  "F841",
+]
 
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[\\p{XID_Continue}]*[\\p{XID_Continue}--_]+?))$"
+
+[lint.pydocstyle]
+# Enforce PEP 257 compliance for modules, classes, and functions.
+convention = "pep257"
 
 [format]
 # Like Black, use double quotes for strings.
