@@ -48,7 +48,7 @@ select = [
   "C4",  # flake8-comprehensions
   "SIM", # flake8-simplify
   "RUF", # Ruff-specific rules
-  "PL",  # Pylint rules
+  # "PL",  # Pylint rules
 ]
 
 # select = [...]  # See the Default Rules page for the full listing.
