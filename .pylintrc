@@ -42,10 +42,6 @@ load-plugins=
 # number of processors available to use.
 jobs=0
 
-# When enabled, pylint would attempt to guess common misconfiguration and emit
-# user-friendly hints instead of false-positive error messages.
-# suggestion-mode=yes
-
 # Allow loading of arbitrary C extensions. Extensions are imported into the
 # active Python interpreter and may run arbitrary code.
 unsafe-load-any-extension=no
@@ -56,7 +52,7 @@ unsafe-load-any-extension=no
 extension-pkg-allow-list=
 
 # Minimum supported python version
-py-version = 3.7.2
+py-version = 3.11.0
 
 # Control the amount of potential inferred values when inferring a single
 # object. This can help the performance when dealing with large functions or
@@ -86,9 +82,18 @@ clear-cache-post-run=no
 # either give multiple identifier separated by comma (,) or put this option
 # multiple time (only on the command line, not in the configuration file where
 # it should appear only once). See also the "--disable" option for examples.
+#
+# Added:
+# ------
+# - deprecated-typing-alias: Enforces the use of built-in collection types
+#   (list, dict) instead of the typing module aliases (PEP 585).
+# - consider-alternative-union-syntax: Enforces the use of A | B and T | None
+#   instead of Union[A, B] and Optional[T] (PEP 604).
 enable=
     use-symbolic-message-instead,
     useless-suppression,
+    deprecated-typing-alias,
+    consider-alternative-union-syntax,
 
 # Disable the message, report, category or checker with the given id(s). You
 # can either give multiple identifiers separated by comma (,) or put this
@@ -103,7 +108,6 @@ enable=
 disable=
     attribute-defined-outside-init,
     invalid-name,
-    missing-docstring,
     protected-access,
     too-few-public-methods,
     # handled by black
@@ -111,20 +115,6 @@ disable=
     # We anticipate #3512 where it will become optional
     fixme,
     consider-using-assignment-expr,
-# # CUSTOM JC --> BEGIN
-# consider-using-any-or-all,
-# consider-using-with,
-# consider-using-f-string,
-# too-many-ancestors,
-# overlapping-except,
-# no-else-return,
-# else-if-used,
-# bad-builtin,
-# simplifiable-if-statement,
-# use-set-for-membership,
-# consider-alternative-union-syntax,
-# unnecessary-lambda-assignment
-# # CUSTOM JC --> END
 
 [REPORTS]
 
@@ -173,7 +163,8 @@ notes=FIXME,XXX,TODO
 
 [SIMILARITIES]
 
-# Minimum lines number of a similarity.
+# Minimum lines number of a similarity. Setting it to 0 will disable the check,
+# but you should use disable=duplicate-code instead.
 min-similarity-lines=6
 
 # Ignore comments when computing similarities.
@@ -216,7 +207,7 @@ redefining-builtins-modules=six.moves,past.builtins,future.builtins,builtins,io
 [FORMAT]
 
 # Maximum number of characters on a single line.
-max-line-length=79
+max-line-length=88
 
 # Regexp for a line that is allowed to be longer than the limit.
 ignore-long-lines=^\s*(# )?<?https?://\S+>?$
@@ -393,7 +384,7 @@ ignore-on-opaque-inference=yes
 # of finding the hint is based on edit distance.
 missing-member-hint=yes
 
-# The minimum edit distance a name should have in order to be considered a
+# The maximum edit distance a name should have in order to be considered a
 # similar match for a missing member name.
 missing-member-hint-distance=1
 
@@ -408,14 +399,13 @@ missing-member-max-choices=1
 spelling-dict=
 
 # List of comma separated words that should not be checked.
-spelling-ignore-words=
+spelling-ignore-words=subpkg,MyClass
 
 # List of comma separated words that should be considered directives if they
 # appear and the beginning of a comment and should not be checked.
 spelling-ignore-comment-directives=fmt: on,fmt: off,noqa:,noqa,nosec,isort:skip,mypy:,pragma:,# noinspection
 
 # A path to a file that contains private dictionary; one word per line.
-# spelling-private-dict-file=.pyenchant_pylint_custom_dict.txt
 spelling-private-dict-file=custom_dict.txt
 
 # Tells whether to store unknown words to indicated private dictionary in
@@ -430,29 +420,27 @@ max-spelling-suggestions=2
 
 # Maximum number of arguments for function / method
 max-args = 9
-# max-args=10
 
 # Maximum number of locals for function / method body
 max-locals = 19
-# max-locals=25
 
 # Maximum number of return / yield for function / method body
 max-returns=11
 
 # Maximum number of branch for function / method body
 max-branches = 20
-# max-branches=27
 
 # Maximum number of statements in function / method body
 max-statements = 50
-# max-statements=100
 
 # Maximum number of attributes for a class (see R0902).
 max-attributes=11
 
 # Maximum number of statements in a try-block
 max-try-statements = 7
-# min-public-methods=2
+
+# Maximum number of positional arguments (see R0917).
+max-positional-arguments = 12
 
 [CLASSES]
 
