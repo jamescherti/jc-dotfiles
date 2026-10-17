@@ -87,6 +87,7 @@ clear-cache-post-run=no
 # ------
 # - deprecated-typing-alias: Enforces the use of built-in collection types
 #   (list, dict) instead of the typing module aliases (PEP 585).
+#
 # - consider-alternative-union-syntax: Enforces the use of A | B and T | None
 #   instead of Union[A, B] and Optional[T] (PEP 604).
 enable=
