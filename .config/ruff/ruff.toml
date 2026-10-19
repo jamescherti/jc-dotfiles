@@ -37,24 +37,26 @@ target-version = "py311"
 
 [lint]
 select = [
-  "E",   # pycodestyle errors
-  "W",   # pycodestyle warnings
-  "F",   # pyflakes
-  "I",   # isort
-  "B",   # flake8-bugbear
-  "UP",  # pyupgrade
-  "D",   # pydocstyle
-  "PTH", # flake8-use-pathlib
-  "C4",  # flake8-comprehensions
-  "SIM", # flake8-simplify
-  "RUF", # Ruff-specific rules
-  "PL",  # Pylint rules
-  "A",   # flake8-builtins
-  "S",   # flake8-bandit
-  "RET", # flake8-return
-  "TRY", # tryceratops
-  "PT",  # flake8-pytest-style
-  "TCH", # flake8-type-checking
+  "ALL",
+  # "E",   # pycodestyle errors
+  # "W",   # pycodestyle warnings
+  # "F",   # pyflakes
+  # "I",   # isort
+  # "B",   # flake8-bugbear
+  # "UP",  # pyupgrade
+  # "D",   # pydocstyle
+  # "PTH", # flake8-use-pathlib
+  # "C4",  # flake8-comprehensions
+  # "SIM", # flake8-simplify
+  # "RUF", # Ruff-specific rules
+  # "PL",  # Pylint rules
+  # # TODO Python projects
+  # "A",   # flake8-builtins
+  # "S",   # flake8-bandit
+  # "RET", # flake8-return
+  # "TRY", # tryceratops
+  # "PT",  # flake8-pytest-style
+  # "TCH", # flake8-type-checking
 ]
 
 # select = [...]  # See the Default Rules page for the full listing.
@@ -64,7 +66,19 @@ select = [
 # your select list, explicitly ignoring ISC001 is standard practice to prevent
 # terminal warnings and format loops if you ever expand your rule set.
 ignore = [
-  "ISC001", # Conflicts with Ruff formatter
+  "E501",    # Line too long (handled by the formatter)
+  "ISC001",  # Prevent conflicts with the Ruff formatter
+  "PLW2901", # For loop variable `pattern` overwritten by assignment target
+  "PLR0915", # Pylint rules: Too many statements
+  "PLR0912", # Pylint rules: Too many branches
+  "TRY003",  # Avoid specifying long messages outside the exception class
+
+  # warning: The following rule may cause conflicts when used with the
+  # formatter: missing-trailing-comma (COM812). To avoid unexpected
+  # behavior, we recommend disabling this rule, either by removing it from the
+  # lint.select or lint.extend-select configuration, or adding it to the
+  # lint.ignore configuration.
+  "COM812",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
@@ -76,13 +90,16 @@ fixable = ["ALL"]
 # in your editor) will aggressively delete imports and variables that you are
 # currently writing but haven't used yet. Uncommenting this prevents the
 # auto-fixer from destroying your work-in-progress code while debugging.
-unfixable = [
-  "F401",
-  "F841",
-]
+# unfixable = [
+#   "F401",   # Prevent auto-fixer from deleting unused imports during development
+#   "F841",   # Prevent auto-fixer from deleting unused variables during development
+# ]
 
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[\\p{XID_Continue}]*[\\p{XID_Continue}--_]+?))$"
+
+# Allow unused variables when underscore-prefixed.
+# dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [lint.pydocstyle]
 # Enforce PEP 257 compliance for modules, classes, and functions.
