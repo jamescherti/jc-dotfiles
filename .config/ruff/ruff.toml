@@ -73,12 +73,71 @@ ignore = [
   "PLR0912", # Pylint rules: Too many branches
   "TRY003",  # Avoid specifying long messages outside the exception class
 
+  # TODO: Set it to 8 to 10
+  # ----
+  # (Too many arguments / positional arguments: 8 > 5): 5 is overly restrictive
+  # for functions with multiple options or dependency injections. Set the
+  # threshold to 8 or 10.
+  "PLR0913",
+  "PLR0917",
+
+  # TODO
+  # ----
+  # C901 (Cyclomatic complexity): 10 flags almost any non-trivial function.
+  # Setting it to 15 is standard industry practice. (Note: process_websites at
+  # complexity 25 is still a strong sign the function needs refactoring).
+
   # warning: The following rule may cause conflicts when used with the
   # formatter: missing-trailing-comma (COM812). To avoid unexpected
   # behavior, we recommend disabling this rule, either by removing it from the
   # lint.select or lint.extend-select configuration, or adding it to the
   # lint.ignore configuration.
   "COM812",
+
+  # What it demands: Forbids writing raise ValueError(f"Invalid {x}") and forces
+  # you to do msg = f"Invalid {x}" followed by raise ValueError(msg).
+  #
+  # Why it's useless: It originated from an old Python optimization idea
+  # regarding traceback readability and string duplication in byte code. In
+  # modern Python, it just forces two lines of boilerplate where one line is
+  # standard and readable.
+  "EM101",
+  "EM102",
+
+  # FIX002, TD002, TD003 (flake8-fixme / flake8-todos): Disable.
+  #
+  # What it demands: Flags any # TODO, requiring you to delete it (FIX002), tag
+  # an author (TD002), or link an issue tracker link like a Jira/GitHub ticket
+  # (TD003).
+  #
+  # Why it's useless: It punishes standard development notes and clutters
+  # internal scratchpads. Linters shouldn't block local development or CI just
+  # because someone left a TODO.
+  "FIX002",
+  "TD002",
+  "TD003"
+
+  # (subprocess untrusted input): Disable.
+  # Bandit's own authors acknowledge that S603 is a "low-confidence" catch-all.
+  # It triggers on almost any standard subprocess.run(["cmd", arg]) call even
+  # when passing a safe list of arguments without shell=True. It produces
+  # overwhelming false-positive noise.
+  "S603",
+
+  # S607 (Partial executable path): Disable (or ignore per project).
+  #
+  # Demands that you specify the full path (e.g., /usr/bin/git) instead of
+  # relying on $PATH (git). This makes code brittle and non-portable across
+  # operating systems, virtualenvs, or containers.
+  "S607",
+
+  # (Consider moving statement to an else block): Disable.
+  #
+  # Pushes an overly dogmatic "keep only the throwing statement in try" pattern.
+  # In practice, this introduces unnecessary indentation, separates
+  # error-handling logic, and often turns clean early return statements into
+  # convoluted try / except / else branches.
+  "TRY300",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
