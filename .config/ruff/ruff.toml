@@ -115,7 +115,7 @@ ignore = [
   # because someone left a TODO.
   "FIX002",
   "TD002",
-  "TD003"
+  "TD003",
 
   # (subprocess untrusted input): Disable.
   # Bandit's own authors acknowledge that S603 is a "low-confidence" catch-all.
