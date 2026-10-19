@@ -42,13 +42,19 @@ select = [
   "F",   # pyflakes
   "I",   # isort
   "B",   # flake8-bugbear
-  "UP",  # pyupgrade (enforces PEP 585, PEP 604, and modern exceptions)
-  "D",   # pydocstyle (enforces PEP 257)
-  "PTH", # flake8-use-pathlib (enforces pathlib over os.path and open)
+  "UP",  # pyupgrade
+  "D",   # pydocstyle
+  "PTH", # flake8-use-pathlib
   "C4",  # flake8-comprehensions
   "SIM", # flake8-simplify
   "RUF", # Ruff-specific rules
-  # "PL",  # Pylint rules
+  "PL",  # Pylint rules
+  "A",   # flake8-builtins
+  "S",   # flake8-bandit
+  "RET", # flake8-return
+  "TRY", # tryceratops
+  "PT",  # flake8-pytest-style
+  "TCH", # flake8-type-checking
 ]
 
 # select = [...]  # See the Default Rules page for the full listing.
