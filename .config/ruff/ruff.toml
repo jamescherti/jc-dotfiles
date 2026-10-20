@@ -138,6 +138,9 @@ ignore = [
   # error-handling logic, and often turns clean early return statements into
   # convoluted try / except / else branches.
   "TRY300",
+
+  # ...is too complex.
+  "C901",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
