@@ -163,12 +163,6 @@ esac
 # can be disabled with shopt -u hostcomplete.
 shopt -u hostcomplete &>/dev/null
 
-# Enable case-insensitive pattern matching for conditional commands, pattern
-# substitution, and programmable completion. When nocasematch is set, pattern
-# matching in case statements, [[ ... ]] conditions, and pattern substitutions
-# becomes case-insensitive.
-shopt -s nocasematch &>/dev/null
-
 # Autocorrect minor typos in 'cd' commands. The cdspell option allows Bash to
 # automatically correct minor spelling errors when using cd. For instance, if
 # you type cd /usr/local, Bash interpret it as cd /usr/local.
