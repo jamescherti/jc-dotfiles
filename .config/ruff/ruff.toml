@@ -141,6 +141,9 @@ ignore = [
 
   # ...is too complex.
   "C901",
+
+  # Too many return statements
+  "PLR0911",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
