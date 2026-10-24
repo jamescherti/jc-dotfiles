@@ -1,3 +1,39 @@
+#!/usr/bin/env bash
+#
+# Author: James Cherti
+# URL: https://github.com/jamescherti/jc-dotfiles
+#
+# Description:
+# ------------
+# Ruff configuration.
+#
+# License:
+# --------
+#
+# Distributed under terms of the MIT license.
+#
+# Copyright (C) 2004-2026 James Cherti
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+#
 # Exclude a variety of commonly ignored directories.
 exclude = [
     ".bzr",
@@ -36,56 +72,21 @@ indent-width = 4
 target-version = "py311"
 
 [lint]
+# select = [...]  # See the Default Rules page for the full listing.
 select = [
   "ALL",
-  # "E",   # pycodestyle errors
-  # "W",   # pycodestyle warnings
-  # "F",   # pyflakes
-  # "I",   # isort
-  # "B",   # flake8-bugbear
-  # "UP",  # pyupgrade
-  # "D",   # pydocstyle
-  # "PTH", # flake8-use-pathlib
-  # "C4",  # flake8-comprehensions
-  # "SIM", # flake8-simplify
-  # "RUF", # Ruff-specific rules
-  # "PL",  # Pylint rules
-  # # TODO Python projects
-  # "A",   # flake8-builtins
-  # "S",   # flake8-bandit
-  # "RET", # flake8-return
-  # "TRY", # tryceratops
-  # "PT",  # flake8-pytest-style
-  # "TCH", # flake8-type-checking
 ]
 
-# select = [...]  # See the Default Rules page for the full listing.
-#
-# The Ruff formatter intentionally conflicts with rule ISC001 (Implicit String
-# Concatenation). While you don't currently have the ISC rule class enabled in
-# your select list, explicitly ignoring ISC001 is standard practice to prevent
-# terminal warnings and format loops if you ever expand your rule set.
 ignore = [
   "E501",    # Line too long (handled by the formatter)
   "ISC001",  # Prevent conflicts with the Ruff formatter
   "PLW2901", # For loop variable `pattern` overwritten by assignment target
-  "PLR0915", # Pylint rules: Too many statements
-  "PLR0912", # Pylint rules: Too many branches
   "TRY003",  # Avoid specifying long messages outside the exception class
 
-  # TODO: Set it to 8 to 10
-  # ----
-  # (Too many arguments / positional arguments: 8 > 5): 5 is overly restrictive
-  # for functions with multiple options or dependency injections. Set the
-  # threshold to 8 or 10.
-  "PLR0913",
-  "PLR0917",
+  "PLR0915", # Pylint rules: Too many statements
+  "PLR0912", # Pylint rules: Too many branches
 
-  # TODO
-  # ----
-  # C901 (Cyclomatic complexity): 10 flags almost any non-trivial function.
-  # Setting it to 15 is standard industry practice. (Note: process_websites at
-  # complexity 25 is still a strong sign the function needs refactoring).
+  "PLR0911", # Too many return statements
 
   # warning: The following rule may cause conflicts when used with the
   # formatter: missing-trailing-comma (COM812). To avoid unexpected
@@ -138,23 +139,16 @@ ignore = [
   # error-handling logic, and often turns clean early return statements into
   # convoluted try / except / else branches.
   "TRY300",
-
-  # ...is too complex.
-  "C901",
-
-  # Too many return statements
-  "PLR0911",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
 
-# Prevent automatic removal of unused imports and variables during active development
+# Prevent automatic removal of unused imports and variables during active
+# development If you leave unfixable = [], running ruff check --fix (or
+# formatting on save in your editor) will aggressively delete imports and
+# variables that you are currently writing but haven't used yet.
 #
-# If you leave unfixable = [], running ruff check --fix (or formatting on save
-# in your editor) will aggressively delete imports and variables that you are
-# currently writing but haven't used yet. Uncommenting this prevents the
-# auto-fixer from destroying your work-in-progress code while debugging.
 # unfixable = [
 #   "F401",   # Prevent auto-fixer from deleting unused imports during development
 #   "F841",   # Prevent auto-fixer from deleting unused variables during development
@@ -163,8 +157,13 @@ fixable = ["ALL"]
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[\\p{XID_Continue}]*[\\p{XID_Continue}--_]+?))$"
 
-# Allow unused variables when underscore-prefixed.
-# dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+[lint.pylint]
+max-args = 10
+max-positional-args = 10
+max-returns = 10
+
+[lint.mccabe]
+max-complexity = 15
 
 [lint.pydocstyle]
 # Enforce PEP 257 compliance for modules, classes, and functions.
