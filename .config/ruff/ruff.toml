@@ -33,6 +33,10 @@
 # SOFTWARE.
 #
 
+# Centralize the cache directory to prevent Ruff from scattering .ruff_cache
+# folders across individual project directories and cluttering the filesystem.
+cache-dir = "~/.cache/ruff"
+
 #
 # Exclude a variety of commonly ignored directories.
 exclude = [

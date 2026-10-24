@@ -153,6 +153,10 @@ export DFT_SKIP_UNCHANGED=true
 
 export PYLINTRC="$HOME/.pylintrc"
 
+# Centralize the cache directory to prevent Ruff from scattering .ruff_cache
+# folders across individual project directories and cluttering the filesystem.
+export RUFF_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ruff"
+
 #-------------------------------------------------------------------------------
 # FASD
 #-------------------------------------------------------------------------------
