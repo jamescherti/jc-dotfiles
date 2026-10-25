@@ -1,5 +1,8 @@
 # jc-dotfiles - James Cherti's Dotfiles
 
+- Author: James Cherti <[https://www.jamescherti.com/](https://www.jamescherti.com/)>
+- License: MIT
+
 The [jc-dotfiles](https://github.com/jamescherti/jc-dotfiles) repository houses James Cherti's dotfiles and configuration scripts:
 
 * **Shell Configuration (.bashrc, .profile, and .bash_profile):** Optimized Bash shell settings for efficient command execution and interactive sessions.
