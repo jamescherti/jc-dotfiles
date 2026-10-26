@@ -50,13 +50,15 @@ threads = 0
 # Allocate up to 5GB as the amount of memory consumed by each thread in
 # git-pack-objects for pack window memory when no limit is specified on the
 # command line. This enhances Git's efficiency for large repositories.
-windowMemory = 5g
+# TODO:	Potentially very high RAM consumption
+# windowMemory = 5g
 
 # The packSizeLimit configuration in Git determines the maximum size of a
 # packfile that Git will generate. A packfile is a file that contains a
 # collection of objects, such as commits, trees, and blobs, in a compressed
 # format.
-packSizeLimit = 2g
+# TODO Can reduce packing efficiency
+# packSizeLimit = 2g
 
 [repack]
 # Groups objects into isolated "islands" based on branch or tag references
@@ -92,6 +94,8 @@ writeCommitGraph = true
 auto = 8000
 
 [core]
+multiPackIndex = true
+
 # Enables reading the commit-graph file. This speeds up commit traversal
 # operations like 'git log' and branch calculations by avoiding the need to
 # parse individual commit objects.
@@ -116,7 +120,12 @@ attributesfile = ~/.gitattributes.global
 
 # Enables the built-in file system monitor. Git will ask the OS for a list of
 # changed files instead of scanning the entire directory tree.
-fsmonitor = true
+#
+# TODO In large repositories, the built-in filesystem monitor speeds up git
+# status. However, in small repositories, the IPC overhead of querying the
+# daemon (or spawning it on the first command) can make git status slightly
+# slower than a direct lstat() walk.
+# fsmonitor = true
 
 # While disabling this avoids stale results with certain external tools,
 # enabling it is strictly required for maximum 'git status' performance. It
@@ -224,13 +233,15 @@ noPrefix = true
 # Configures Git to detect file copies in addition to renames during diff
 # generation. This helps identify files that were copied, improving the accuracy
 # of the diff output for changes involving file copying.
-renames = copies
+# TODO High for large changesets
+# renames = copies
 
 # Sets the maximum number of renames to detect in a diff. When there are more
 # than this number of renames, Git will stop trying to detect renames to avoid
 # performance degradation. The default is 1000, but increasing it can help in
 # repos with many file renames.
-renameLimit = 2400
+# TODO Potentially high CPU usage
+# renameLimit = 2400
 
 [rerere]
 # The "reuse recorded resolution" (rerere) feature, which helps Git
@@ -397,12 +408,16 @@ fsckObjects = false
 # - Use "skipping" when the CPU is your bottleneck. It reduces calculation time
 #   by jumping through history, but often results in downloading larger,
 #   redundant packfiles over the network.
-negotiationAlgorithm = skipping
+# TODO This trades network bandwidth for lower CPU usage. On slower connections,
+# downloading redundant objects can make git fetch take longer overall compared
+# to consecutive.
+# negotiationAlgorithm = skipping
 
 # Updates the commit-graph immediately after fetching from a remote. This
 # ensures that operations involving newly fetched commits are fast right away,
 # without waiting for the next garbage collection cycle.
-writeCommitGraph = true
+# TODO:	Let gc or git-maintenance handle commit-graph updates instead of every fetch
+# writeCommitGraph = true
 
 # Validates all objects during fetch to ensure no corrupted or malformed data is
 # introduced into the local repository.
@@ -486,7 +501,8 @@ statusHints = false
 #   (e.g., refactoring, dependency updates)
 # - Avoiding noisy commits that can distract from meaningful line-by-line
 #   changes and authorship.
-ignoreRevsFile = .git-blame-ignore-revs
+# TODO
+# ignoreRevsFile = .git-blame-ignore-revs
 
 # [color "branch"]
 # Uses brighter colors for improved readability and visual comfort
