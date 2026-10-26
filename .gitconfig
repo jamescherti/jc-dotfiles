@@ -51,7 +51,7 @@ threads = 0
 # git-pack-objects for pack window memory when no limit is specified on the
 # command line. This enhances Git's efficiency for large repositories.
 # TODO:	Potentially very high RAM consumption
-windowMemory = 256m
+# windowMemory = 256m
 
 # The packSizeLimit configuration in Git determines the maximum size of a
 # packfile that Git will generate. A packfile is a file that contains a
@@ -226,7 +226,8 @@ mnemonicPrefix = true
 
 # Disables the default prefix (e.g., 'a/' and 'b/') in diff output, showing file
 # names directly instead
-noPrefix = true
+# TODO Disabled for patch compatibility.
+# noPrefix = true
 
 # Configures Git to detect file copies in addition to renames during diff
 # generation. This helps identify files that were copied, improving the accuracy
