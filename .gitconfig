@@ -440,7 +440,10 @@ prune = true
 # removed from the remote repository during a 'git fetch'. This ensures that #
 # your local tags list is up-to-date and prevents the accumulation of tags that
 # # no longer exist on the remote.
-pruneTags = true
+# TODO This is primarily a data-preservation concern, not a speed concern. I
+# would remove it from the global configuration unless that behavior is
+# intentional.
+# pruneTags = true
 
 [receive]
 # Verifies the integrity of all objects during data transfer operations like
