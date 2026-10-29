@@ -696,10 +696,25 @@ if [[ $JC_FASD -ne 0 ]] && command -v fasd >/dev/null 2>&1; then
   # regenerate the cache if the fasd binary gets updated.
   _fasd_cache="$HOME/.fasd-init.bash"
   if [[ ! -s "$_fasd_cache" ]]; then
-    command fasd --init bash-hook bash-ccomp bash-ccomp-install >"$_fasd_cache"
+    # posix-alias: Defines standard POSIX-compatible aliases (a, s, d, f, sd,
+    # sf, z, zz) and the fasd_cd shell function used for directory navigation.
+    #
+    # bash-hook: Appends a hook function to PROMPT_COMMAND that inspects
+    # recently executed commands and logs accessed paths to the frecency
+    # database in the background.
+    #
+    # bash-ccomp: Defines the Bash tab completion logic
+    # (_fasd_bash_cmd_complete) and the registration helper function
+    # (_fasd_bash_hook_cmd_complete).
+    #
+    # bash-ccomp-install: Registers the completion handler via 'complete -F' for
+    # the fasd executable and its default aliases (fasd, a, s, d, f, sd, sf, z,
+    # zz).
+    command fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >|"$_fasd_cache"
   fi
   # shellcheck disable=SC1090
   source "$_fasd_cache"
+  unset _fasd_cache
 
   alias j="_jc_fasd_cd -d"
 fi
