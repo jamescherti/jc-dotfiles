@@ -82,7 +82,8 @@ select = [
 ]
 
 ignore = [
-  # "E501",    # Line too long
+  "T201",    # print found
+  # "E501",  # Line too long
   "ISC001",  # Prevent conflicts with the Ruff formatter
   "PLW2901", # For loop variable `pattern` overwritten by assignment target
   "TRY003",  # Avoid specifying long messages outside the exception class
