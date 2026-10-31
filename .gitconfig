@@ -567,9 +567,6 @@ co = checkout
 # List, create, or delete branches
 b = branch
 
-# Discard all local changes and reset to the latest commit on the current branch
-rh = reset --hard HEAD
-
 # Fetch and integrate changes from the remote repository
 pl = pull
 
