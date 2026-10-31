@@ -50,14 +50,14 @@ threads = 0
 # Allocate the specified amount of memory consumed by each thread in
 # git-pack-objects for pack window memory when no limit is specified on the
 # command line. This enhances Git's efficiency for large repositories.
-# TODO:	Potentially very high RAM consumption
-# windowMemory = 256m
+windowMemory = 256m
 
 # The packSizeLimit configuration in Git determines the maximum size of a
 # packfile that Git will generate. A packfile is a file that contains a
 # collection of objects, such as commits, trees, and blobs, in a compressed
 # format.
-# TODO Can reduce packing efficiency
+# TODO Splitting packs can reduce compression efficiency. Enable only for a
+# concrete storage constraint.
 # packSizeLimit = 2g
 
 [repack]
@@ -441,10 +441,7 @@ prune = true
 # removed from the remote repository during a 'git fetch'. This ensures that #
 # your local tags list is up-to-date and prevents the accumulation of tags that
 # # no longer exist on the remote.
-# TODO This is primarily a data-preservation concern, not a speed concern. I
-# would remove it from the global configuration unless that behavior is
-# intentional.
-# pruneTags = true
+pruneTags = true
 
 [receive]
 # Verifies the integrity of all objects during data transfer operations like
