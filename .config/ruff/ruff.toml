@@ -82,6 +82,7 @@ select = [
 ]
 
 ignore = [
+  "ERA001",  # Found commented out code
   "T201",    # print found
   # "E501",  # Line too long
   "ISC001",  # Prevent conflicts with the Ruff formatter
