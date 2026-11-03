@@ -193,22 +193,25 @@ _jc_ncpu() {
   echo "$_JC_NCPU"
 }
 
+if [ -z "$_JC_NCPU" ]; then
+  # shellcheck disable=SC2119
+  _JC_NCPU=$(_jc_ncpu)
+  export _JC_NCPU
+fi
+
 alias ncpu=_jc_ncpu
 
 #-------------------------------------------------------------------------------
 # FZF
 #-------------------------------------------------------------------------------
 if command -v rg >/dev/null 2>&1; then
-  # shellcheck disable=SC2119
-  FZF_DEFAULT_COMMAND="rg --threads=$(_jc_ncpu) --files --hidden --follow 2>/dev/null"
+  FZF_DEFAULT_COMMAND="rg --threads=$_JC_NCPU --files --hidden --follow 2>/dev/null"
   export FZF_DEFAULT_COMMAND
 elif command -v fd >/dev/null 2>&1; then
-  # shellcheck disable=SC2119
-  FZF_DEFAULT_COMMAND="fd --threads=$(_jc_ncpu) --color=never -H --type f"
+  FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f"
   export FZF_DEFAULT_COMMAND
 elif command -v fdfind >/dev/null 2>&1; then
-  # shellcheck disable=SC2119
-  FZF_DEFAULT_COMMAND="fd --threads=$(_jc_ncpu) --color=never -H --type f"
+  FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f"
   export FZF_DEFAULT_COMMAND
 else
   export FZF_DEFAULT_COMMAND='find . -type f'
@@ -310,12 +313,14 @@ export PIP_DOWNLOAD_CACHE="$HOME/.cache/python_cache_pip_download"
 #-------------------------------------------------------------------------------
 # MISC
 #-------------------------------------------------------------------------------
-# shellcheck disable=SC2034
-OS_ID=$(
-  # shellcheck disable=SC1091
-  [ -r /etc/os-release ] && . /etc/os-release 2>/dev/null
-  printf '%s\n' "${ID:-unknown}"
-)
+if [ -z "$OS_ID" ]; then
+  OS_ID=$(
+    # shellcheck disable=SC1091
+    [ -r /etc/os-release ] && . /etc/os-release 2>/dev/null
+    printf '%s\n' "${ID:-unknown}"
+  )
+  export OS_ID
+fi
 
 # Prepend the OS-specific binary directory to PATH if it exists and is not
 # already included.

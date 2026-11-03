@@ -244,7 +244,7 @@ alias glp="git log -p"
 alias grep="grep --color=auto --exclude-dir=.git"
 
 # shellcheck disable=SC2139
-alias rg="rg --sort=none --hidden --no-messages --no-heading --threads=$(_jc_ncpu)"
+alias rg="rg --sort=none --hidden --no-messages --no-heading --threads=${_JC_NCPU:-$(_jc_ncpu)}"
 alias rgf='rg --fixed-strings'
 alias rgl='rg --files-with-matches'
 alias rgq='rg --quiet'
@@ -255,7 +255,7 @@ else
 fi
 
 # shellcheck disable=SC2139
-alias fd="fd --color=never --hidden --threads=$(_jc_ncpu)"
+alias fd="fd --color=never --hidden --threads=${_JC_NCPU:-$(_jc_ncpu)}"
 alias fdf="fd --type file"
 alias fdd="fd --type d"
 alias fdq='fd --quiet'
@@ -326,7 +326,7 @@ alias make='make -j$(ncpu) -l$(ncpu --ignore=1)'
 #-------------------------------------------------------------------------------
 # Misc
 #-------------------------------------------------------------------------------
-if [[ -n "$TERM" ]]; then
+if [[ -n "$TERM" && -t 0 ]]; then
   # Disable flow control to prevent Vim from freezing when CTRL-s is pressed.
   # The 'stty -ixon' command disables the XON/XOFF flow control, which is
   # typically triggered by CTRL-s (pause) and CTRL-q (resume) in the terminal.
@@ -450,8 +450,8 @@ jc-ps1-count-mails-maildir() {
   fi
 }
 
-if type -P tput &>/dev/null \
-  && [[ $(command tput colors 2>/dev/null) -ge 8 ]]; then
+if [[ "$TERM" == *256color* || "$TERM" == *truecolor* || "$TERM" == *direct* || "$TERM" == xterm* || "$TERM" == screen* || "$TERM" == tmux* || "$TERM" == rxvt* || "$TERM" == linux* ]] \
+  || { type -P tput &>/dev/null && [[ $(command tput colors 2>/dev/null) -ge 8 ]]; }; then
   # shellcheck disable=SC2034
   Color_Off="\[\033[0m\]" # Text Reset
   # shellcheck disable=SC2034
@@ -659,36 +659,33 @@ alias o="_jc_xdg_open"
 #-------------------------------------------------------------------------------
 # Better ls
 #-------------------------------------------------------------------------------
+_JC_GNU_LS=1
+_JC_LS_CMD="ls"
+case "$OSTYPE" in
+darwin*)
+  if type -P gls &>/dev/null; then
+    _JC_LS_CMD="gls"
+  else
+    _JC_GNU_LS=0
+  fi
+  ;;
+esac
+
 _jc_better_ls() {
-  OPTS=()
+  local -a OPTS=()
 
-  local gnu_ls=1
-
-  local ls_cmd
-  ls_cmd="ls"
-
-  case "$OSTYPE" in
-  darwin*)
-    if type -P gls &>/dev/null; then
-      ls_cmd="gls"
-    else
-      gnu_ls=0
-    fi
-    ;;
-  esac
-
-  if [[ $gnu_ls -ne 0 ]]; then
+  if [[ $_JC_GNU_LS -ne 0 ]]; then
     if [[ -n "$TERM" && "$TERM" != "dumb" ]]; then
       OPTS+=(--color=auto)
     fi
 
-    command "$ls_cmd" "${OPTS[@]}" -X --human-readable \
+    command "$_JC_LS_CMD" "${OPTS[@]}" -X --human-readable \
       --hide=__pycache__ \
       --hide=*.elc \
       --hide=*.egg-info \
       "$@"
   else
-    command "$ls_cmd" "${OPTS[@]}" "$@"
+    command "$_JC_LS_CMD" "${OPTS[@]}" "$@"
   fi
 }
 
