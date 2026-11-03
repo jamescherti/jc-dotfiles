@@ -114,7 +114,7 @@ unset MANPATH
 #----------------------------------------------------------------------------
 # Other environment variables
 #----------------------------------------------------------------------------
-export LESS="-X -F -R"
+export LESS="-RFXSMi -x4"
 export PAGER="less"
 
 export MANWIDTH=79
