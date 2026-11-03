@@ -871,20 +871,18 @@ fi
 # FZF variables
 #-------------------------------------------------------------------------------
 if [[ "${_JC_FZF:-0}" -ne 0 ]]; then
-  if [ -z "$FZF_DEFAULT_COMMAND" ]; then
-    if command -v rg >/dev/null 2>&1; then
-      FZF_DEFAULT_COMMAND="rg --threads=$_JC_NCPU --files --hidden --follow 2>/dev/null"
-      export FZF_DEFAULT_COMMAND
-    elif command -v fd >/dev/null 2>&1; then
-      FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f --follow"
-      export FZF_DEFAULT_COMMAND
-    elif command -v fdfind >/dev/null 2>&1; then
-      FZF_DEFAULT_COMMAND="fdfind --threads=$_JC_NCPU --color=never -H --type f"
-      export FZF_DEFAULT_COMMAND
-    else
-      FZF_DEFAULT_COMMAND='find . -type d -name .git -prune -o -type f -print'
-      export FZF_DEFAULT_COMMAND
-    fi
+  if command -v rg >/dev/null 2>&1; then
+    FZF_DEFAULT_COMMAND="rg --threads=$_JC_NCPU --files --hidden --follow 2>/dev/null"
+    export FZF_DEFAULT_COMMAND
+  elif command -v fd >/dev/null 2>&1; then
+    FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f --follow"
+    export FZF_DEFAULT_COMMAND
+  elif command -v fdfind >/dev/null 2>&1; then
+    FZF_DEFAULT_COMMAND="fdfind --threads=$_JC_NCPU --color=never -H --type f"
+    export FZF_DEFAULT_COMMAND
+  else
+    FZF_DEFAULT_COMMAND='find . -type d -name .git -prune -o -type f -print'
+    export FZF_DEFAULT_COMMAND
   fi
 
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
