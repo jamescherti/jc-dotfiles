@@ -150,6 +150,11 @@ case $- in
 esac
 
 #-------------------------------------------------------------------------------
+# Variables
+#-------------------------------------------------------------------------------
+INPUTRC=~/.inputrc
+
+#-------------------------------------------------------------------------------
 # OPTIONS
 # -s = enable | -u = disable
 #-------------------------------------------------------------------------------
@@ -233,6 +238,7 @@ alias ncdu="ncdu --color dark"
 alias tree="tree -C --gitignore"
 alias mv="mv -i"
 alias mode='stat -c "%a %n"'
+alias yamllint="yamllint -c ~/.yamllint_global.yml"
 
 alias br="git --no-pager branch"
 alias g="git"
@@ -254,6 +260,8 @@ alias gp="git push"
 alias gpf="git push --force"
 alias gpl="git pull"
 alias gb='git branch'
+alias gs="git show"
+alias ca=wcalc
 
 alias 7z_level9="7z -r -mx 9"
 alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf \
@@ -669,6 +677,16 @@ _jc_better_ls() {
 }
 
 alias ls='_jc_better_ls'
+
+#-------------------------------------------------------------------------------
+# mawk
+#-------------------------------------------------------------------------------
+
+# The GNU awk (gawk) implementation is standard on many systems, but mawk is a
+# bytecode-compiled implementation that is significantly faster.
+if type -P mawk &>/dev/null; then
+  alias awk=mawk
+fi
 
 #-------------------------------------------------------------------------------
 # Configure FASD

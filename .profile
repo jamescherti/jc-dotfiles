@@ -282,3 +282,37 @@ if test "$BASH" \
     . ~/.bashrc
   fi
 fi
+
+#-------------------------------------------------------------------------------
+# Python
+#-------------------------------------------------------------------------------
+export PYTHONPYCACHEPREFIX="$HOME/.cache/python_cache"
+export MYPY_CACHE_DIR="$HOME/.cache/python_cache_mypy"
+export PYTHON_EGG_CACHE="$HOME/.cache/python_cache_egg"
+export PIP_DOWNLOAD_CACHE="$HOME/.cache/python_cache_pip_download"
+
+#-------------------------------------------------------------------------------
+# MISC
+#-------------------------------------------------------------------------------
+# shellcheck disable=SC2034
+OSFAMILY=$(
+  # shellcheck disable=SC1091
+  [ -r /etc/os-release ] && . /etc/os-release 2>/dev/null
+  printf '%s\n' "${ID:-unknown}"
+)
+
+# Prepend the OS-specific binary directory to PATH if it exists and is not
+# already included.
+# shellcheck disable=SC2034
+OS_BIN_DIR="$HOME/.local-$OSFAMILY/bin"
+if [ -n "$OSFAMILY" ] && [ -d "$OS_BIN_DIR" ]; then
+  case ":$PATH:" in
+  *":$OS_BIN_DIR:"*) ;;
+  *) export PATH="$OS_BIN_DIR:$PATH" ;;
+  esac
+fi
+
+#-------------------------------------------------------------------------------
+# OTHER
+#-------------------------------------------------------------------------------
+export BATCHFETCH_CHECK_UNTRACKED=1
