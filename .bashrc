@@ -889,7 +889,7 @@ if [[ "${_JC_FZF:-0}" -ne 0 ]]; then
   fi
 
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up"
+  export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up --height=~70%"
 fi
 
 #-------------------------------------------------------------------------------
