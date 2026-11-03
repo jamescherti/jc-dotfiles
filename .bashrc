@@ -842,27 +842,40 @@ fi
 #-------------------------------------------------------------------------------
 # bash-completion
 #-------------------------------------------------------------------------------
-case "$OSTYPE" in
-# Mac OS X
-darwin*)
-  if [ -r /opt/local/etc/bash_completion ]; then
-    # shellcheck disable=SC1091
-    source /opt/local/etc/bash_completion
-  fi
+_jc_lazy_bash_completion() {
+  complete -r -D 2>/dev/null
 
-  if [ -r /opt/local/share/git/contrib/completion/git-completion.bash ]; then
-    # shellcheck disable=SC1091
-    source /opt/local/share/git/contrib/completion/git-completion.bash
+  case "$OSTYPE" in
+  # Mac OS X
+  darwin*)
+    if [[ -z "${BASH_COMPLETION_VERSINFO:-}" ]] && [ -r /opt/local/etc/bash_completion ]; then
+      # shellcheck disable=SC1091
+      source /opt/local/etc/bash_completion
+    fi
+
+    if [ -r /opt/local/share/git/contrib/completion/git-completion.bash ]; then
+      # shellcheck disable=SC1091
+      source /opt/local/share/git/contrib/completion/git-completion.bash
+    fi
+    ;;
+  # Linux
+  linux-gnu*)
+    if [[ -z "${BASH_COMPLETION_VERSINFO:-}" ]] && [ -r /usr/share/bash-completion/bash_completion ]; then
+      # shellcheck disable=SC1091
+      source /usr/share/bash-completion/bash_completion
+    fi
+    ;;
+  esac
+
+  if [[ -n "${1:-}" ]] && ! complete -p "$1" &>/dev/null && declare -F _completion_loader &>/dev/null; then
+    _completion_loader "$@"
   fi
-  ;;
-# Linux
-linux-gnu*)
-  if [ -r /usr/share/bash-completion/bash_completion ]; then
-    # shellcheck disable=SC1091
-    source /usr/share/bash-completion/bash_completion
-  fi
-  ;;
-esac
+  return 124
+}
+
+if [[ -z "${BASH_COMPLETION_VERSINFO:-}" || "$OSTYPE" == darwin* ]]; then
+  complete -D -F _jc_lazy_bash_completion
+fi
 
 #-------------------------------------------------------------------------------
 # Tmux/fzf auto complete
