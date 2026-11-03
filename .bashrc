@@ -243,9 +243,33 @@ alias g="git"
 alias glp="git log -p"
 alias grep="grep --color=auto --exclude-dir=.git"
 
-_JC_RG_OPTIONS=(--sort=none --hidden --no-messages --no-heading
-  --threads="$_JC_NCPU")
-_JC_FD_OPTIONS=(--color=never --hidden --follow --threads="$_JC_NCPU")
+# rg
+# Include hidden files while excluding Git, Subversion, and Mercurial metadata.
+# These directories contain internal repository data rather than working files.
+# Excluding them reduces directory traversal and irrelevant search results.
+_JC_RG_OPTIONS=(
+  --color=never
+  --follow
+  --threads="$_JC_NCPU"
+  --hidden
+  --glob='!.git'
+  --glob='!.svn'
+  --glob='!.hg'
+  --sort=none
+  --no-messages
+  --no-heading
+)
+
+# fd
+_JC_FD_OPTIONS=(
+  --color=never
+  --follow
+  --threads="$_JC_NCPU"
+  --hidden
+  --exclude=.git
+  --exclude=.svn
+  --exclude=.hg
+)
 
 rg() {
   if [ -z "$_JC_NCPU" ]; then
