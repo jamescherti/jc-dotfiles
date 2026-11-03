@@ -193,32 +193,11 @@ _jc_ncpu() {
   echo "$_JC_NCPU"
 }
 
+alias ncpu=_jc_ncpu
+
 if [ -z "$_JC_NCPU" ]; then
   _jc_ncpu >/dev/null
 fi
-
-alias ncpu=_jc_ncpu
-
-#-------------------------------------------------------------------------------
-# FZF
-#-------------------------------------------------------------------------------
-if [ -z "$FZF_DEFAULT_COMMAND" ]; then
-  if command -v rg >/dev/null 2>&1; then
-    FZF_DEFAULT_COMMAND="rg --threads=$_JC_NCPU --files --hidden --follow 2>/dev/null"
-    export FZF_DEFAULT_COMMAND
-  elif command -v fd >/dev/null 2>&1; then
-    FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f"
-    export FZF_DEFAULT_COMMAND
-  elif command -v fdfind >/dev/null 2>&1; then
-    FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f"
-    export FZF_DEFAULT_COMMAND
-  else
-    export FZF_DEFAULT_COMMAND='find . -type f'
-  fi
-fi
-
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up"
 
 #-------------------------------------------------------------------------------
 # Custom environment

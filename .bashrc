@@ -243,8 +243,23 @@ alias g="git"
 alias glp="git log -p"
 alias grep="grep --color=auto --exclude-dir=.git"
 
-# shellcheck disable=SC2139
-alias rg="rg --sort=none --hidden --no-messages --no-heading --threads=${_JC_NCPU:-$(_jc_ncpu)}"
+rg() {
+  if [ -z "$_JC_NCPU" ]; then
+    _jc_ncpu >/dev/null
+  fi
+
+  command rg --sort=none --hidden --no-messages --no-heading \
+    --threads="$_JC_NCPU" "$@"
+}
+
+fd() {
+  if [ -z "$_JC_NCPU" ]; then
+    _jc_ncpu >/dev/null
+  fi
+
+  command fd --color=never --hidden --threads="$_JC_NCPU" "$@"
+}
+
 alias rgf='rg --fixed-strings'
 alias rgl='rg --files-with-matches'
 alias rgq='rg --quiet'
@@ -255,7 +270,6 @@ else
 fi
 
 # shellcheck disable=SC2139
-alias fd="fd --color=never --hidden --threads=${_JC_NCPU:-$(_jc_ncpu)}"
 alias fdf="fd --type file"
 alias fdd="fd --type d"
 alias fdq='fd --quiet'
@@ -854,45 +868,27 @@ elif [[ -f /usr/share/fzf/key-bindings.bash ]]; then
 fi
 
 #-------------------------------------------------------------------------------
-# bash-completion
+# FZF variables
 #-------------------------------------------------------------------------------
-_jc_lazy_bash_completion() {
-  complete -r -D 2>/dev/null
-
-  case "$OSTYPE" in
-  # Mac OS X
-  darwin*)
-    if [[ -z "${BASH_COMPLETION_VERSINFO:-}" ]] \
-      && [ -r /opt/local/etc/bash_completion ]; then
-      # shellcheck disable=SC1091
-      source /opt/local/etc/bash_completion
+if [[ "${_JC_FZF:-0}" -ne 0 ]]; then
+  if [ -z "$FZF_DEFAULT_COMMAND" ]; then
+    if command -v rg >/dev/null 2>&1; then
+      FZF_DEFAULT_COMMAND="rg --threads=$_JC_NCPU --files --hidden --follow 2>/dev/null"
+      export FZF_DEFAULT_COMMAND
+    elif command -v fd >/dev/null 2>&1; then
+      FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f --follow"
+      export FZF_DEFAULT_COMMAND
+    elif command -v fdfind >/dev/null 2>&1; then
+      FZF_DEFAULT_COMMAND="fdfind --threads=$_JC_NCPU --color=never -H --type f"
+      export FZF_DEFAULT_COMMAND
+    else
+      FZF_DEFAULT_COMMAND='find . -type d -name .git -prune -o -type f -print'
+      export FZF_DEFAULT_COMMAND
     fi
-
-    if [ -r /opt/local/share/git/contrib/completion/git-completion.bash ]; then
-      # shellcheck disable=SC1091
-      source /opt/local/share/git/contrib/completion/git-completion.bash
-    fi
-    ;;
-  # Linux
-  linux-gnu*)
-    if [[ -z "${BASH_COMPLETION_VERSINFO:-}" ]] \
-      && [ -r /usr/share/bash-completion/bash_completion ]; then
-      # shellcheck disable=SC1091
-      source /usr/share/bash-completion/bash_completion
-    fi
-    ;;
-  esac
-
-  if [[ -n "${1:-}" ]] \
-    && ! complete -p "$1" &>/dev/null \
-    && declare -F _completion_loader &>/dev/null; then
-    _completion_loader "$@"
   fi
-  return 124
-}
 
-if [[ -z "${BASH_COMPLETION_VERSINFO:-}" || "$OSTYPE" == darwin* ]]; then
-  complete -D -F _jc_lazy_bash_completion
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_DEFAULT_OPTS="--cycle -i --multi --exact --bind alt-j:down,alt-k:up"
 fi
 
 #-------------------------------------------------------------------------------
@@ -933,6 +929,48 @@ if [[ "${_JC_FZF:-0}" -ne 0 ]]; then
 
   # Pressing Ctrl-n autocompletes from the Tmux scrollback buffer
   bind -x '"\C-n": "__tmux_fzf_autocomplete_inline__"'
+fi
+
+#-------------------------------------------------------------------------------
+# bash-completion
+#-------------------------------------------------------------------------------
+_jc_lazy_bash_completion() {
+  complete -r -D 2>/dev/null
+
+  case "$OSTYPE" in
+  # Mac OS X
+  darwin*)
+    if [[ -z "${BASH_COMPLETION_VERSINFO:-}" ]] \
+      && [ -r /opt/local/etc/bash_completion ]; then
+      # shellcheck disable=SC1091
+      source /opt/local/etc/bash_completion
+    fi
+
+    if [ -r /opt/local/share/git/contrib/completion/git-completion.bash ]; then
+      # shellcheck disable=SC1091
+      source /opt/local/share/git/contrib/completion/git-completion.bash
+    fi
+    ;;
+  # Linux
+  linux-gnu*)
+    if [[ -z "${BASH_COMPLETION_VERSINFO:-}" ]] \
+      && [ -r /usr/share/bash-completion/bash_completion ]; then
+      # shellcheck disable=SC1091
+      source /usr/share/bash-completion/bash_completion
+    fi
+    ;;
+  esac
+
+  if [[ -n "${1:-}" ]] \
+    && ! complete -p "$1" &>/dev/null \
+    && declare -F _completion_loader &>/dev/null; then
+    _completion_loader "$@"
+  fi
+  return 124
+}
+
+if [[ -z "${BASH_COMPLETION_VERSINFO:-}" || "$OSTYPE" == darwin* ]]; then
+  complete -D -F _jc_lazy_bash_completion
 fi
 
 #-------------------------------------------------------------------------------
