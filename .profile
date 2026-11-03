@@ -336,8 +336,13 @@ export BATCHFETCH_CHECK_UNTRACKED=1
 #-------------------------------------------------------------------------------
 # Local profile
 #-------------------------------------------------------------------------------
+
 # shellcheck disable=SC1091
 [ -f "$HOME/.profile-after.local" ] && . "$HOME/.profile-after.local"
+
+#-------------------------------------------------------------------------------
+# Bashrc
+#-------------------------------------------------------------------------------
 
 if test "$BASH" \
   && test "$PS1" \
@@ -345,8 +350,10 @@ if test "$BASH" \
   && test "${0#-}" != sh \
   && test -r ~/.bashrc; then
   if [ -z "$_JC_BASHRC_LOADED" ]; then
+    _JC_PROFILE_SOURCING_BASHRC=1
     # shellcheck disable=SC1090
     . ~/.bashrc
+    unset _JC_PROFILE_SOURCING_BASHRC
     _JC_BASHRC_LOADED=1
   fi
 fi
