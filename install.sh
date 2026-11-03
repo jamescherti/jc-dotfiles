@@ -124,6 +124,18 @@ main() {
     git config --global core.editor "devemacs -nw"
   fi
 
+  if type -P bat &>/dev/null; then
+    git config --global core.pager "bat --plain"
+
+    # # Use bat for diffs and inspects
+    # git config --global color.diff false
+    # git config --global pager.diff "bat --plain -l diff"
+    # git config --global pager.show "bat --plain -l diff"
+
+    # # Keep standard pager for commit history
+    # git config --global pager.log "bat --plain"
+  fi
+
   if type -P difft &>/dev/null; then
     # Set the external diff tool (This handles 'git diff')
     git config --global diff.external difft
