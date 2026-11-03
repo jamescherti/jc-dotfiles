@@ -267,6 +267,27 @@ jc_env_path_prepend() {
 }
 
 #-------------------------------------------------------------------------------
+# jc-ncpu
+#-------------------------------------------------------------------------------
+jc-ncpu() {
+  if [ -z "$_JC_NCPU" ]; then
+    if _JC_NCPU_SCRIPT=$(type -P ncpu &>/dev/null); then
+      # shellcheck disable=SC1090
+      source "$_JC_NCPU_SCRIPT"
+      _JC_NCPU="$_NCPU_CACHE"
+    else
+      # Fallback
+      _JC_NCPU=$(getconf _NPROCESSORS_ONLN 2>/dev/null \
+        || nproc 2>/dev/null \
+        || sysctl -n hw.ncpu 2>/dev/null \
+        || echo 1)
+    fi
+  fi
+
+  echo "$_JC_NCPU"
+}
+
+#-------------------------------------------------------------------------------
 # Local profile
 #-------------------------------------------------------------------------------
 # shellcheck disable=SC1091

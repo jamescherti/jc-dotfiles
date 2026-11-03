@@ -267,13 +267,6 @@ alias 7z_level9="7z -r -mx 9"
 alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf \
   -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0'
 
-# Scale build concurrency to the hardware thread count and restrict the load
-# average to ensure the environment stays responsive by leaving one core
-# available for other tasks.
-#
-# Alternative to: export MAKEFLAGS="-j `nproc` -l `nproc --ignore=1`"
-alias make='make -j$(command nproc) -l$(command nproc --ignore=1)'
-
 if type -P colordiff &>/dev/null; then
   alias diff=colordiff
 fi
@@ -312,6 +305,17 @@ alias x=exit
 alias lsblk-uuid='lsblk -o NAME,UUID,MOUNTPOINT,FSTYPE'
 
 #-------------------------------------------------------------------------------
+# JC NPROC
+#-------------------------------------------------------------------------------
+# Scale build concurrency to the hardware thread count and restrict the load
+# average to ensure the environment stays responsive by leaving one core
+# available for other tasks.
+#
+# Alternative to: export MAKEFLAGS="-j `nproc` -l `nproc --ignore=1`"
+
+alias make='make -j$(jc-ncpu) -l$(command nproc --ignore=1)'
+
+#-------------------------------------------------------------------------------
 # Misc
 #-------------------------------------------------------------------------------
 if [[ -n "$TERM" ]]; then
@@ -324,7 +328,7 @@ fi
 #-------------------------------------------------------------------------------
 # GPG
 #-------------------------------------------------------------------------------
-fix-gpg-tty() {
+jc-fix-gpg-tty() {
   local current_tty
   current_tty=$(command tty 2>/dev/null) || return
 
@@ -354,21 +358,21 @@ if [[ ${JC_FIX_GPG_TTY:-1} -ne 0 ]]; then
     if [[ $_JC_FIX_GPG_TTY_DONE = "" ]]; then
       _JC_FIX_GPG_TTY_DONE=1
       if [[ -z "${PROMPT_COMMAND:-}" ]]; then
-        PROMPT_COMMAND="fix-gpg-tty"
+        PROMPT_COMMAND="jc-fix-gpg-tty"
       else
-        PROMPT_COMMAND="fix-gpg-tty; $PROMPT_COMMAND"
+        PROMPT_COMMAND="jc-fix-gpg-tty; $PROMPT_COMMAND"
       fi
     fi
   else
     # Standard terminal detected: run exactly once during startup
-    fix-gpg-tty
+    jc-fix-gpg-tty
   fi
 fi
 
 #-------------------------------------------------------------------------------
 # PS1
 #-------------------------------------------------------------------------------
-ps1-git-branch-slow() {
+jc-ps1-git-branch-slow() {
   if [[ $JC_PS1_GIT_BRANCH -ne 0 ]]; then
     local branch_name
     # Run the plumbing command directly in the condition to avoid a separate
@@ -379,7 +383,7 @@ ps1-git-branch-slow() {
   fi
 }
 
-ps1-git-branch() {
+jc-ps1-git-branch() {
   if [[ $JC_PS1_GIT_BRANCH -ne 0 ]]; then
     local dir="$PWD"
     local head_file=""
@@ -415,7 +419,7 @@ ps1-git-branch() {
   fi
 }
 
-ps1-count-mails-maildir() {
+jc-ps1-count-mails-maildir() {
   if [[ $JC_PS1_MAILDIR -ne 0 ]] && [[ "$JC_PS1_MAILDIR_PATH" != "" ]]; then
     # The Maildir specification dictates that unread messages reside exclusively
     # in the 'new/' subdirectory.
@@ -458,35 +462,35 @@ if type -P tput &>/dev/null \
     Safe_User_Color=""
   fi
 
-  PS1="${Green}\$(ps1-git-branch)${Color_Off}"
-  PS1="${PS1}${Blue}\$(ps1-count-mails-maildir)${Color_Off}"
+  PS1="${Green}\$(jc-ps1-git-branch)${Color_Off}"
+  PS1="${PS1}${Blue}\$(jc-ps1-count-mails-maildir)${Color_Off}"
   PS1="${PS1}${MYPROMPT:-}${Safe_User_Color}\$USER${Color_Off} "
   PS1="${PS1}${Yellow}${PathShort}${Color_Off} $ "
 else
-  PS1="\$(ps1-git-branch)"
-  PS1="${PS1}\$(ps1-count-mails-maildir)$MYPROMPT\$USER $PathShort $ "
+  PS1="\$(jc-ps1-git-branch)"
+  PS1="${PS1}\$(jc-ps1-count-mails-maildir)$MYPROMPT\$USER $PathShort $ "
 fi
 
 #-------------------------------------------------------------------------------
 # Functions
 #-------------------------------------------------------------------------------
 
-bg-run-and-own() {
+jc-bg-run-and-own() {
   "$@" &
 }
 
-bg-run() {
-  bg-run-and-own "$@" &>/dev/null
+jc-bg-run() {
+  jc-bg-run-and-own "$@" &>/dev/null
   disown
 }
 
-kill-gpg-agent() {
+jc-kill-gpg-agent() {
   command pkill gpgconf || :
   command pkill gpg-agent || :
   command gpgconf --kill gpg-agent || :
 }
 
-fix-gpg-agent() {
+jc-fix-gpg-agent() {
   command gpg-connect-agent updatestartuptty /bye &>/dev/null || :
 }
 
@@ -1001,7 +1005,7 @@ if [[ $EUID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
     return "$errno"
   }
 
-  _trash_empty_wrapper() {
+  _jc_trash_empty_wrapper() {
     command trash-list --size | command sort
     local ANSWER
     read -r -p "Empty the trash? (y,n) " ANSWER
@@ -1016,7 +1020,7 @@ if [[ $EUID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
     fi
   }
 
-  alias trash-empty=_trash_empty_wrapper
+  alias trash-empty=_jc_trash_empty_wrapper
   alias trash-rm=_jc_trash_put_wrapper
   alias trash-put=_jc_trash_put_wrapper
   alias rm=_jc_trash_put_wrapper
@@ -1036,9 +1040,9 @@ if [[ "${JC_EMACS_INTEGRATION:-0}" -ne 0 ]]; then
     # prompt-tracking or message passing) require shell-side configurations. The
     # main goal of these additional functions is to enable the shell to send
     # information to vterm via properly escaped sequences. A function that helps
-    # in this task, vterm_printf, is defined below. This function is widely used
-    # throughout this readme.
-    vterm_printf() {
+    # in this task, _jc_vterm_printf, is defined below. This function is widely
+    # used throughout this readme.
+    _jc_vterm_printf() {
       if [[ -n "$TMUX" ]] \
         && { [[ "${TERM%%-*}" == "tmux" ]] \
           || [[ "${TERM%%-*}" == "screen" ]]; }; then
@@ -1052,10 +1056,12 @@ if [[ "${JC_EMACS_INTEGRATION:-0}" -ne 0 ]]; then
       fi
     }
 
-    clear() {
-      vterm_printf "51;Evterm-clear-scrollback"
+    jc-clear() {
+      _jc_vterm_printf "51;Evterm-clear-scrollback"
       command tput clear
     }
+
+    alias clear=jc-clear
   fi
 
   # Eat (Emulate A Terminal)
