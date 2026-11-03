@@ -44,11 +44,9 @@ fi
 
 _JC_BASHRC_LOADED=1
 
-if [[ $_JC_PROFILE_LOADED = "" ]]; then
-  # shellcheck disable=SC1090
-  if [[ -f ~/.profile ]]; then
-    source ~/.profile
-  fi
+# shellcheck disable=SC1090
+if [[ -r ~/.profile ]]; then
+  source ~/.profile
 fi
 
 #-------------------------------------------------------------------------------
@@ -129,7 +127,7 @@ PROMPT_COMMAND=""
 #-------------------------------------------------------------------------------
 # INIT
 #-------------------------------------------------------------------------------
-if [[ -f ~/.bashrc-before.local ]]; then
+if [[ -r ~/.bashrc-before.local ]]; then
   # shellcheck disable=SC1090
   source ~/.bashrc-before.local
 fi
@@ -140,7 +138,7 @@ case $- in
   ;;
 *)
   # If not running interactively, don't do anything
-  if [[ -f ~/.bashrc-after.local ]]; then
+  if [[ -r ~/.bashrc-after.local ]]; then
     # shellcheck disable=SC1090
     source ~/.bashrc-after.local
   fi
@@ -778,12 +776,12 @@ fi
 case "$OSTYPE" in
 # Mac OS X
 darwin*)
-  if [ -f /opt/local/etc/bash_completion ]; then
+  if [ -r /opt/local/etc/bash_completion ]; then
     # shellcheck disable=SC1091
     source /opt/local/etc/bash_completion
   fi
 
-  if [ -f /opt/local/share/git/contrib/completion/git-completion.bash ]; then
+  if [ -r /opt/local/share/git/contrib/completion/git-completion.bash ]; then
     # shellcheck disable=SC1091
     source /opt/local/share/git/contrib/completion/git-completion.bash
   fi
@@ -1206,7 +1204,7 @@ fi
 #-------------------------------------------------------------------------------
 # Local bashrc
 #-------------------------------------------------------------------------------
-if [[ -f ~/.bashrc-after.local ]]; then
+if [[ -r ~/.bashrc-after.local ]]; then
   # shellcheck disable=SC1090
   source ~/.bashrc-after.local
 fi

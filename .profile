@@ -269,13 +269,15 @@ jc_env_path_prepend() {
 #-------------------------------------------------------------------------------
 # ncpu
 #-------------------------------------------------------------------------------
-_JC_NCPU_SCRIPT=$(command -v ncpu 2>/dev/null) || _JC_NCPU_SCRIPT=""
+if [ -z "$_JC_NCPU_SCRIPT" ]; then
+  _JC_NCPU_SCRIPT=$(command -v ncpu 2>/dev/null) || _JC_NCPU_SCRIPT=""
+fi
 
-ncpu() {
+_jc_ncpu() {
   if [ $# -gt 0 ] || [ -z "$_JC_NCPU" ]; then
     if ! [ -z "$_JC_NCPU_SCRIPT" ]; then
       # shellcheck disable=SC1090
-      _JC_NCPU=$("$_JC_NCPU_SCRIPT" "$@")
+      _JC_NCPU=$(command "$_JC_NCPU_SCRIPT" "$@")
     else
       # Fallback
       _JC_NCPU=$(getconf _NPROCESSORS_ONLN 2>/dev/null \
@@ -288,22 +290,7 @@ ncpu() {
   echo "$_JC_NCPU"
 }
 
-#-------------------------------------------------------------------------------
-# Local profile
-#-------------------------------------------------------------------------------
-# shellcheck disable=SC1091
-[ -f "$HOME/.profile-after.local" ] && . "$HOME/.profile-after.local"
-
-if test "$BASH" \
-  && test "$PS1" \
-  && test -z "$POSIXLY_CORRECT" \
-  && test "${0#-}" != sh \
-  && test -r ~/.bashrc; then
-  if [[ $_JC_BASHRC_LOADED = "" ]]; then
-    # shellcheck disable=SC1090
-    . ~/.bashrc
-  fi
-fi
+alias ncpu=_jc_ncpu
 
 #-------------------------------------------------------------------------------
 # Python
@@ -338,3 +325,21 @@ fi
 # OTHER
 #-------------------------------------------------------------------------------
 export BATCHFETCH_CHECK_UNTRACKED=1
+
+#-------------------------------------------------------------------------------
+# Local profile
+#-------------------------------------------------------------------------------
+# shellcheck disable=SC1091
+[ -f "$HOME/.profile-after.local" ] && . "$HOME/.profile-after.local"
+
+if test "$BASH" \
+  && test "$PS1" \
+  && test -z "$POSIXLY_CORRECT" \
+  && test "${0#-}" != sh \
+  && test -r ~/.bashrc; then
+  if [[ $_JC_BASHRC_LOADED = "" ]]; then
+    # shellcheck disable=SC1090
+    . ~/.bashrc
+    _JC_BASHRC_LOADED=1
+  fi
+fi
