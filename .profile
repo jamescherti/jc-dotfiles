@@ -295,7 +295,7 @@ export PIP_DOWNLOAD_CACHE="$HOME/.cache/python_cache_pip_download"
 # MISC
 #-------------------------------------------------------------------------------
 # shellcheck disable=SC2034
-OSFAMILY=$(
+OS_ID=$(
   # shellcheck disable=SC1091
   [ -r /etc/os-release ] && . /etc/os-release 2>/dev/null
   printf '%s\n' "${ID:-unknown}"
@@ -304,8 +304,8 @@ OSFAMILY=$(
 # Prepend the OS-specific binary directory to PATH if it exists and is not
 # already included.
 # shellcheck disable=SC2034
-OS_BIN_DIR="$HOME/.local-$OSFAMILY/bin"
-if [ -n "$OSFAMILY" ] && [ -d "$OS_BIN_DIR" ]; then
+OS_BIN_DIR="$HOME/.local-$OS_ID/bin"
+if [ -n "$OS_ID" ] && [ -d "$OS_BIN_DIR" ]; then
   case ":$PATH:" in
   *":$OS_BIN_DIR:"*) ;;
   *) export PATH="$OS_BIN_DIR:$PATH" ;;
