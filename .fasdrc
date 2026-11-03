@@ -1,0 +1,51 @@
+#
+# Author: James Cherti
+# URL: https://github.com/jamescherti/jc-dotfiles
+#
+# Description:
+# ------------
+# Install the dotfiles into the home directory.
+#
+# License:
+# --------
+# Distributed under terms of the MIT license.
+#
+# Copyright (C) 2004-2026 James Cherti
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+export _FASD_TRACK_PWD=0
+
+# Disable Version Control System (VCS) directory traversal.
+# By default, fasd recursively searches upward for a .git or .hg directory.
+# Disabling this prevents disk I/O overhead on every command execution.
+export _FASD_ONLY_VCS=0
+
+# Disable symlink resolution. This prevents the script from spawning
+# sub-processes to run 'xargs' and 'readlink'.
+export _FASD_RESOLVE_SYMLINKS=0
+
+export _FASD_BACKENDS="native fasd-projects"
+
+# The GNU awk (gawk) implementation is standard on many systems, but mawk is a
+# bytecode-compiled implementation that is significantly faster.
+if type -P mawk &>/dev/null; then
+  export _FASD_AWK="mawk"
+fi

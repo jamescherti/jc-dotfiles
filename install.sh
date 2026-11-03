@@ -61,6 +61,7 @@ LIST_FILES=(
   .puppet-lint.rc
   .pylintrc
   .yamllint_global.yml
+  .fasdrc
 
   # Dirs
   .parallel

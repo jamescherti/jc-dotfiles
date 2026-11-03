@@ -48,20 +48,26 @@ actions:
     tags:
       - main
       - install
-    command: "pip install {{ file | quote }}"
+    shell: true
+    command: |
+      if [ -z "${VIRTUAL_ENV:-}" ]; then
+        pip install --user {{ file | quote }};
+      else
+        pip install {{ file | quote }};
+      fi
 
   - mimetype_match:
       - "image/*"
       - "video/*"
     timeout: 0  # No timeout for the image editor
-    tags:
-      - main
+    tags: main
     command:
       - "xdg-open"
       - "{{ file }}"
 
   - path_match: "*"
-    tags: main
+    tags:
+      - main
     cwd: "{{ file | dirname }}"
     shell: true
     command: 'source ~/.bashrc && {{ file | shebang }} {{ file | quote }}'
