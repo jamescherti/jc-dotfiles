@@ -395,15 +395,24 @@ jc-ps1-git-branch() {
   if [[ $JC_PS1_GIT_BRANCH -ne 0 ]]; then
     local dir="$PWD"
     local head_file=""
+    local git_marker=0
 
     # Fast path: Find .git/HEAD by walking up the directory tree in pure Bash
     while [[ -n "$dir" && "$dir" != "/" ]]; do
       if [[ -f "$dir/.git/HEAD" ]]; then
         head_file="$dir/.git/HEAD"
+        git_marker=1
+        break
+      elif [[ -e "$dir/.git" ]]; then
+        git_marker=1
         break
       fi
       dir="${dir%/*}"
     done
+
+    if [[ $git_marker -eq 0 ]]; then
+      return 0
+    fi
 
     # If we found a standard Git repository
     if [[ -n "$head_file" ]]; then
@@ -416,6 +425,7 @@ jc-ps1-git-branch() {
         printf '(%s) ' "${head_ref#ref: refs/heads/}"
         return 0
       fi
+      return 0
     fi
 
     # Slow path fallback: Use the git binary for submodules, worktrees, or
@@ -450,7 +460,58 @@ jc-ps1-count-mails-maildir() {
   fi
 }
 
-if [[ "$TERM" == *256color* || "$TERM" == *truecolor* || "$TERM" == *direct* || "$TERM" == xterm* || "$TERM" == screen* || "$TERM" == tmux* || "$TERM" == rxvt* || "$TERM" == linux* ]] \
+_jc_ps1_update() {
+  _JC_PS1_GIT=""
+  _JC_PS1_MAIL=""
+
+  if [[ $JC_PS1_GIT_BRANCH -ne 0 ]]; then
+    local dir="$PWD"
+    local head_file=""
+    local git_marker=0
+
+    while [[ -n "$dir" && "$dir" != "/" ]]; do
+      if [[ -f "$dir/.git/HEAD" ]]; then
+        head_file="$dir/.git/HEAD"
+        git_marker=1
+        break
+      elif [[ -e "$dir/.git" ]]; then
+        git_marker=1
+        break
+      fi
+      dir="${dir%/*}"
+    done
+
+    if [[ $git_marker -ne 0 ]]; then
+      if [[ -n "$head_file" ]]; then
+        local head_ref
+        read -r head_ref <"$head_file" 2>/dev/null
+        if [[ "$head_ref" == ref:\ refs/heads/* ]]; then
+          _JC_PS1_GIT="(${head_ref#ref: refs/heads/}) "
+        fi
+      else
+        local branch_name
+        if branch_name=$(command git symbolic-ref --short -q HEAD 2>/dev/null); then
+          _JC_PS1_GIT="($branch_name) "
+        fi
+      fi
+    fi
+  fi
+
+  if [[ $JC_PS1_MAILDIR -ne 0 ]] && [[ "$JC_PS1_MAILDIR_PATH" != "" ]]; then
+    local maildir="$JC_PS1_MAILDIR_PATH/new"
+    if [[ -d "$maildir" ]]; then
+      local file
+      for file in "$maildir"/*; do
+        if [[ -e "$file" || -L "$file" ]]; then
+          _JC_PS1_MAIL="[Unread mail] "
+          break
+        fi
+      done
+    fi
+  fi
+}
+
+if [[ "$TERM" == *256color* || "$TERM" == *truecolor* || "$TERM" == *direct* || "$TERM" == xterm* || "$TERM" == screen* || "$TERM" == tmux* || "$TERM" == rxvt* || "$TERM" == linux* || "$TERM" == *kitty* || "$TERM" == *alacritty* || "$TERM" == *foot* || "$TERM" == *wezterm* || "$TERM" == eat* ]] \
   || { type -P tput &>/dev/null && [[ $(command tput colors 2>/dev/null) -ge 8 ]]; }; then
   # shellcheck disable=SC2034
   Color_Off="\[\033[0m\]" # Text Reset
@@ -470,13 +531,13 @@ if [[ "$TERM" == *256color* || "$TERM" == *truecolor* || "$TERM" == *direct* || 
     Safe_User_Color=""
   fi
 
-  PS1="${Green}\$(jc-ps1-git-branch)${Color_Off}"
-  PS1="${PS1}${Blue}\$(jc-ps1-count-mails-maildir)${Color_Off}"
+  PS1="${Green}\${_JC_PS1_GIT}${Color_Off}"
+  PS1="${PS1}${Blue}\${_JC_PS1_MAIL}${Color_Off}"
   PS1="${PS1}${MYPROMPT:-}${Safe_User_Color}\$USER${Color_Off} "
   PS1="${PS1}${Yellow}${PathShort}${Color_Off} $ "
 else
-  PS1="\$(jc-ps1-git-branch)"
-  PS1="${PS1}\$(jc-ps1-count-mails-maildir)$MYPROMPT\$USER $PathShort $ "
+  PS1="\${_JC_PS1_GIT}"
+  PS1="${PS1}\${_JC_PS1_MAIL}$MYPROMPT\$USER $PathShort $ "
 fi
 
 #-------------------------------------------------------------------------------
@@ -546,7 +607,7 @@ _jc_better_cd() {
   if [[ $# -eq 0 ]]; then
     path="$HOME"
   else
-    path=$(echo "$1" | sed -e 's/^file:\/\///')
+    path="${1#file://}"
     shift
 
     local item
@@ -1112,7 +1173,7 @@ alias sc='_jc_screen_auto_attach'
 if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
   _jc_get_lastdir() {
     local lastdir
-    if lastdir=$(command head -n 1 "$JC_RESTORE_LAST_DIR_FILE" 2>/dev/null) \
+    if IFS= read -r lastdir <"$JC_RESTORE_LAST_DIR_FILE" 2>/dev/null \
       && [[ -d "$lastdir" ]]; then
       printf "%s\n" "$lastdir"
     else
@@ -1128,7 +1189,8 @@ if [[ $JC_RESTORE_LAST_DIR -ne 0 ]]; then
     # preventing the script from overriding the directory ncdu intends to open.
     if [[ -z "${NCDU_LEVEL+x}" ]]; then
       local lastdir
-      if lastdir=$(_jc_get_lastdir) && [[ -n $lastdir ]]; then
+      if IFS= read -r lastdir <"$JC_RESTORE_LAST_DIR_FILE" 2>/dev/null \
+        && [[ -n "$lastdir" && -d "$lastdir" ]]; then
         cd "$lastdir" >/dev/null || return 1
       fi
     fi
@@ -1195,9 +1257,9 @@ shopt -s lithist
 # existing PROMPT_COMMAND:
 #
 if [[ -z "$PROMPT_COMMAND" ]]; then
-  PROMPT_COMMAND="history -a"
+  PROMPT_COMMAND="_jc_ps1_update; history -a"
 else
-  PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+  PROMPT_COMMAND="_jc_ps1_update; history -a; $PROMPT_COMMAND"
 fi
 
 # History Option 2:

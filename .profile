@@ -82,7 +82,7 @@ append_path '/usr/sbin'
 _jc_add_local_path "$HOME/.local"
 
 if [ -z "$BASH_VERSION" ]; then
-  if [ "$(uname)" = "Darwin" ]; then
+  if [ -z "$OSTYPE" ] && [ "$(uname)" = "Darwin" ]; then
     OSTYPE=darwin
   fi
 fi
@@ -130,7 +130,7 @@ export SDCV_PAGER=less
 export XZ_OPT=-9e
 
 export TMPDIR="/tmp/tmp_$USER"
-if ! test -d "$TMPDIR"; then
+if ! [ -d "$TMPDIR" ]; then
   mkdir -p "$TMPDIR"
   chmod 700 "$TMPDIR"
 fi
@@ -164,7 +164,7 @@ export RUFF_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ruff"
 # data files by explicitly defining a dedicated subdirectory for its data.
 _FASD_DATA_DIR="$HOME/.fasd_data"
 export _FASD_DATA="$_FASD_DATA_DIR/fasd"
-if ! test -d "$_FASD_DATA_DIR"; then
+if ! [ -d "$_FASD_DATA_DIR" ]; then
   mkdir -p "$_FASD_DATA_DIR"
 fi
 
@@ -204,17 +204,19 @@ alias ncpu=_jc_ncpu
 #-------------------------------------------------------------------------------
 # FZF
 #-------------------------------------------------------------------------------
-if command -v rg >/dev/null 2>&1; then
-  FZF_DEFAULT_COMMAND="rg --threads=$_JC_NCPU --files --hidden --follow 2>/dev/null"
-  export FZF_DEFAULT_COMMAND
-elif command -v fd >/dev/null 2>&1; then
-  FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f"
-  export FZF_DEFAULT_COMMAND
-elif command -v fdfind >/dev/null 2>&1; then
-  FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f"
-  export FZF_DEFAULT_COMMAND
-else
-  export FZF_DEFAULT_COMMAND='find . -type f'
+if [ -z "$FZF_DEFAULT_COMMAND" ]; then
+  if command -v rg >/dev/null 2>&1; then
+    FZF_DEFAULT_COMMAND="rg --threads=$_JC_NCPU --files --hidden --follow 2>/dev/null"
+    export FZF_DEFAULT_COMMAND
+  elif command -v fd >/dev/null 2>&1; then
+    FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f"
+    export FZF_DEFAULT_COMMAND
+  elif command -v fdfind >/dev/null 2>&1; then
+    FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f"
+    export FZF_DEFAULT_COMMAND
+  else
+    export FZF_DEFAULT_COMMAND='find . -type f'
+  fi
 fi
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
