@@ -1156,7 +1156,8 @@ fi
 
 # 'ignoreboth' combines 'ignorespace' (commands starting with space) and
 # 'ignoredups' (consecutive duplicates).
-# 'erasedups' removes older instances of the same command to keep the list unique.
+# 'erasedups' removes older instances of the same command to keep the list
+# unique.
 # NOTE: If you want to record absolutely every keystroke (including mistakes
 # and duplicates), set this to an empty string.
 HISTCONTROL=ignoredups
