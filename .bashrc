@@ -244,7 +244,10 @@ alias glp="git log -p"
 alias grep="grep --color=auto --exclude-dir=.git"
 
 # shellcheck disable=SC2139
-alias rg="rg --hidden --no-messages --no-heading --threads=$(_jc_ncpu)"
+alias rg="rg --sort=none --hidden --no-messages --no-heading --threads=$(_jc_ncpu)"
+alias rgf='rg --fixed-strings'
+alias rgl='rg --files-with-matches'
+alias rgq='rg --quiet'
 if type -P rg >/dev/null 2>&1; then
   alias gr='rg'
 else
@@ -253,9 +256,9 @@ fi
 
 # shellcheck disable=SC2139
 alias fd="fd --color=never --hidden --threads=$(_jc_ncpu)"
-
 alias fdf="fd --type file"
 alias fdd="fd --type d"
+alias fdq='fd --quiet'
 
 alias gitroot='cd "$(command git rev-parse --show-toplevel)"'
 alias gt=gitroot
