@@ -243,13 +243,16 @@ alias g="git"
 alias glp="git log -p"
 alias grep="grep --color=auto --exclude-dir=.git"
 
+_JC_RG_OPTIONS=(--sort=none --hidden --no-messages --no-heading
+  --threads="$_JC_NCPU")
+_JC_FD_OPTIONS=(--color=never --hidden --follow --threads="$_JC_NCPU")
+
 rg() {
   if [ -z "$_JC_NCPU" ]; then
     _jc_ncpu >/dev/null
   fi
 
-  command rg --sort=none --hidden --no-messages --no-heading \
-    --threads="$_JC_NCPU" "$@"
+  command rg "${_JC_RG_OPTIONS[@]}" "$@"
 }
 
 fd() {
@@ -257,7 +260,7 @@ fd() {
     _jc_ncpu >/dev/null
   fi
 
-  command fd --color=never --hidden --threads="$_JC_NCPU" "$@"
+  command fd "${_JC_FD_OPTIONS[@]}" "$@"
 }
 
 alias rgf='rg --fixed-strings'
@@ -872,13 +875,13 @@ fi
 #-------------------------------------------------------------------------------
 if [[ "${_JC_FZF:-0}" -ne 0 ]]; then
   if command -v rg >/dev/null 2>&1; then
-    FZF_DEFAULT_COMMAND="rg --threads=$_JC_NCPU --files --hidden --follow 2>/dev/null"
+    FZF_DEFAULT_COMMAND="rg ${_JC_RG_OPTIONS[*]} --files"
     export FZF_DEFAULT_COMMAND
   elif command -v fd >/dev/null 2>&1; then
-    FZF_DEFAULT_COMMAND="fd --threads=$_JC_NCPU --color=never -H --type f --follow"
+    FZF_DEFAULT_COMMAND="fd ${_JC_FD_OPTIONS[*]} --type f"
     export FZF_DEFAULT_COMMAND
   elif command -v fdfind >/dev/null 2>&1; then
-    FZF_DEFAULT_COMMAND="fdfind --threads=$_JC_NCPU --color=never -H --type f"
+    FZF_DEFAULT_COMMAND="fdfind ${_JC_FD_OPTIONS[*]} --type f"
     export FZF_DEFAULT_COMMAND
   else
     FZF_DEFAULT_COMMAND='find . -type d -name .git -prune -o -type f -print'
