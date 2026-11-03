@@ -511,7 +511,19 @@ _jc_ps1_update() {
   fi
 }
 
-if [[ "$TERM" == *256color* || "$TERM" == *truecolor* || "$TERM" == *direct* || "$TERM" == xterm* || "$TERM" == screen* || "$TERM" == tmux* || "$TERM" == rxvt* || "$TERM" == linux* || "$TERM" == *kitty* || "$TERM" == *alacritty* || "$TERM" == *foot* || "$TERM" == *wezterm* || "$TERM" == eat* ]] \
+if [[ "$TERM" == *256color* ||
+  "$TERM" == *truecolor* ||
+  "$TERM" == *direct* ||
+  "$TERM" == xterm* ||
+  "$TERM" == screen* ||
+  "$TERM" == tmux* ||
+  "$TERM" == rxvt* ||
+  "$TERM" == linux* ||
+  "$TERM" == *kitty* ||
+  "$TERM" == *alacritty* ||
+  "$TERM" == *foot* ||
+  "$TERM" == *wezterm* ||
+  "$TERM" == eat* ]] \
   || { type -P tput &>/dev/null && [[ $(command tput colors 2>/dev/null) -ge 8 ]]; }; then
   # shellcheck disable=SC2034
   Color_Off="\[\033[0m\]" # Text Reset
