@@ -164,6 +164,9 @@ main() {
   rm -f ~/.config/mpv/scripts/regularly-write-watch-later-config.lua
   rm -f ~/.config/mpv/scripts/show-filename.lua
 
+  # Pathaction
+  cp -uv "$SCRIPT_DIR/.default_pathaction.yaml" "$HOME/.pathaction.yaml"
+
   echo "Success."
 }
 
