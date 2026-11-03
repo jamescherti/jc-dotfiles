@@ -267,14 +267,15 @@ jc_env_path_prepend() {
 }
 
 #-------------------------------------------------------------------------------
-# jc-ncpu
+# ncpu
 #-------------------------------------------------------------------------------
-jc-ncpu() {
+_JC_NCPU_SCRIPT=$(command -v ncpu 2>/dev/null) || _JC_NCPU_SCRIPT=""
+
+ncpu() {
   if [ -z "$_JC_NCPU" ]; then
-    if _JC_NCPU_SCRIPT=$(type -P ncpu &>/dev/null); then
+    if ! [ -z "$_JC_NCPU_SCRIPT" ]; then
       # shellcheck disable=SC1090
-      source "$_JC_NCPU_SCRIPT"
-      _JC_NCPU="$_NCPU_CACHE"
+      _JC_NCPU=$("$_JC_NCPU_SCRIPT")
     else
       # Fallback
       _JC_NCPU=$(getconf _NPROCESSORS_ONLN 2>/dev/null \

@@ -313,7 +313,7 @@ alias lsblk-uuid='lsblk -o NAME,UUID,MOUNTPOINT,FSTYPE'
 #
 # Alternative to: export MAKEFLAGS="-j `nproc` -l `nproc --ignore=1`"
 
-alias make='make -j$(jc-ncpu) -l$(command nproc --ignore=1)'
+alias make='make -j$(ncpu) -l$(ncpu --ignore=1)'
 
 #-------------------------------------------------------------------------------
 # Misc
