@@ -490,7 +490,8 @@ _jc_ps1_update() {
         fi
       else
         local branch_name
-        if branch_name=$(command git symbolic-ref --short -q HEAD 2>/dev/null); then
+        if branch_name=$(command \
+          git symbolic-ref --short -q HEAD 2>/dev/null); then
           _JC_PS1_GIT="($branch_name) "
         fi
       fi
@@ -524,7 +525,8 @@ if [[ "$TERM" == *256color* ||
   "$TERM" == *foot* ||
   "$TERM" == *wezterm* ||
   "$TERM" == eat* ]] \
-  || { type -P tput &>/dev/null && [[ $(command tput colors 2>/dev/null) -ge 8 ]]; }; then
+  || { type -P tput &>/dev/null \
+    && [[ $(command tput colors 2>/dev/null) -ge 8 ]]; }; then
   # shellcheck disable=SC2034
   Color_Off="\[\033[0m\]" # Text Reset
   # shellcheck disable=SC2034
@@ -860,7 +862,8 @@ _jc_lazy_bash_completion() {
   case "$OSTYPE" in
   # Mac OS X
   darwin*)
-    if [[ -z "${BASH_COMPLETION_VERSINFO:-}" ]] && [ -r /opt/local/etc/bash_completion ]; then
+    if [[ -z "${BASH_COMPLETION_VERSINFO:-}" ]] \
+      && [ -r /opt/local/etc/bash_completion ]; then
       # shellcheck disable=SC1091
       source /opt/local/etc/bash_completion
     fi
@@ -872,14 +875,17 @@ _jc_lazy_bash_completion() {
     ;;
   # Linux
   linux-gnu*)
-    if [[ -z "${BASH_COMPLETION_VERSINFO:-}" ]] && [ -r /usr/share/bash-completion/bash_completion ]; then
+    if [[ -z "${BASH_COMPLETION_VERSINFO:-}" ]] \
+      && [ -r /usr/share/bash-completion/bash_completion ]; then
       # shellcheck disable=SC1091
       source /usr/share/bash-completion/bash_completion
     fi
     ;;
   esac
 
-  if [[ -n "${1:-}" ]] && ! complete -p "$1" &>/dev/null && declare -F _completion_loader &>/dev/null; then
+  if [[ -n "${1:-}" ]] \
+    && ! complete -p "$1" &>/dev/null \
+    && declare -F _completion_loader &>/dev/null; then
     _completion_loader "$@"
   fi
   return 124

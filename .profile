@@ -194,9 +194,7 @@ _jc_ncpu() {
 }
 
 if [ -z "$_JC_NCPU" ]; then
-  # shellcheck disable=SC2119
-  _JC_NCPU=$(_jc_ncpu)
-  export _JC_NCPU
+  _jc_ncpu >/dev/null
 fi
 
 alias ncpu=_jc_ncpu
