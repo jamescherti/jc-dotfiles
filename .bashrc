@@ -45,7 +45,7 @@ fi
 _JC_BASHRC_LOADED=1
 
 # shellcheck disable=SC1090
-if [[ -r ~/.profile ]]; then
+if [[ -r ~/.profile && -z "$_JC_PROFILE_SOURCING_BASHRC" ]]; then
   source ~/.profile
 fi
 
@@ -243,10 +243,17 @@ alias g="git"
 alias glp="git log -p"
 alias grep="grep --color=auto --exclude-dir=.git"
 
-alias rg="rg --hidden --no-messages --no-heading"
-alias fd="fd --threads "
+# shellcheck disable=SC2139
+alias rg="rg --hidden --no-messages --no-heading --threads=$(_jc_ncpu)"
+if type -P rg >/dev/null 2>&1; then
+  alias gr='rg'
+else
+  alias gr='grep -R -i --no-messages'
+fi
 
-alias fd="fd --hidden"
+# shellcheck disable=SC2139
+alias fd="fd --color=never --hidden --threads=$(_jc_ncpu)"
+
 alias fdf="fd --type file"
 alias fdd="fd --type d"
 

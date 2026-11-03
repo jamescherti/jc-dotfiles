@@ -169,14 +169,47 @@ if ! test -d "$_FASD_DATA_DIR"; then
 fi
 
 #-------------------------------------------------------------------------------
+# ncpu
+#-------------------------------------------------------------------------------
+if [ -z "$_JC_NCPU_SCRIPT" ]; then
+  _JC_NCPU_SCRIPT=$(command -v ncpu 2>/dev/null) || _JC_NCPU_SCRIPT=""
+fi
+
+# shellcheck disable=SC2120
+_jc_ncpu() {
+  if [ $# -gt 0 ] || [ -z "$_JC_NCPU" ]; then
+    if ! [ -z "$_JC_NCPU_SCRIPT" ]; then
+      # shellcheck disable=SC1090
+      _JC_NCPU=$(command "$_JC_NCPU_SCRIPT" "$@")
+    else
+      # Fallback
+      _JC_NCPU=$(getconf _NPROCESSORS_ONLN 2>/dev/null \
+        || nproc 2>/dev/null \
+        || sysctl -n hw.ncpu 2>/dev/null \
+        || echo 1)
+    fi
+  fi
+
+  echo "$_JC_NCPU"
+}
+
+alias ncpu=_jc_ncpu
+
+#-------------------------------------------------------------------------------
 # FZF
 #-------------------------------------------------------------------------------
 if command -v rg >/dev/null 2>&1; then
-  export FZF_DEFAULT_COMMAND='rg --files --hidden --follow 2>/dev/null'
+  # shellcheck disable=SC2119
+  FZF_DEFAULT_COMMAND="rg --threads=$(_jc_ncpu) --files --hidden --follow 2>/dev/null"
+  export FZF_DEFAULT_COMMAND
 elif command -v fd >/dev/null 2>&1; then
-  export FZF_DEFAULT_COMMAND='fd -H --type f'
+  # shellcheck disable=SC2119
+  FZF_DEFAULT_COMMAND="fd --threads=$(_jc_ncpu) --color=never -H --type f"
+  export FZF_DEFAULT_COMMAND
 elif command -v fdfind >/dev/null 2>&1; then
-  export FZF_DEFAULT_COMMAND='fd -H --type f'
+  # shellcheck disable=SC2119
+  FZF_DEFAULT_COMMAND="fd --threads=$(_jc_ncpu) --color=never -H --type f"
+  export FZF_DEFAULT_COMMAND
 else
   export FZF_DEFAULT_COMMAND='find . -type f'
 fi
@@ -267,32 +300,6 @@ jc_env_path_prepend() {
 }
 
 #-------------------------------------------------------------------------------
-# ncpu
-#-------------------------------------------------------------------------------
-if [ -z "$_JC_NCPU_SCRIPT" ]; then
-  _JC_NCPU_SCRIPT=$(command -v ncpu 2>/dev/null) || _JC_NCPU_SCRIPT=""
-fi
-
-_jc_ncpu() {
-  if [ $# -gt 0 ] || [ -z "$_JC_NCPU" ]; then
-    if ! [ -z "$_JC_NCPU_SCRIPT" ]; then
-      # shellcheck disable=SC1090
-      _JC_NCPU=$(command "$_JC_NCPU_SCRIPT" "$@")
-    else
-      # Fallback
-      _JC_NCPU=$(getconf _NPROCESSORS_ONLN 2>/dev/null \
-        || nproc 2>/dev/null \
-        || sysctl -n hw.ncpu 2>/dev/null \
-        || echo 1)
-    fi
-  fi
-
-  echo "$_JC_NCPU"
-}
-
-alias ncpu=_jc_ncpu
-
-#-------------------------------------------------------------------------------
 # Python
 #-------------------------------------------------------------------------------
 export PYTHONPYCACHEPREFIX="$HOME/.cache/python_cache"
@@ -337,7 +344,7 @@ if test "$BASH" \
   && test -z "$POSIXLY_CORRECT" \
   && test "${0#-}" != sh \
   && test -r ~/.bashrc; then
-  if [[ $_JC_BASHRC_LOADED = "" ]]; then
+  if [ -z "$_JC_BASHRC_LOADED" ]; then
     # shellcheck disable=SC1090
     . ~/.bashrc
     _JC_BASHRC_LOADED=1
