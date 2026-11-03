@@ -734,7 +734,8 @@ if [[ $JC_FASD -ne 0 ]] && type -P fasd &>/dev/null; then
     # bash-ccomp-install: Registers the completion handler via 'complete -F' for
     # the fasd executable and its default aliases (fasd, a, s, d, f, sd, sf, z,
     # zz).
-    command fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >|"$_fasd_cache"
+    command fasd --init posix-alias bash-hook bash-ccomp \
+      bash-ccomp-install >|"$_fasd_cache"
   fi
   # shellcheck disable=SC1090
   source "$_fasd_cache"
