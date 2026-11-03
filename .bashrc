@@ -221,7 +221,7 @@ shopt -s autocd &>/dev/null
 # buffer during tab-completion. When direxpand is enabled, any shorthand paths,
 # like ~ for the home directory, are replaced with the fully expanded path
 # (e.g., /home/user) upon completion.
-# shopt -s direxpand >/dev/null 2>&1
+# shopt -s direxpand &>/dev/null
 
 #-------------------------------------------------------------------------------
 # Aliases
@@ -274,17 +274,21 @@ alias 7z_ultra='7z -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf \
 # Alternative to: export MAKEFLAGS="-j `nproc` -l `nproc --ignore=1`"
 alias make='make -j$(command nproc) -l$(command nproc --ignore=1)'
 
-if command -v colordiff >/dev/null 2>&1; then
+if type -P colordiff &>/dev/null; then
   alias diff=colordiff
 fi
 
 alias ipython='ipython --no-confirm-exit'
-if command -v ipython >/dev/null 2>&1; then
+if type -P ipython &>/dev/null; then
   alias py=ipython
   alias ipy=ipython
 else
   alias py='python -q'
   alias ipy='python -q'
+fi
+
+if type -P bat &>/dev/null; then
+  alias cat='bat --plain --paging=never'
 fi
 
 #-------------------------------------------------------------------------------
@@ -335,7 +339,7 @@ fix-gpg-tty() {
     # When using tmux, ensure gpg-agent updates its TTY when the session is
     # reattached
     if [[ -n "$TMUX" ]] && type -P gpg-connect-agent &>/dev/null; then
-      command gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
+      command gpg-connect-agent updatestartuptty /bye &>/dev/null || :
     fi
   fi
 }
@@ -434,7 +438,7 @@ ps1-count-mails-maildir() {
   fi
 }
 
-if command -v tput >/dev/null 2>&1 \
+if type -P tput &>/dev/null \
   && [[ $(command tput colors 2>/dev/null) -ge 8 ]]; then
   # shellcheck disable=SC2034
   Color_Off="\[\033[0m\]" # Text Reset
@@ -483,7 +487,7 @@ kill-gpg-agent() {
 }
 
 fix-gpg-agent() {
-  command gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || :
+  command gpg-connect-agent updatestartuptty /bye &>/dev/null || :
 }
 
 _jc_better_cd() {
@@ -653,7 +657,7 @@ _jc_better_ls() {
 
   case "$OSTYPE" in
   darwin*)
-    if command -v gls &>/dev/null; then
+    if type -P gls &>/dev/null; then
       ls_cmd="gls"
     else
       gnu_ls=0
@@ -691,7 +695,7 @@ fi
 #-------------------------------------------------------------------------------
 # Configure FASD
 #-------------------------------------------------------------------------------
-if [[ $JC_FASD -ne 0 ]] && command -v fasd >/dev/null 2>&1; then
+if [[ $JC_FASD -ne 0 ]] && type -P fasd &>/dev/null; then
   _JC_FASD_ENABLED=1
 
   _jc_fasd_cd() {
@@ -842,7 +846,7 @@ _jc_confirm_command() {
     return 1
   fi
 
-  if ! command -v "$1" &>/dev/null; then
+  if ! type -P "$1" &>/dev/null; then
     echo "Error: $1 doesn't exist."
     return 1
   fi
@@ -885,15 +889,15 @@ _jc_create_confirm_aliases
 #-------------------------------------------------------------------------------
 case "$OSTYPE" in
 darwin*)
-  if command -v ginstall &>/dev/null; then
+  if type -P ginstall &>/dev/null; then
     alias install=ginstall
   fi
 
-  if command -v grm &>/dev/null; then
+  if type -P grm &>/dev/null; then
     alias rm=grm
   fi
 
-  if command -v gfind &>/dev/null; then
+  if type -P gfind &>/dev/null; then
     alias find=gfind
   fi
   ;;
@@ -903,7 +907,7 @@ esac
 # Trash
 #-------------------------------------------------------------------------------
 if [[ $EUID -ne 0 ]] && [[ $JC_TRASH_CLI -ne 0 ]] \
-  && type -P trash-put >/dev/null 2>&1; then
+  && type -P trash-put &>/dev/null; then
   # Confirm
   _jc_confirm_proceed() {
     local ANSWER
@@ -1074,7 +1078,7 @@ fi
 #-------------------------------------------------------------------------------
 _jc_screen_auto_attach() {
   if [[ -z "${STY}" ]]; then
-    if command screen -ls >/dev/null 2>&1; then
+    if command screen -ls &>/dev/null; then
       command screen -rx
       return $?
     else
