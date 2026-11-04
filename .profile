@@ -114,11 +114,86 @@ unset MANPATH
 #----------------------------------------------------------------------------
 # Other environment variables
 #----------------------------------------------------------------------------
-export LESS="-RFXSMi -x4"
-export PAGER="less"
+# Configure default behavior for the 'less' pager:
+#
+# -R: Output ANSI color escape sequences in "raw" form (preserves terminal
+#     colors from tools like git and grep).
+#
+# -F: Automatically exit if the entire output fits on a single screen.
+#
+# -X: Do not send termcap initialization/deinitialization strings; prevents
+#     clearing the screen on exit so content remains visible.
+#
+# -S: Chop long lines instead of wrapping them to the next line (enables
+#     horizontal scrolling with arrow keys).
+#
+# -M: Use a verbose prompt showing filename, line numbers, and byte
+#     percentage into the file.
+#
+# -i: Ignore case in search patterns unless the pattern contains an
+#     uppercase letter.
+#
+# -x4: Set tab stops every 4 positions instead of the default 8 spaces.
+#
+# -J: Display a status column on the left edge; marks search matches with
+#     an asterisk (*).
+#
+# --mouse: Enable mouse wheel scrolling and click-drag support in terminals
+#     that support xterm mouse reporting.
+#
+# --incsearch: Search incrementally, highlighting matches as search terms
+#     are entered.
+export LESS='-RFXSMi -x4 -J --mouse --incsearch'
+export LESSCHARSET='utf-8'
+export PAGER=less
+export MANPAGER=less
+export GIT_PAGER=less
+export SYSTEMD_PAGER=less
+
+# Define custom colors for reading man pages with less. These variables hijack
+# standard terminal capabilities to add syntax highlighting to manuals.
+#
+# LESS_TERMCAP_md: Starts bold text (set to cyan).
+#
+# LESS_TERMCAP_me: Ends all text formatting modes.
+#
+# LESS_TERMCAP_us: Starts underlined text (set to green).
+#
+# LESS_TERMCAP_ue: Ends underline mode.
+#
+# LESS_TERMCAP_so: Starts standout mode (set to yellow for search highlights
+#     and status bars at the bottom).
+#
+# LESS_TERMCAP_se: Ends standout mode.
+#
+# export LESS_TERMCAP_md=$'\e[1;36m'
+# export LESS_TERMCAP_me=$'\e[0m'
+# export LESS_TERMCAP_us=$'\e[1;32m'
+# export LESS_TERMCAP_ue=$'\e[0m'
+# export LESS_TERMCAP_so=$'\e[01;33m'
+# export LESS_TERMCAP_se=$'\e[0m'
+
+# Define the input preprocessor script.
+#
+# Without LESSOPEN, running less archive.tar.gz will dump binary into the
+# terminal. Defining LESSOPEN='|lesspipe %s' tells less to intercept the file
+# and pass it to the lesspipe script first. lesspipe checks the file
+# signature. If it detects a non-text format, it processes it into readable text
+# and pipes the result back to less. This allows reading the contents of files
+# without manually running extraction or conversion commands first.
+#
+# For example, lesspipe allows you to directly view:
+# - Compressed files (.gz, .bz2, .xz) as uncompressed text.
+# - Archives (.tar, .zip, .rar, .iso) as a directory tree of their contents.
+# - Packages (.deb, .rpm) as a list of installed files and metadata.
+# PDFs or binary executables as extracted text strings or metadata.
+export LESSOPEN='|lesspipe %s'
+
+# Limit the maximum number of commands and search terms saved to your history
+# file. The default is 100, but you can increase or decrease it as needed.
+export LESSHISTSIZE=1000
 
 export MANWIDTH=79
-export MANPAGER=less
 export EDITOR=vim
 export LS_COLORS=''
 
