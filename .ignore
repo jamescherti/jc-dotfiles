@@ -17,12 +17,17 @@ __pycache__/
 
 # Emacs Artifacts
 *.elc
-*~
-\#*\#
-/.emacs.d/eln-cache/
+eln-cache/
+/.emacs-data/var/savefold/
+/.emacs-data/var/undo-fu-session/
+/.emacs-data/var/tmpedit/
 
 # System & Editor Directories
 /.cache/
 /.local/share/Trash/
 /.lightvim.d/var/swap/
 /.lightvim.d/var/undo/
+
+# Temporary files and backups
+*~
+\#*\#
