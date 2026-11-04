@@ -142,7 +142,7 @@ main() {
   fi
 
   local less_cmd
-  less_cmd=less
+  less_cmd="less -R -F -X"
   if [[ $difft_exists -ne 0 ]]; then
     # Difftastic exists: make it the default and keep delta aside
     git config --global diff.external difft
