@@ -163,7 +163,10 @@ main() {
 
     if [[ $delta_exists -ne 0 ]]; then
       # Explicit Delta diff
-      git config --global alias.ddiff '!git -c core.pager=delta -c pager.diff=delta diff --no-ext-diff'
+      git config --global alias.ddiff \
+        '!git -c core.pager=delta -c pager.diff=delta diff --no-ext-diff'
+    else
+      git config --global alias.ddiff ndiff
     fi
 
     # git d  -> Structural diff
@@ -184,7 +187,6 @@ main() {
     # git config --global alias.d "diff"
     # git config --global alias.ds "show"
     # git config --global alias.dl "log -p"
-
   fi
 
   # Legacy

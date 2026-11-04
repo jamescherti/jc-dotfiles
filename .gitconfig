@@ -580,7 +580,7 @@ pl = pull
 t = tag
 
 # Show changes in the working directory relative to the last commit
-d = diff HEAD
+d = diff
 
 # Rebase
 rb = rebase
