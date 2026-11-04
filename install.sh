@@ -124,24 +124,36 @@ main() {
     git config --global core.editor "devemacs -nw"
   fi
 
+  local delta_exists=0
+  if type -P delta &>/dev/null; then
+    delta_exists=1
+  fi
+
+  local difft_exists=0
   if type -P difft &>/dev/null; then
-    # Set the external diff tool (This handles 'git diff')
+    difft_exists=1
+  fi
+
+  # Configure Delta settings whenever the binary is present
+  if [[ $delta_exists -ne 0 ]]; then
+    git config --global interactive.diffFilter "delta --color-only"
+    git config --global delta.navigate true
+    git config --global delta.side-by-side true
+  fi
+
+  local less_cmd
+  less_cmd=less
+  if [[ $difft_exists -ne 0 ]]; then
+    # Difftastic exists: make it the default and keep delta aside
     git config --global diff.external difft
-
-    # git d  -> Structural diff
-    git config --global alias.d "-c diff.external=difft diff"
-
-    # git ds -> Show recent commit with difftastic
-    git config --global alias.ds "-c diff.external=difft show --ext-diff"
-
-    # git dl -> Log with structural patches
-    git config --global alias.dl "-c diff.external=difft log -p --ext-diff"
+    git config --global core.pager "$less_cmd"
+    git config --global pager.diff "$less_cmd"
+    git config --global pager.show "$less_cmd"
+    git config --global pager.log "$less_cmd"
+    git config --global pager.difftool "$less_cmd"
 
     # Don't prompt when running difftool
     git config --global difftool.prompt false
-
-    # Use a pager for difftool output
-    git config --global pager.difftool true
 
     # Define the tool and the command
     git config --global diff.tool "difftastic"
@@ -149,11 +161,30 @@ main() {
     # shellcheck disable=SC2016
     git config --global difftool.difftastic.cmd 'difft "$LOCAL" "$REMOTE"'
 
-    # Normal git diff
-    git config --global alias.ndiff 'diff --no-ext-diff'
-  else
-    # Normal git diff
-    git config --global alias.ndiff 'diff'
+    if [[ $delta_exists -ne 0 ]]; then
+      # Explicit Delta diff
+      git config --global alias.ddiff '!git -c core.pager=delta -c pager.diff=delta diff --no-ext-diff'
+    fi
+
+    # git d  -> Structural diff
+    # git config --global alias.d "diff"
+
+    # git ds -> Show recent commit with difftastic
+    # git config --global alias.ds "show --ext-diff"
+
+    # git dl -> Log with structural patches
+    # git config --global alias.dl "log -p --ext-diff"
+  elif [[ $delta_exists -ne 0 ]]; then
+    # Only delta exists: use delta as the primary pager
+    git config --global core.pager delta
+
+    # Explicit Delta diff (same behavior as ndiff in this fallback state)
+    git config --global alias.ddiff "diff"
+
+    # git config --global alias.d "diff"
+    # git config --global alias.ds "show"
+    # git config --global alias.dl "log -p"
+
   fi
 
   # Legacy

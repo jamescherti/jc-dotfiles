@@ -98,37 +98,17 @@ auto = 8000
 # mandatory so you can see Git's native colors and Difftastic's syntax
 # highlighting.
 #
-# -S (Chop long lines): Truncates long lines instead of soft-wrapping them to
-# the next line. This is crucial for Difftastic; if side-by-side diffs wrap, the
-# columns break and become unreadable. You can scroll horizontally with the
-# left/right arrow keys to see truncated text.
-#
 # -F (Quit if one screen): Automatically exits less without pausing if the git
 # log or git diff output is short enough to fit on a single screen.
 #
 # -X (No init): Prevents less from clearing the screen when you exit. Your diff
 # or log remains visible in your terminal scrollback after you hit q.
-#
-# -M (Long prompt): Replaces the default colon prompt with a more useful status
-# bar at the bottom showing the filename, line numbers, and a percentage through
-# the file.
-#
-# -i (Ignore case): Makes searching (using /) case-insensitive, unless you type
-# a capital letter (smart-case).
-#
-# -x4 (Tab width): Renders tab characters as 4 spaces instead of the default 8,
-# keeping code diffs much closer to how they look in your editor.
-pager = less -RFXSMi -x4
+pager = less -R -F -X
 
 # Enables reading the commit-graph file. This speeds up commit traversal
 # operations like 'git log' and branch calculations by avoiding the need to
 # parse individual commit objects.
 commitGraph = true
-
-# -X: Keep the content visible after closing the pager
-# -R: Ensures that color codes and other control characters in the output
-#     (e.g., from 'git diff --color') are properly displayed in the pager.
-pager = less -X -R
 
 # Displays non-ASCII file names in their original form instead of quoted octal
 # sequences.
@@ -674,6 +654,8 @@ contrib = !git --no-pager shortlog --summary --numbered --no-merges --email
 contrib-merge = !git --no-pager shortlog --summary --numbered --email
 
 gpg = check-gpg -i
+
+ndiff = diff --no-ext-diff
 
 [index]
 # Uses a more compact index format. This reduces the size of the index file on

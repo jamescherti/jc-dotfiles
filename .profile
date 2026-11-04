@@ -121,8 +121,10 @@ unset MANPATH
 #
 # -F: Automatically exit if the entire output fits on a single screen.
 #
-# -X: Do not send termcap initialization/deinitialization strings; prevents
-#     clearing the screen on exit so content remains visible.
+# -X: Do not send termcap initialization/deinitialization strings. Prevents
+#     clearing the screen on exit so content remains visible. The benefit of -X
+#     is that the last displayed page remains visible after quitting less,
+#     rather than restoring the previous terminal screen.
 #
 # -S: Chop long lines instead of wrapping them to the next line (enables
 #     horizontal scrolling with arrow keys).
@@ -135,7 +137,7 @@ unset MANPATH
 #
 # -x4: Set tab stops every 4 positions instead of the default 8 spaces.
 #
-# -J: Display a status column on the left edge; marks search matches with
+# -J: Display a status column on the left edge. Marks search matches with
 #     an asterisk (*).
 #
 # --mouse: Enable mouse wheel scrolling and click-drag support in terminals
@@ -143,11 +145,20 @@ unset MANPATH
 #
 # --incsearch: Search incrementally, highlighting matches as search terms
 #     are entered.
-export LESS='-RFXSMi -x4 -J --mouse --incsearch'
+#
+# --rscroll=*n: Use normal text styling for > instead of reverse video.
+#
+# --use-color: Enables colors for interface elements.
+# -D: Sets a display color.
+# R: Selects the horizontal truncation marker (>).
+# c: Sets its foreground to cyan.
+#
+# -DPw Enable colors in less and set the bottom prompt's text color to white.
+# Removed:--use-color -DRc -DPw
+export LESS='-R -F -M -i -J --incsearch -X -S -x4 --mouse'
 export LESSCHARSET='utf-8'
 export PAGER=less
 export MANPAGER=less
-export GIT_PAGER=less
 export SYSTEMD_PAGER=less
 
 # Define custom colors for reading man pages with less. These variables hijack
