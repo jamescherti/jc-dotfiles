@@ -157,10 +157,9 @@ unset MANPATH
 # Removed:--use-color -DRc -DPw
 export LESS='-R -F -M -i -J --incsearch -X -S -x4 --mouse'
 export LESSCHARSET='utf-8'
-export PAGER=vimpager
-# export PAGER=less
-# export MANPAGER=less
-# export SYSTEMD_PAGER=less
+export PAGER=less
+export MANPAGER=less
+export SYSTEMD_PAGER=less
 
 # Define custom colors for reading man pages with less. These variables hijack
 # standard terminal capabilities to add syntax highlighting to manuals.
