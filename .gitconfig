@@ -103,7 +103,8 @@ auto = 8000
 #
 # -X (No init): Prevents less from clearing the screen when you exit. Your diff
 # or log remains visible in your terminal scrollback after you hit q.
-pager = less -R -F -X
+# pager = less -R -F -X
+pager = vimpager
 
 # Enables reading the commit-graph file. This speeds up commit traversal
 # operations like 'git log' and branch calculations by avoiding the need to
