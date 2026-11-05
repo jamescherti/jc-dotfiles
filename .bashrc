@@ -290,7 +290,7 @@ fd() {
 alias rgf='rg --fixed-strings'
 alias rgl='rg --files-with-matches'
 alias rgq='rg --quiet'
-if type -P rg >/dev/null 2>&1; then
+if type -P rg &>/dev/null; then
   alias gr='rg'
 else
   alias gr='grep -R -i --no-messages'
@@ -898,13 +898,13 @@ fi
 # FZF variables
 #-------------------------------------------------------------------------------
 if [[ "${_JC_FZF:-0}" -ne 0 ]]; then
-  if command -v rg >/dev/null 2>&1; then
+  if command -v rg &>/dev/null; then
     FZF_DEFAULT_COMMAND="rg ${_JC_RG_OPTIONS[*]} --files"
     export FZF_DEFAULT_COMMAND
-  elif command -v fd >/dev/null 2>&1; then
+  elif command -v fd &>/dev/null; then
     FZF_DEFAULT_COMMAND="fd ${_JC_FD_OPTIONS[*]} --type f"
     export FZF_DEFAULT_COMMAND
-  elif command -v fdfind >/dev/null 2>&1; then
+  elif command -v fdfind &>/dev/null; then
     FZF_DEFAULT_COMMAND="fdfind ${_JC_FD_OPTIONS[*]} --type f"
     export FZF_DEFAULT_COMMAND
   else
