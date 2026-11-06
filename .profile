@@ -126,9 +126,6 @@ unset MANPATH
 #     is that the last displayed page remains visible after quitting less,
 #     rather than restoring the previous terminal screen.
 #
-# -S: Chop long lines instead of wrapping them to the next line (enables
-#     horizontal scrolling with arrow keys).
-#
 # -M: Use a verbose prompt showing filename, line numbers, and byte
 #     percentage into the file.
 #
@@ -154,8 +151,15 @@ unset MANPATH
 # c: Sets its foreground to cyan.
 #
 # -DPw Enable colors in less and set the bottom prompt's text color to white.
-# Removed:--use-color -DRc -DPw
-export LESS='-R -F -M -i -J --incsearch -X -S -x4 --mouse'
+#
+# Removed
+# -------
+# --use-color -DRc -DPw
+#
+# -S: Chop long lines instead of wrapping them to the next line (enables
+#     horizontal scrolling with arrow keys).
+#
+export LESS='-R -F -M -i -J --incsearch -X -x4 --mouse'
 export LESSCHARSET='utf-8'
 export PAGER=less
 export MANPAGER=less
