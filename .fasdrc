@@ -31,7 +31,7 @@
 # SOFTWARE.
 #
 
-export _FASD_TRACK_PWD=0
+export _FASD_TRACK_PWD=1
 
 # Disable Version Control System (VCS) directory traversal.
 # By default, fasd recursively searches upward for a .git or .hg directory.
@@ -40,7 +40,7 @@ export _FASD_ONLY_VCS=0
 
 # Disable symlink resolution. This prevents the script from spawning
 # sub-processes to run 'xargs' and 'readlink'.
-export _FASD_RESOLVE_SYMLINKS=0
+export _FASD_RESOLVE_SYMLINKS=1
 
 export _FASD_BACKENDS="native fasd-projects"
 
@@ -49,3 +49,11 @@ export _FASD_BACKENDS="native fasd-projects"
 if type -P mawk &>/dev/null; then
   export _FASD_AWK="mawk"
 fi
+
+# STANDARD CONFIG
+# TODO: Make efasd allow inheriting values
+_FASD_IGNORE="fasd ls echo printf rm unlink rmdir trash trash-put mv rename chmod chown chgrp"
+
+# My config
+# qa qai?
+_FASD_IGNORE="$_FASD_IGNORE git j ip gr rg grep ripgrep fd find git-rexec gm rgit man mountall nc so time which type wc"
