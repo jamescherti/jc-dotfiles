@@ -40,7 +40,7 @@ export _FASD_ONLY_VCS=0
 
 # Disable symlink resolution. This prevents the script from spawning
 # sub-processes to run 'xargs' and 'readlink'.
-export _FASD_RESOLVE_SYMLINKS=1
+export _FASD_RESOLVE_SYMLINKS=0
 
 export _FASD_BACKENDS="native fasd-projects"
 
