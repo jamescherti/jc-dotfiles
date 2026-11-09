@@ -49,7 +49,7 @@ set show-all-if-unmodified on
 set show-all-if-ambiguous on
 
 # Ignore case when completing
-set completion-ignore-case on
+set completion-ignore-case off
 
 # Enable coloring of filename completions using the colored-stats option. You
 # can also color the common prefix in completion lists using

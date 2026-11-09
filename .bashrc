@@ -188,12 +188,6 @@ shopt -s progcomp &>/dev/null
 # like !!, !number, or !string).
 shopt -s histverify &>/dev/null
 
-# The nocaseglob option allows case-insensitive matching for filename expansion
-# (also known as "pathname expansion"), which is the feature that expands
-# patterns with wildcards (*, ?, [abc], etc.) to match filenames and directory
-# names.
-shopt -s nocaseglob &>/dev/null
-
 # Enable "**" pattern to match files, directories, and all nested subdirectories
 # in pathname expansion.
 shopt -s globstar &>/dev/null
