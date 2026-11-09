@@ -95,10 +95,10 @@ ignore = [
   "PLR0911",  # Too many return statements
 
   # warning: The following rule may cause conflicts when used with the
-  # formatter: missing-trailing-comma (COM812). To avoid unexpected
-  # behavior, we recommend disabling this rule, either by removing it from the
-  # lint.select or lint.extend-select configuration, or adding it to the
-  # lint.ignore configuration.
+  # formatter: missing-trailing-comma (COM812). To avoid unexpected behavior, we
+  # recommend disabling this rule, either by removing it from the lint.select or
+  # lint.extend-select configuration, or adding it to the lint.ignore
+  # configuration.
   "COM812",
 
   # What it demands: Forbids writing raise ValueError(f"Invalid {x}") and forces
