@@ -241,7 +241,7 @@ alias yamllint="yamllint -c ~/.yamllint_global.yml"
 alias br="git --no-pager branch"
 alias g="git"
 alias glp="git log -p"
-alias grep="grep --color=auto --exclude-dir=.git"
+alias grep="grep --color=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.hg"
 
 # rg
 # Include hidden files while excluding Git, Subversion, and Mercurial metadata.
@@ -271,21 +271,8 @@ _JC_FD_OPTIONS=(
   --exclude=.hg
 )
 
-rg() {
-  if [ -z "$_JC_NCPU" ]; then
-    _jc_ncpu >/dev/null
-  fi
-
-  command rg "${_JC_RG_OPTIONS[@]}" "$@"
-}
-
-fd() {
-  if [ -z "$_JC_NCPU" ]; then
-    _jc_ncpu >/dev/null
-  fi
-
-  command fd "${_JC_FD_OPTIONS[@]}" "$@"
-}
+alias rg='command rg "${_JC_RG_OPTIONS[@]}"'
+alias fd='command fd "${_JC_FD_OPTIONS[@]}"'
 
 alias rgf='rg --fixed-strings'
 alias rgl='rg --files-with-matches'
