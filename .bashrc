@@ -686,6 +686,11 @@ _jc_better_cd() {
   return "$errno"
 }
 
+# Prevent cd completion from expanding environment variables (like $USER or
+# $HOME) and restrict it strictly to directories and files, by overriding the
+# completion behavior for the cd builtin using the complete command.
+complete -A directory cd
+
 alias cd=_jc_better_cd
 alias ..='cd ..'
 alias ..2='cd ../..'
@@ -978,6 +983,18 @@ _jc_lazy_bash_completion() {
 if [[ -z "${BASH_COMPLETION_VERSINFO:-}" || "$OSTYPE" == darwin* ]]; then
   complete -D -F _jc_lazy_bash_completion
 fi
+
+FIGNORE="${FIGNORE:+$FIGNORE:}~:.swp:.swo"
+FIGNORE+=':.git:.svn:.hg'
+FIGNORE+=':.DS_Store:Thumbs.db'
+FIGNORE+=':#:.elc:.eln'
+FIGNORE+=':.o'
+FIGNORE+=':.ansible'
+FIGNORE+=':.tox:.nox:.ipynb_checkpoints:.egg-info:.dist-info'
+export FIGNORE
+
+# Allow completion when every candidate matches a suffix in FIGNORE.
+shopt -u force_fignore
 
 #-------------------------------------------------------------------------------
 # Confirm before executing certain commands
