@@ -242,7 +242,7 @@ alias grep="grep --color=auto --exclude-dir=.git --exclude-dir=.svn --exclude-di
 # These directories contain internal repository data rather than working files.
 # Excluding them reduces directory traversal and irrelevant search results.
 _JC_RG_OPTIONS=(
-  --color=never
+  --color=auto
   --follow
   --threads="$_JC_NCPU"
   --hidden
