@@ -383,11 +383,15 @@ export PIP_DOWNLOAD_CACHE="$HOME/.cache/python_cache_pip_download"
 # MISC
 #-------------------------------------------------------------------------------
 if [ -z "$OS_ID" ]; then
-  OS_ID=$(
-    # shellcheck disable=SC1091
-    [ -r /etc/os-release ] && . /etc/os-release 2>/dev/null
-    printf '%s\n' "${ID:-unknown}"
-  )
+  if command -v osid &>/dev/null; then
+    OS_ID=$(osid)
+  else
+    OS_ID=$(
+      # shellcheck disable=SC1091
+      [ -r /etc/os-release ] && . /etc/os-release 2>/dev/null
+      printf '%s\n' "${ID:-unknown}"
+    )
+  fi
   export OS_ID
 fi
 
