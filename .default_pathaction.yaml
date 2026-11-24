@@ -34,7 +34,7 @@
 #
 
 options:
-  shell_path: /bin/bash
+  shell_command: ["/usr/bin/env", "bash", "-c"]
   timeout: 600
   confirm_after_timeout: 15
 
